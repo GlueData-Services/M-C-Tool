@@ -1,0 +1,42 @@
+<section class="header container-fluid mt-4">
+  <h2>Validations / Batch 2022-01-01-1</h2>
+</section>
+
+<section class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="#">Incomplete</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Complete</a>
+    </li>
+  </ul>
+</section>
+
+<section class="content container-fluid">
+  <table class="table table-sm table-bordered mt-4">
+    <thead>
+    <tr>
+      <th>Match ID</th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Articles</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+      <% @matches.each do |match| %>
+        <tr>
+          <td><%= match.id %></td>
+          <td><%= match.name %></td>
+          <td></td>
+          <td><%= match.matched_articles.count %></td>
+          <td><%= match.status %></td>
+          <td><%= link_to 'Consolidate', consolidate_match_path(match) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

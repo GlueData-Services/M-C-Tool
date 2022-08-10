@@ -1,16 +1,66 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Harmonics</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<html class="h-100">
+<head>
+  <title>Harmonics</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
-  </head>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+</head>
 
-  <body>
-    <%= yield %>
-  </body>
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-1">
+  <header class="p-3 bg-dark text-white">
+    <div class="container-fluid">
+
+      <div class="d-flex flex-wrap justify-content-between">
+
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+<!--          <i class="text-warning bi bi-boxes" style="font-size: 32px;"></i>-->
+<!--          <span class="ms-2 fs-4">Data Harmonics</span>-->
+          <img src="gd_logo_white.png" alt="GlueData Logo" height="32px">
+        </a>
+
+        <ul class="nav mb-2 mb-md-0">
+          <li><a href="/" class="nav-link px-2 text-secondary">Dashboard</a></li>
+          <% if current_user&.is_admin? %>
+            <li><a href="/motor_admin" class="nav-link px-2 text-secondary">Admin</a></li>
+            <li><a href="/users" class="nav-link px-2 text-secondary">User Management</a></li>
+          <% else %>
+
+          <% end %>
+        </ul>
+
+
+        <div class="">
+          <% if current_user %>
+          <%= link_to current_user.name, '#', class: 'btn btn-outline-primary' %>
+          <% else %>
+            <%= link_to 'Login', new_user_session_path, class: 'btn btn-outline-primary'%>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <%= yield %>
+</main>
+
+<footer class="footer mt-auto bg-light py-4 px-3">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-4 text-dark">
+        © <%= Time.now.year %> GlueData, All rights reserved.
+      </div>
+      <div class="col-4 text-dark">
+      </div>
+      <div class="col-4 text-end">
+        <%= mail_to "support@gluedata.com", "Email Support"  %>
+      </div>
+    </div>
+  </div>
+</footer>
+</body>
 </html>

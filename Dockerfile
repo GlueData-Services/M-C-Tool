@@ -6,9 +6,15 @@ RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
     curl \
     less \
     git \
-    libpq-dev \
-    postgresql-client \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    mariadb-client \
+    libmariadb-dev \
+    nodejs \
+    npm \
+  && npm install --global yarn \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+
+#    libpq-dev \
+#    postgresql-client \
 
 ENV LANG=C.UTF-8 \
   BUNDLE_JOBS=4 \

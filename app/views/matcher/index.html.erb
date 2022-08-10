@@ -1,0 +1,47 @@
+<section class="header container-fluid mt-4">
+  <h2>Matcher / Batch 2022-01-01-1</h2>
+</section>
+
+<section class="content container-fluid" data-controller="matcher">
+  <div class="refine d-flex justify-content-between my-4">
+    <h4 class="d-inline">Unmatched Articles</h4>
+    <div class="search">
+      <%= form_tag matcher_path, method: :get do %>
+        Refine results <%= search_field_tag :match_q, params[:match_q] %>
+        <%= submit_tag 'Go' %>
+      <% end %>
+    </div>
+  </div>
+
+  <table class="table table-sm table-bordered table-hover mt-4">
+    <thead>
+    <tr>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @need_match.each do |mara| %>
+    <tr data-action="click->matcher#refine"
+        data-matcher-ean11-param="<%= mara.barcodes %>"
+        data-matcher-description-param="<%= mara.description %>"
+        data-matcher-npage-param="<%= params[:n_page] %>"
+        class="<%= 'bg-selected' if mara.barcodes == params[:q]  %>">
+      <td><%= mara.banner %></td>
+      <td><%= mara.description %></td>
+      <td><%= mara.type %></td>
+      <td><%= mara.article_type %></td>
+      <td><%= truncate mara.barcodes %></td>
+      <td class="text-end"><a href="">Needs Correction</a></td>
+    </tr>
+    <% end %>
+    <tr>
+      <td colspan="7" class="text-muted text-end" >
+        <%= paginate @need_match, param_name: :n_page %>
+        Total articles: <%= Mara.unmatched.count %>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <%= render 'matches' %>
+</section>

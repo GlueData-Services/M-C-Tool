@@ -1,0 +1,94 @@
+<section class="header container mt-4">
+  <h2>Dashboard / Batch 2022-01-01-1</h2>
+
+  <div class="d-none">
+    <%= form_tag search_path do %>
+      <%= text_field_tag :q %>
+      <%= submit_tag 'Search' %>
+    <% end %>
+
+    <hr>
+
+    <% if @search.present? %>
+      <h2>Search results: <%= @search.size %></h2>
+      <% @search.each do |r| %>
+        <p><%= r.inspect %></p>
+      <% end %>
+    <% end %>
+
+  </div>
+</section>
+
+<section class="content">
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col-4 mb-3">
+        <a href="/matcher" class="btn btn-lg btn-outline-primary w-100 p-4">
+          <i class="bi bi-diagram-3" style="font-size: 3rem;"></i>
+          <br>
+          Matcher
+        </a>
+      </div>
+      <div class="col-4 mb-3">
+        <a href="/validation" class="btn btn-lg btn-outline-primary w-100 p-4">
+          <i class="bi bi-link-45deg" style="font-size: 3rem;"></i>
+          <br>
+          Consolidation
+        </a>
+      </div>
+      <div class="col-4 mb-3">
+        <a href="/validation" class="btn btn-lg btn-outline-primary w-100 p-4">
+          <i class="bi bi-link-45deg" style="font-size: 3rem;"></i>
+          <br>
+          Review
+        </a>
+      </div>
+      <div class="col-4 mb-3">
+        <a href="/reports" class="btn btn-lg btn-outline-primary w-100 p-4">
+          <i class="bi bi-graph-up" style="font-size: 3rem;"></i>
+          <br>
+          Reports
+        </a>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <h3>General Status</h3>
+      <p>The data below is for Batch <b>2022-01-01-1</b></p>
+      <div class="col-6">
+        <table class="table table-borderless">
+          <tr>
+            <th>Total Articles</th>
+            <td><%= Mara.count %></td>
+          </tr>
+          <tr>
+            <th>Unmatched Articles</th>
+            <td><%= Mara.unmatched.count %></td>
+          </tr>
+          <tr>
+            <th>Total Matches</th>
+            <td><%= Match.count %></td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-6">
+        <table class="table table-borderless">
+          <tr>
+            <th>Matches today</th>
+            <td><%= Match.where('DATE(created_at) = ?', Date.today).count %></td>
+          </tr>
+          <tr>
+            <th>Matches yesterday</th>
+            <td><%= Match.where('DATE(created_at) = ?', Date.today - 1.day).count %></td>
+          </tr>
+          <tr>
+            <th>Match Velocity</th>
+            <td>0</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</section>
+

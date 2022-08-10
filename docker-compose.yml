@@ -1,33 +1,64 @@
 services:
-  web:
-    build: .
-    command: bash -c "rm -f tmp/pids/server.pid && bin/rails s -p 3000 -b '0.0.0.0'"
-    volumes:
-      - .:/usr/src/app
-      - bundle:/usr/local/bundle
-    ports:
-      - "3000:3000"
-    env_file:
-      - .env
+#  web:
+#    build: .
+##    command: bash -c "rm -f tmp/pids/server.pid && bin/rails s -p 3000 -b '0.0.0.0'"
+#    command: bash -c "rm -f tmp/pids/server.pid && bin/dev"
+#    volumes:
+#      - .:/usr/src/app
+#      - bundle:/usr/local/bundle
+#    ports:
+#      - "3001:3000"
+#    env_file:
+#      - .env
+#    environment:
+#      - HISTFILE=/usr/src/app/log/.bash_history
+#    depends_on:
+#      - mariadb
+
+  mariadb:
+    image: mariadb:10
+    restart: always
     environment:
-      - HISTFILE=/usr/src/app/log/.bash_history
-    depends_on:
-      - db
-      - redis
-  db:
-    image: postgres:13
+      MARIADB_ROOT_PASSWORD: mariapass
     ports:
-      - "5432:5432"
+      - "3306:3306"
+
+
+#  db:
+#    image: postgres:13
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      - POSTGRES_PASSWORD=arkpass
+#    volumes:
+#      - pg_data:/var/lib/postgresql/data
+
+  elasticsearch:
+    image: elasticsearch:8.1.2
+    ports:
+      - "9200:9200"
+      - "9300:9300"
     environment:
-      - POSTGRES_PASSWORD=arkpass
+      - discovery.type=single-node
+      - xpack.security.enabled=false
     volumes:
-      - pg_data:/var/lib/postgresql/data
-  redis:
-    image: redis
-    volumes:
-      - redis_data:/data
+      - ./elastic:/usr/share/elasticsearch/data
+
+#  redis:
+#    image: redis
+#    volumes:
+#      - redis_data:/data
+#  solr:
+#    image: solr
+#    ports:
+#      - "8983:8983"
+#    volumes:
+#      - ./solr:/var/solr
+#    command:
+#      - solr-precreate
+#      - development
 
 volumes:
   pg_data:
-  redis_data:
+#  redis_data:
   bundle:

@@ -1,0 +1,23 @@
+<%= bootstrap_form_with(model: article, layout: :inline) do |form| %>
+  <% if article.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(article.errors.count, "error") %> prohibited this article from being saved:</h2>
+
+      <ul>
+        <% article.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+    <%= form.text_field :code_1 %>
+    <%= form.text_field :code_2 %>
+    <%= form.text_field :code_3 %>
+    <%= form.text_field :name %>
+    <%= form.text_field :model %>
+    <%= form.text_field :brand %>
+    <%= form.text_field :description %>
+    <%= form.number_field :price %>
+    <%= form.submit %>
+<% end %>

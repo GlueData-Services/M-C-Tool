@@ -1,0 +1,36 @@
+# == Schema Information
+#
+# Table name: articles
+#
+#  id          :bigint           not null, primary key
+#  code_1      :string
+#  code_2      :string
+#  code_3      :string
+#  name        :string
+#  model       :string
+#  brand       :string
+#  description :string
+#  price       :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
+one:
+  code_1: MyString
+  code_2: MyString
+  code_3: MyString
+  name: MyString
+  model: MyString
+  brand: MyString
+  description: MyString
+  price: 1
+
+two:
+  code_1: MyString
+  code_2: MyString
+  code_3: MyString
+  name: MyString
+  model: MyString
+  brand: MyString
+  description: MyString
+  price: 1
