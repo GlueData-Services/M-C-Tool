@@ -36,6 +36,14 @@
 /node_modules
 
 .idea/
-.DS_Store
+
 solr/
 elastic/
+mysqldev/
+mysqldev-cnf/
+mysqldev-enc/
+
+*.bz2
+*.csv
+*.tsv
+.DS_Store

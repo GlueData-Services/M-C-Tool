@@ -9,7 +9,12 @@ export default class extends Controller {
   refine(event) {
     console.log('Refining...');
     console.log(event.params);
-    let location = "/matcher?q=" + event.params.ean11 + " " + event.params.description + "&n_page=" + event.params.npage;
+    let location = "/matcher?q=" + event.params.ean11 + " " + event.params.description +
+        "&n_page=" + event.params.npage +
+        "&match_q=" + event.params.matchq +
+        "&f_banner=" + event.params.fBanner +
+        "&f_article_type=" + event.params.fArticleType;
+
     Turbo.visit(location)
   }
 }

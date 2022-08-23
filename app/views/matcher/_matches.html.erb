@@ -14,6 +14,7 @@
     <tr>
       <th>Banner</th>
       <th>Description</th>
+      <th>Article Type</th>
       <th>Barcodes</th>
       <th></th>
     </tr>
@@ -21,10 +22,16 @@
 
     <tbody>
     <% @matched.each do |mara| %>
-      <tr class="<%= mara.banner.downcase %>">
+      <tr class="<%= mara.banner.downcase %> <%= mara.barcodes.split(',').join(" ") %>">
         <td><span><%= mara.banner %></span></td>
         <td><%= mara.description %></td>
-        <td><%= truncate mara.barcodes %></td>
+        <td><%= mara.article_type %></td>
+        <td><span data-bs-toggle="tooltip" data-bs-placement="bottom" title="<%= mara.barcodes %>"><%= truncate mara.barcodes, length: 50 %></span></td>
+<!--        <td>-->
+          <%# mara.barcodes.split(',').each do |b| %>
+<!--            <span class="badge rounded-pill bg-light text-dark barcode"><%#= b %></span>-->
+          <%# end %>
+<!--        </td>-->
         <td class="text-center"><%= check_box_tag 'p_matnr[]', mara.prefixed_matnr %></td>
       </tr>
     <% end %>

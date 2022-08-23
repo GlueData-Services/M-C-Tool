@@ -15,14 +15,13 @@
     <% Lookup.sections.each_with_index do |sec, i| %>
       <div class="tab-pane fade show <%= 'show active' if i == 0 %>" id="<%= sec.downcase %>" role="tabpanel">
         <% fields_for_section = Lookup.fields_for_section(sec) %>
-
         <table class="table table-sm table-bordered table-hover">
           <thead>
           <tr>
             <th></th>
             <% @match.maras.each do |mara| %>
               <th>
-                <%= mara.send('Material description') %>
+                <%= mara.description %>
                 <div class="dropdown float-end">
                   <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
                   </button>
@@ -48,90 +47,40 @@
           </thead>
 
           <tbody>
-          <% fields_for_section.each do |col| %>
-            <% if Mara.has_field(col) && Lookup.display(col) %>
-              <tr>
-                <th class="bg-light">
-                  <%= Lookup.name_for(col).humanize %>
-                </th>
-                <% @match.maras.each do |mara| %>
-                  <td class="mara-data"><%= mara.send(col) %></td>
-                <% end %>
-                <td class="text-center"></td>
-                <td class="text-center"><%= check_box_tag :override, 1, false, class: 'override' %>
-                  <%= text_field_tag 'mara[]override', nil, class: 'mara-input d-none' %>
-                </td>
-              </tr>
-            <% end %>
+          <% fields_for_section.each do |tab_col| %>
+            <tr data-table="<%= tab_col[0] %>" data-column="<%= tab_col[1] %>">
+              <th class="bg-light">
+                <%= Lookup.name_for(tab_col).humanize rescue 'Missing' %>
+              </th>
+              <% @match.maras.each do |mara| %>
+                <td class="<%= mara.banner.downcase %> mara-data"><%= mara.get_specific_field(tab_col[0], tab_col[1]) %></td>
+              <% end %>
+              <td class="text-center"></td>
+              <td class="text-center"><%= check_box_tag :override, 1, false, class: 'override' %>
+                <%= text_field_tag 'mara[]override', nil, class: 'mara-input d-none' %>
+              </td>
+            </tr>
           <% end %>
           </tbody>
-
-
         </table>
       </div>
     <% end %>
   </div>
 </section>
 
-
-<section class="content container-fluid d-none">
-  <table class="table table-sm table-bordered table-hover">
-    <thead>
-    <tr>
-      <th></th>
-      <% @match.maras.each do |mara| %>
-        <th>
-          <%= mara.send('Material description') %>
-          <div class="dropdown float-end">
-            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-              <li>
-                <button class="dropdown-item" type="button">Mark as Main</button>
-              </li>
-              <li>
-                <button class="dropdown-item" type="button">Remove from match</button>
-              </li>
-              <li>
-                <button class="dropdown-item" type="button">Mark all</button>
-              </li>
-            </ul>
-          </div>
-        </th>
-      <% end %>
-      <th class="text-center">
-        <%= button_tag '+', class: 'btn btn-sm btn-success', data: { toggle: "modal", target: '#exampleModal' } %>
-      </th>
-      <th class="text-center">Override</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    <% Mara.column_names.each do |col| %>
-      <% if Lookup.display(col) %>
-        <tr>
-          <th class="bg-light">
-            <%= Lookup.name_for(col).humanize %>
-          </th>
-          <% @match.maras.each do |mara| %>
-            <td class="mara-data"><%= mara.send(col) %></td>
-          <% end %>
-          <td class="text-center"></td>
-          <td class="text-center"><%= check_box_tag :override, 1, false, class: 'override' %>
-            <%= text_field_tag 'mara[]override', nil, class: 'mara-input d-none' %>
-          </td>
-        </tr>
-      <% end %>
-    <% end %>
-    </tbody>
-  </table>
-</section>
-
 <section class="content container-fluid">
   <div class="d-flex justify-content-end">
-    <a href="#" class="btn btn-warning ms-2">
-      Needs corrections
-    </a>
+    <div class="dropdown">
+      <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        Needs Correction
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <li><a class="dropdown-item" href="#">UOM Mismatch</a></li>
+        <li><a class="dropdown-item" href="#">Type Mismatch</a></li>
+        <li><a class="dropdown-item" href="#">Other</a></li>
+      </ul>
+    </div>
+
     <a href="#" class="btn btn-warning ms-2">
       Reject
     </a>

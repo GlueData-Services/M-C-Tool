@@ -31,7 +31,7 @@
         <tr>
           <td><%= match.id %></td>
           <td><%= match.name %></td>
-          <td></td>
+          <td><%= match.article_type %></td>
           <td><%= match.matched_articles.count %></td>
           <td><%= match.status %></td>
           <td><%= link_to 'Consolidate', consolidate_match_path(match) %></td>

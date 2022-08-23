@@ -1,10 +1,8 @@
 class Lookup < ApplicationRecord
-  self.table_name = "LOOKUP_AND_OPERATIONS"
+  self.table_name = "lookup_and_operations"
 
   def self.name_for(col)
-    logger.debug col
-    m = where('G_FIELD = ?', col).first
-    logger.debug m
+    m = where('G_TABLE = ? AND G_FIELD = ?', col[0], col[1]).first
     if m
       return m.send('Attribute_Name')
     else
@@ -12,15 +10,23 @@ class Lookup < ApplicationRecord
     end
   end
 
-  def self.display(col)
+  def self.display(table, col)
     where('G_FIELD = ? AND display = "D"', col).count > 0
   end
 
   def self.sections
-    distinct.pluck('Tab')
+    tabs = distinct.pluck('Tab')
+    filtered_tabs = []
+    tabs.each do |t|
+      if self.where('Tab = ? AND display = "D"', t).exists?
+        filtered_tabs << t
+      end
+    end
+
+    filtered_tabs
   end
 
   def self.fields_for_section(sec)
-    where('Tab = ?', sec).distinct.pluck('G_FIELD')
+    where("Tab = ? AND Display = 'D'", sec).distinct.pluck('G_TABLE', 'G_FIELD')
   end
 end
