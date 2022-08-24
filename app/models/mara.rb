@@ -1,7 +1,6 @@
 class Mara < ApplicationRecord
-  searchkick
-  # self.table_name = "MARA"
-  # self.primary_key = 'PREFIXED_MATNR'
+  searchkick highlight: [:description, :barcodes], filterable: [:banner, :article_type]
+
   self.table_name = "matchable_articles"
   self.inheritance_column = :foo
 
@@ -16,7 +15,8 @@ class Mara < ApplicationRecord
   def search_data
     {
       description: description,
-      barcodes: barcodes.split(',')
+      barcodes: barcodes.split(","),
+      banner: banner
     }
   end
 

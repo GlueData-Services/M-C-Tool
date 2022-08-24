@@ -16,6 +16,9 @@ class Match < ApplicationRecord
     else
       maras.first&.article_type
     end
+  end
 
+  def matched_articles_count
+    matched_articles.count
   end
 end

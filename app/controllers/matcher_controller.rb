@@ -4,31 +4,68 @@ class MatcherController < ApplicationController
       cookies[:unmatched_limit] = params[:unmatched_limit]
     end
 
-    if params[:match_q]
-      # @need_match = Mara.unmatched.where('barcodes like :q OR description LIKE :q', q: "%#{params[:match_q]}%").page(params[:n_page]).per(5)
-      @need_match = Mara.active.unmatched.where('barcodes LIKE :q OR description LIKE :q', q: "%#{params[:match_q]}%")
-      @need_match = @need_match.where(banner: params[:f_banner].upcase) if params[:f_banner].present?
-      @need_match = @need_match.where(article_type: params[:f_article_type]) if params[:f_article_type].present?
-      @need_match = @need_match.page(params[:n_page]).per(cookies.fetch(:unmatched_limit, 5))
+    if params[:match_q].present? || params[:f_banner].present? || params[:f_article_type].present?
+      _where = {
+        # matched: false,
+        # active: true,
+      }
+      _where[:banner] = params[:f_banner] if params[:f_banner].present?
+      _where[:article_type] = params[:f_article_type] if params[:f_article_type].present?
+
+      q = params[:match_q].blank? ? '*' : params[:match_q]
+
+      logger.debug "Query: " + q
+      logger.debug "Filter: " + _where.ai
+
+      @need_match = Mara.search(q,
+                                where: _where,
+                                misspellings: {edit_distance: 2, fields: [:description]},
+                                per_page: cookies.fetch(:unmatched_limit, 5),
+                                page: params[:n_page],
+                                fields: [:description, :barcodes, :banner]
+      )
+
     else
       @need_match = Mara.active.unmatched.all.page(params[:n_page]).per(cookies.fetch(:unmatched_limit, 5))
     end
 
     if params[:q]
-      @matched = Mara.search(params[:q], operator: "or", fields: ['barcodes^10', :description], page: params[:m_page], per_page: 20)
-    else
-      @matched = Mara.all.page(params[:m_page]).per(10)
-    end
+      @matched = Mara.search(params[:q],
+                             operator: "or",
+                             fields: ['barcodes^10', :description],
+                             page: params[:m_page], per_page: 20,
+                             highlight: { tag: "<strong>" },
+                             misspellings: { prefix_length: 2, fields: [:description] },
+                             body_options: {min_score: 300})
 
+      @scores = {}
+      @matched.response.body.dig('hits', 'hits').each do |score|
+        @scores[score["_id"]] = score["_score"]
+      end
+    end
   end
 
   def create
-    match = Match.create(status: 'awaiting')
-    params[:p_matnr].each do |matnr|
-      Mara.where(prefixed_matnr: matnr).update(matched: true)
-      match.matched_articles.create(prefixed_matnr: matnr)
+    if params[:p_matnr].blank?
+      redirect_to matcher_path(notice: 'No matches selected')
+      return
     end
 
-    redirect_to matcher_path(notice: 'Match created')
+    Match.transaction do
+      @match = Match.create(status: 'awaiting')
+      params[:p_matnr].each do |matnr|
+        Mara.where(prefixed_matnr: matnr).update(matched: true)
+        @match.matched_articles.create(prefixed_matnr: matnr)
+      end
+    end
+
+    if params[:button] == 'continue'
+      redirect_to matcher_path(notice: 'Match created')
+    else
+      redirect_to consolidate_match_path(@match)
+    end
+  rescue Exception => e
+    logger.debug e.message
+    redirect_to matcher_path(notice: e.message)
   end
 end
