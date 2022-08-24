@@ -6,13 +6,6 @@
   <div class="refine d-flex my-4 justify-content-between">
     <h4 class="d-inline">Unmatched Articles</h4>
 
-    Limit
-    <ul class="nav">
-      <li class="nav-item"><%= link_to '1', matcher_path(unmatched_limit: 1), class: "nav-link" %></li>
-      <li class="nav-item"><%= link_to '5', matcher_path(unmatched_limit: 5), class: "nav-link" %></li>
-      <li class="nav-item"><%= link_to '10', matcher_path(unmatched_limit: 10), class: "nav-link" %></li>
-    </ul>
-    <%= link_to 'Show' %>
     <%= form_tag matcher_path, method: :get, class: 'row gy-2 gx-3 align-items-center bd-highlight' do %>
       <div class="col-auto">
         <%= select_tag :f_banner, options_for_select(%w[GAME BUILDERS MAKRO], params[:f_banner]), include_blank: true, placeholder: 'Banner', class: 'form-select' %>
@@ -29,49 +22,7 @@
     <% end %>
   </div>
 
-  <table class="table table-sm table-bordered table-hover mt-4">
-    <thead>
-    <tr>
-      <th>Banner</th>
-      <th>Description</th>
-      <th>Article Type</th>
-      <th>Barcodes</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    <% @need_match.each do |mara| %>
-      <tr data-action="click->matcher#refine"
-          data-matcher-ean11-param="<%= mara.barcodes %>"
-          data-matcher-description-param="<%= mara.description %>"
-          data-matcher-npage-param="<%= params[:n_page] %>"
-          data-matcher-matchq-param="<%= params[:match_q] %>"
-          data-matcher-f_banner-param="<%= params[:f_banner] %>"
-          data-matcher-f_article_type-param="<%= params[:f_article_type] %>"
-          class="<%= 'bg-selected' if params[:q]&.include?(mara.barcodes) && mara.barcodes.present? %>"
-      >
-        <td><%= mara.banner %></td>
-        <td><%= mara.description %></td>
-        <td><%= mara.article_type %></td>
-        <td>
-          <%# mara.barcodes.split(',').each do |code| %>
-<!--            <span class="barcode badge bg-light text-dark" data-barcode="<%#= code %>"><%#= code %></span>-->
-          <%# end %>
-          <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="<%= mara.barcodes %>">
-            <%= truncate mara.barcodes, length: 50 %>
-          </span>
-        </td>
-        <td class="text-end"><a href="">Needs Correction</a></td>
-      </tr>
-    <% end %>
-    <tr>
-      <td colspan="7" class="text-muted text-end">
-        <%= paginate @need_match, param_name: :n_page %>
-        Total articles: <%= @need_match.total_count %>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+  <%= render partial: 'results_table' %>
 
   <%= render 'matches' %>
 </section>
