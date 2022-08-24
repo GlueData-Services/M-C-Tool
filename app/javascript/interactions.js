@@ -32,10 +32,8 @@ $(document).on('turbo:load', function(){
    })
 
    $("span.barcode").hover(function(){
-      console.log($(this).data('barcode'))
       $($(this).data('barcode')).addClass('bg-selected')
    }, function(){
-      console.log('out')
       $("tr").removeClass('bg-selected')
    });
 })
