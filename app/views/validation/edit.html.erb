@@ -40,7 +40,7 @@
               </th>
             <% end %>
             <th class="text-center">
-              <%= button_tag '+', class: 'btn btn-sm btn-success', data: { toggle: "modal", target: '#exampleModal' } %>
+              <%= button_tag '+', class: 'btn btn-sm btn-success', 'data-bs-toggle': "modal", 'data-bs-target': "#exampleModal" %>
             </th>
             <th class="text-center">Override</th>
           </tr>
@@ -91,16 +91,41 @@
 </section>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-xl " role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <h5 class="modal-title" id="exampleModalLabel">Article Search</h5>
+        <button type="button" class="close btn btn-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
         </button>
       </div>
       <div class="modal-body">
-        ...
+
+        <%= form_tag search_path, method: :post, class: 'row gy-2 gx-3 bd-highlight', remote: true do %>
+          <div class="col-auto">
+            <%= select_tag :f_banner, options_for_select(%w[GAME BUILDERS MAKRO], params[:f_banner]), include_blank: true, placeholder: 'Banner', class: 'form-select' %>
+          </div>
+          <div class="col-auto">
+            <%= select_tag :f_article_type, options_for_select(Mara.article_types), placeholder: 'Article Type', include_blank: true, class: 'form-select' %>
+          </div>
+          <div class="col-auto">
+            <%= search_field_tag :match_q, params[:match_q], class: 'form-control-inline', placeholder: 'Search' %>
+          </div>
+          <div class="col-auto">
+            <%= submit_tag 'Go' %>
+          </div>
+        <% end %>
+
+        <table id="results" class="table table-sm table-bordered table-hover mt-4">
+          <thead>
+          <tr>
+            <th>Banner</th>
+            <th>Description</th>
+            <th>Article Type</th>
+            <th>Barcodes</th>
+          </tr>
+          </thead>
+        </table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
