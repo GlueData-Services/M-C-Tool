@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   get 'matcher', to: 'matcher#index', as: :matcher
   post 'match', to: 'matcher#create', as: :create_match
+  post 'search', to: 'search#search', as: :search
 
   get 'reports', to: 'reports#index', as: :reports
 
@@ -14,7 +15,7 @@ Rails.application.routes.draw do
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  post 'search', controller: :welcome, action: :index, as: :search
+  post 'search', controller: :welcome, action: :index, as: :dash_search
 
   # Defines the root path route ("/")
   root "welcome#index"
