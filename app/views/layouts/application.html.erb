@@ -14,9 +14,7 @@
 <main class="flex-shrink-1">
   <header class="p-3 bg-dark text-white">
     <div class="container-fluid">
-
       <div class="d-flex flex-wrap justify-content-between">
-
         <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
           <img src="/gd_logo_white.png" alt="GlueData Logo" height="32px">
         </a>
@@ -24,7 +22,7 @@
         <ul class="nav mb-2 mb-md-0">
           <li><a href="/" class="nav-link px-2 text-secondary">Dashboard</a></li>
           <% if current_user&.is_admin? %>
-            <li><a href="/motor_admin" class="nav-link px-2 text-secondary">Admin</a></li>
+            <li><a href="/motor_admin" target="_blank" class="nav-link px-2 text-secondary">Admin</a></li>
             <li><a href="/users" class="nav-link px-2 text-secondary">User Management</a></li>
           <% else %>
 

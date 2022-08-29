@@ -4,7 +4,7 @@
     <%= form_tag matcher_path, method: :get do %>
       <div class="d-flex justify-content-between">
       <span>Refine results</span>
-        <%= select_tag :min_score, options_for_select([['Low+', 0], ['Med+', 300], ['High', 1000]], selected: cookies.fetch(:min_score)) %>
+        <%= select_tag :min_score, options_for_select([['Low+', 0], ['Med+', 300], ['High', 1000]], selected: cookies.fetch(:min_score, 0)) %>
       <%= search_field_tag :q, params[:q] %>
       <%= submit_tag 'Go' %>
     <% end %>
