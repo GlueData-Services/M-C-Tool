@@ -1,14 +1,14 @@
 class MatcherController < ApplicationController
   def index
-    if params[:unmatched_limit]
-      cookies[:unmatched_limit] = params[:unmatched_limit]
-    end
+    cookies[:unmatched_limit] = params[:unmatched_limit] if params[:unmatched_limit]
+    cookies[:min_score] = params[:min_score] if params[:min_score]
 
     if params[:match_q].present? || params[:f_banner].present? || params[:f_article_type].present?
       _where = {
-        # matched: false,
-        # active: true,
+        # matched: 0,
+        # active: 'Y',
       }
+
       _where[:banner] = params[:f_banner] if params[:f_banner].present?
       _where[:article_type] = params[:f_article_type] if params[:f_article_type].present?
 
@@ -19,7 +19,7 @@ class MatcherController < ApplicationController
 
       @need_match = Mara.search(q,
                                 where: _where,
-                                misspellings: {edit_distance: 2, fields: [:description]},
+                                misspellings: { edit_distance: 2, fields: [:description] },
                                 per_page: cookies.fetch(:unmatched_limit, 5),
                                 page: params[:n_page],
                                 fields: [:description, :barcodes, :banner]
@@ -33,10 +33,11 @@ class MatcherController < ApplicationController
       @matched = Mara.search(params[:q],
                              operator: "or",
                              fields: ['barcodes^10', :description],
+                             # fields: ['barcodes', :description],
                              page: params[:m_page], per_page: 20,
                              highlight: { tag: "<strong>" },
-                             misspellings: { prefix_length: 2, fields: [:description] },
-                             body_options: {min_score: 300})
+                             misspellings: { edit_distance: 2, fields: [:description] },
+                             body_options: { min_score: cookies.fetch(:min_score, 300) })
 
       @scores = {}
       @matched.response.body.dig('hits', 'hits').each do |score|

@@ -32,3 +32,22 @@
   background: rgb(238,248,255);
   background: linear-gradient(0deg, rgb(220, 241, 255) 0%, rgba(255,255,255,1) 100%);
 }
+
+.matched_table {
+  strong {
+    //color: #008400;
+    background-color: rgba(0, 255, 136, 0.21);
+  }
+}
+
+.selected_row {
+  //background: linear-gradient(0deg, rgba(202, 171, 255, 0.5) 0%, rgba(255,255,255,1) 100%);
+  //border-bottom: 2px solid green;
+  color: #b96a00;
+  font-weight: 800;
+}
+
+.active-code {
+  outline-style: solid;
+  outline-color: red;
+}

@@ -6,7 +6,7 @@ class Mara < ApplicationRecord
 
   # scope :unmatched, -> { joins('LEFT JOIN matched_articles ON matchable_articles.prefixed_matnr = matched_articles.prefixed_matnr').where('matched_articles.prefixed_matnr IS NULL') }
   scope :unmatched, -> { where.not('matched') }
-  scope :active, -> { where.not(active: 'X') }
+  scope :active, -> { where(active: 1) }
 
   def self.has_field(col)
     self.column_names.include?(col)
@@ -15,7 +15,7 @@ class Mara < ApplicationRecord
   def search_data
     {
       description: description,
-      barcodes: barcodes.split(","),
+      barcodes: barcodes,
       banner: banner
     }
   end

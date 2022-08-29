@@ -7,6 +7,15 @@ $(document).on('turbo:load', function(){
       $(this).addClass('mara-selected')
    })
 
+   $('.match_select').on('change', function(e){
+      console.log("Selected match", e, this.checked)
+      if (this.checked) {
+         $(this).closest('tr').addClass('selected_row')
+      } else {
+         $(this).closest('tr').removeClass('selected_row')
+      }
+   });
+
    $('.override').on("change", function(){
       console.log($(this))
       if(this.checked) {
@@ -31,10 +40,13 @@ $(document).on('turbo:load', function(){
       return new bootstrap.Tooltip(tooltipTriggerEl)
    })
 
-   $("span.barcode").hover(function(){
-      $($(this).data('barcode')).addClass('bg-selected')
-   }, function(){
-      $("tr").removeClass('bg-selected')
+   $(".barcode").hover(function(e){
+      console.log('in');
+      let code_class = ".barcode-" + $(this).data('barcode');
+      $(code_class).addClass('active-code');
+   }, function(e){
+      let code_class = ".barcode-" + $(this).data('barcode');
+      $(code_class).removeClass('active-code');
    });
 })
 

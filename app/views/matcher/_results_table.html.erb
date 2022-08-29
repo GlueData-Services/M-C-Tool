@@ -29,9 +29,6 @@
           <td><%= mara.description %></td>
           <td><%= mara.article_type %></td>
           <td>
-            <%# mara.barcodes.split(',').each do |code| %>
-            <!--            <span class="barcode badge bg-light text-dark" data-barcode="<%#= code %>"><%#= code %></span>-->
-            <%# end %>
             <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="<%= mara.barcodes %>">
             <%= truncate mara.barcodes, length: 50 %>
           </span>
