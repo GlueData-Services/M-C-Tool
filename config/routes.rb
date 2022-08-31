@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   get 'edit_validation', to: 'validation#edit', as: :edit_validation
   get 'consolidate/:id', to: 'validation#edit', as: :consolidate_match
 
+  post 'consolidate', to: 'validation#update', as: :update_match_fields
+
+
   get 'matcher', to: 'matcher#index', as: :matcher
   post 'match', to: 'matcher#create', as: :create_match
   post 'search', to: 'search#search', as: :search

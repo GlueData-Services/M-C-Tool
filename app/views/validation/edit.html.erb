@@ -2,7 +2,8 @@
   <h2>Validations / <%= @match.name %></h2>
 </section>
 
-<section class="container-fluid">
+<%= form_with url: update_match_fields_path, method: :post do |form| %>
+  <section class="container-fluid">
   <ul class="nav nav-tabs" id="tab-consolidation">
     <% Lookup.sections.each_with_index do |sec, i| %>
       <li class="nav-item">
@@ -20,7 +21,7 @@
           <tr>
             <th></th>
             <% @match.maras.each do |mara| %>
-              <th>
+              <th class="tight">
                 <%= mara.description %>
                 <div class="dropdown float-end">
                   <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
@@ -42,22 +43,45 @@
             <th class="text-center">
               <%= button_tag '+', class: 'btn btn-sm btn-success', 'data-bs-toggle': "modal", 'data-bs-target': "#exampleModal" %>
             </th>
-            <th class="text-center">Override</th>
+            <th class="text-center">Consolidated</th>
           </tr>
           </thead>
 
           <tbody>
           <% fields_for_section.each do |tab_col| %>
-            <tr data-table="<%= tab_col[0] %>" data-column="<%= tab_col[1] %>">
-              <th class="bg-light">
-                <%= Lookup.name_for(tab_col).humanize rescue 'Missing' %>
+            <tr data-table="<%= tab_col[0] %>" data-column="<%= tab_col[1] %>" data-controller="consolidator">
+              <th class="tight bg-light">
+                <%#= Lookup.name_for(tab_col).humanize rescue 'Missing' %>
+                <%= content_tag :span, truncate(Lookup.name_for(tab_col).humanize, length: 40), title: Lookup.name_for(tab_col).humanize %>
               </th>
+              <% vals = []; %>
               <% @match.maras.each do |mara| %>
-                <td class="<%= mara.banner.downcase %> mara-data"><%= mara.get_specific_field(tab_col[0], tab_col[1]) %></td>
+                <% vals << mara.get_specific_field(tab_col[0], tab_col[1])%>
+                <td class="<%= mara.banner.downcase %> mara-data tight <%= 'text-more-muted' if !Lookup.selectable(tab_col) %>"
+                    data-action="click->consolidator#select"
+                    data-consolidator-field-param="<%= tab_col[0] %>-<%= tab_col[1] %>"
+                    data-consolidator-highlight-class="mara-selected"
+                    data-consolidator-value-param="<%= mara.get_specific_field(tab_col[0], tab_col[1]) %>">
+                  <%= mara.get_specific_field(tab_col[0], tab_col[1]) %>
+                </td>
               <% end %>
-              <td class="text-center"></td>
-              <td class="text-center"><%= check_box_tag :override, 1, false, class: 'override' %>
-                <%= text_field_tag 'mara[]override', nil, class: 'mara-input d-none' %>
+              <td class="text-center tight"></td>
+<!--              <td>-->
+<!--                <input type="text" data-consolidator-target="selectedValue" name="<%#= tab_col.join('-') %>">-->
+<!--              </td>-->
+              <td class="text-center">
+                <% if Lookup.selectable(tab_col) %>
+                  <%= form.text_field "field[#{tab_col.join('-')}]",
+                                      class: 'form-control',
+                                      value: vals.uniq.size == 1 ? vals.first : '',
+                                      data: { 'consolidator-target': 'selectedValue' },
+                                      disabled: !(Lookup.overrideable?(tab_col))
+                  %>
+                <% end %>
+                <%# if Lookup.overrideable?(tab_col) %>
+                  <%#= check_box_tag :override, 1, false, class: 'override' %>
+                  <%#= text_field_tag 'mara[]override', nil, class: 'mara-input d-none' %>
+                <%# end %>
               </td>
             </tr>
           <% end %>
@@ -68,7 +92,7 @@
   </div>
 </section>
 
-<section class="content container-fluid">
+  <section class="content container-fluid">
   <div class="d-flex justify-content-end">
     <div class="dropdown">
       <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -84,11 +108,12 @@
     <a href="#" class="btn btn-warning ms-2">
       Reject
     </a>
-    <a href="#" class="btn btn-success ms-2">
+    <button type="submit" href="#" class="btn btn-success ms-2">
       Consolidate
-    </a>
+    </button>
   </div>
 </section>
+<% end %>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl " role="document">

@@ -6,6 +6,23 @@
   padding-bottom: 0!important;
 }
 
+th.tight, td.tight
+{
+  width: 1px;
+  white-space: nowrap;
+}
+
+.form-control:disabled, .form-control[readonly] {
+  //background-color: #e9ecef;
+  //opacity: 1;
+  padding: 0.25rem 0.75rem;
+  color: #008848;
+}
+
+.text-more-muted {
+  color: #c5c5c5;
+}
+
 .bg-selected {
   background-color: #ceecff;
 }

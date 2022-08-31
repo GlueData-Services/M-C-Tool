@@ -1,11 +1,11 @@
 $(document).on('turbo:load', function(){
-   $(".mara-data").on("click", function(e){
-      $(this).parent().find(".mara-data").each(function(i, col){
-         $(col).removeClass('mara-selected')
-      })
-
-      $(this).addClass('mara-selected')
-   })
+   // $(".mara-data").on("click", function(e){
+   //    $(this).parent().find(".mara-data").each(function(i, col){
+   //       $(col).removeClass('mara-selected')
+   //    })
+   //
+   //    $(this).addClass('mara-selected')
+   // })
 
    $('.match_select').on('change', function(e){
       console.log("Selected match", e, this.checked)
@@ -17,7 +17,6 @@ $(document).on('turbo:load', function(){
    });
 
    $('.override').on("change", function(){
-      console.log($(this))
       if(this.checked) {
          $(this).parent().find('.mara-input').removeClass('d-none')
       } else {

@@ -7,4 +7,8 @@ class ValidationController < ApplicationController
     @match = Match.find(params[:id])
   end
 
+  def update
+
+  end
+
 end

@@ -4,8 +4,11 @@
 
 import { application } from "./application"
 
-import HelloController from "./hello_controller.js"
-application.register("hello", HelloController)
+// import HelloController from "./hello_controller.js"
+// application.register("hello", HelloController)
 
 import MatcherController from "./matcher_controller.js"
 application.register("matcher", MatcherController)
+
+import ConsolidatorController from "./consolidator_controller"
+application.register("consolidator", ConsolidatorController)

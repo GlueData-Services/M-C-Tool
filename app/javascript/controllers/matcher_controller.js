@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 // Connects to data-controller="matcher"
 export default class extends Controller {
   connect() {
-    console.log('Connected')
+    console.log('Matcher controller connected')
   }
 
   refine(event) {
