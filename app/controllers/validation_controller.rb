@@ -27,6 +27,22 @@ class ValidationController < ApplicationController
     redirect_to consolidate_match_path(@match), error: e.message
   end
 
+  def add_article
+    @match = Match.find(params[:match_id])
+    @match.maras << Mara.find(params[:mara_id])
+
+    redirect_to consolidate_match_path(@match), notice: 'Added article to match'
+  end
+
+  def remove_article
+    matched_article = MatchedArticle.find_by(match_id: params[:match_id], prefixed_matnr: params[:mara_id])
+    if matched_article.destroy
+      redirect_to consolidate_match_path(params[:match_id]), notice: 'Removed article from match'
+    else
+      redirect_to consolidate_match_path(params[:match_id]), error: 'Could not remove article from match'
+    end
+  end
+
   private
 
   def match_params

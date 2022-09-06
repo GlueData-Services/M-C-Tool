@@ -42,7 +42,7 @@
                         <button class="dropdown-item" type="button">Mark as Main</button>
                       </li>
                       <li>
-                        <button class="dropdown-item" type="button">Remove from match</button>
+                        <%= button_to 'Remove from match', remove_article_path(mara_id: mara.id, match_id: @match.id), class: 'dropdown-item' %>
                       </li>
                       <li>
                         <button class="dropdown-item" type="button">Mark all</button>
@@ -106,7 +106,6 @@
                            class="<%= mf&.overridden? ? 'd-none' : '' %>"
                            value="<%= mf.present? ? mf.get_value : nil %>"
                            disabled="<%= !(Lookup.overrideable?(lookup_id)) %>">
-
                   <% end %>
 
                 </td>
@@ -153,7 +152,7 @@
       </div>
 
       <div class="modal-body">
-        <%= form_tag search_path, method: :post, class: 'row gy-2 gx-3 bd-highlight', remote: true do %>
+        <%= form_tag search_path(consolidator: true, match_id: @match.id), method: :post, class: 'row gy-2 gx-3 bd-highlight', remote: true do %>
           <div class="col-auto">
             <%= select_tag :f_banner, options_for_select(%w[GAME BUILDERS MAKRO], params[:f_banner]), include_blank: true, placeholder: 'Banner', class: 'form-select' %>
           </div>
@@ -168,20 +167,11 @@
           </div>
         <% end %>
 
-        <table id="results" class="table table-sm table-bordered table-hover mt-4">
-          <thead>
-          <tr>
-            <th>Banner</th>
-            <th>Description</th>
-            <th>Article Type</th>
-            <th>Barcodes</th>
-          </tr>
-          </thead>
-        </table>
+        <div id="results"></div>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>

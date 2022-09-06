@@ -1,0 +1,51 @@
+<table class="table table-sm table-bordered table-hover mt-4">
+  <thead>
+  <tr>
+    <th>Banner</th>
+    <th>Description</th>
+    <th>Article Type</th>
+    <th>Barcodes</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% if @need_match.count == 0 %>
+    <tr>
+      <td colspan=7 class="text-center">No records found, try modifying the search and filtering parameters above.</td>
+    </tr>
+  <% else %>
+    <% @need_match.each do |mara| %>
+      <tr>
+        <td><%= mara.banner %></td>
+        <td><%= mara.description %></td>
+        <td><%= mara.article_type %></td>
+        <td>
+            <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="<%= mara.barcodes %>">
+            <%= truncate mara.barcodes, length: 50 %>
+          </span>
+        </td>
+        <td class="text-end">
+          <%= button_to 'Add', add_article_path(mara_id: mara.id, match_id: @match_id), class: 'btn btn-sm btn-outline-primary', remote: true %>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+
+  <tr>
+    <td>
+      <div class="limit d-inline-flex">
+        <span style="padding: 0.5rem 1rem;">Limit</span>
+        <ul class="nav">
+          <li class="nav-item"><%= link_to '1', matcher_path(unmatched_limit: 1), class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to '5', matcher_path(unmatched_limit: 5), class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to '10', matcher_path(unmatched_limit: 10), class: "nav-link" %></li>
+        </ul>
+      </div>
+    </td>
+    <td colspan="6" class="text-muted text-end">
+      <%= paginate @need_match, param_name: :n_page, params: { controller: 'search', action: 'search', format: :turbo_stream, _method: :post } %>
+      Total articles: <%= @need_match.total_count %>
+    </td>
+  </tr>
+  </tbody>
+</table>

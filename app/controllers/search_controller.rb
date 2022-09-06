@@ -1,6 +1,21 @@
 class SearchController < ApplicationController
 
   def search
+    @match_id = params[:match_id]
+    @need_match = get_results
+
+    respond_to do |format|
+      if params[:consolidator].present?
+        format.turbo_stream { render turbo_stream: turbo_stream.update("results", partial: 'consolidator_results') }
+      else
+        format.turbo_stream { render turbo_stream: turbo_stream.update("results", partial: 'matcher/results_table') }
+      end
+    end
+  end
+
+  private
+
+  def get_results
     if params[:unmatched_limit]
       cookies[:unmatched_limit] = params[:unmatched_limit]
     end
@@ -25,10 +40,6 @@ class SearchController < ApplicationController
 
     else
       @need_match = Mara.active.unmatched.all.page(params[:n_page]).per(cookies.fetch(:unmatched_limit, 5))
-    end
-
-    respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.update("results", partial: 'matcher/results_table') }
     end
   end
 end
