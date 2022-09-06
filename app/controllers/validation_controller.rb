@@ -9,12 +9,27 @@ class ValidationController < ApplicationController
 
   def update
     @match = Match.find(params[:id])
-    # params[:match_fields].each do |lookup_id, link|
-    #   puts "#{lookup_id} -> #{link}"
-    #   @match.match_fields.create(lookup_id: lookup_id, )
-    # end
+    Match.transaction do
+      match_params.each do |lookup_id, match_details|
+        field = @match.match_fields.where(lookup_id: lookup_id).present? ?
+                  @match.match_fields.where(lookup_id: lookup_id).first :
+                  @match.match_fields.new(lookup_id: lookup_id)
+        if match_details[:mara_id].present?
+          match_details[:overridden_value] = nil
+        end
+        field.update(match_details)
+        field.save
+      end
+    end
 
-    Rails.logger.debug params.inspect
+    redirect_to consolidate_match_path(@match), notice: 'Updated consolidated fields'
+  rescue Exception => e
+    redirect_to consolidate_match_path(@match), error: e.message
   end
 
+  private
+
+  def match_params
+    params[:match_fields].permit!
+  end
 end

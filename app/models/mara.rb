@@ -31,12 +31,8 @@ class Mara < ApplicationRecord
                      [lookup.b_table, lookup.b_field]
                    end
 
-    # return 'Skip' if table =~ /mbew/i
     return "<span title='Blank map'>*map</span>".html_safe if table.blank? || field.blank?
-    # t_table = banner[0].downcase + "_" + table.downcase
-    # t_table = table.downcase
 
-    Rails.logger.debug "--- select #{field} from #{table} WHERE MATNR = '#{self.matnr}' LIMIT 1" if table == 'g_mara'
     res = ActiveRecord::Base.connection.execute("select #{field} from #{table} WHERE MATNR = '#{self.matnr}' LIMIT 1").first
     return "<span title='Nil result #{table} #{field}'>*</span>".html_safe if res.blank?
     res.first
