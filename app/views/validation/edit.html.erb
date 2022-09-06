@@ -3,6 +3,7 @@
 </section>
 
 <%= form_with url: update_match_fields_path, method: :post do |form| %>
+  <%= form.hidden_field :id, value: @match.id %>
   <section class="container-fluid">
   <ul class="nav nav-tabs" id="tab-consolidation">
     <% Lookup.sections.each_with_index do |sec, i| %>
@@ -14,7 +15,11 @@
 
   <div class="tab-content">
     <% Lookup.sections.each_with_index do |sec, i| %>
+
+<!--  Pane for a specific tab, contains table for a section (Basic, Logistics etc) -->
       <div class="tab-pane fade show <%= 'show active' if i == 0 %>" id="<%= sec.downcase %>" role="tabpanel">
+
+<!--    fields_for_section is an array of ids to the lookup table for all the fields in this section-->
         <% fields_for_section = Lookup.fields_for_section(sec) %>
         <table class="table table-sm table-bordered table-hover">
           <thead>
@@ -48,21 +53,20 @@
           </thead>
 
           <tbody>
-          <% fields_for_section.each do |tab_col| %>
-            <tr data-table="<%= tab_col[0] %>" data-column="<%= tab_col[1] %>" data-controller="consolidator">
+          <% fields_for_section.each do |lookup_id| %>
+            <tr data-controller="consolidator">
               <th class="tight bg-light">
-                <%#= Lookup.name_for(tab_col).humanize rescue 'Missing' %>
-                <%= content_tag :span, truncate(Lookup.name_for(tab_col).humanize, length: 40), title: Lookup.name_for(tab_col).humanize %>
+                <%= content_tag :span, truncate(Lookup.name_for(lookup_id).humanize, length: 40), title: Lookup.name_for(lookup_id).humanize %>
               </th>
               <% vals = []; %>
               <% @match.maras.each do |mara| %>
-                <% vals << mara.get_specific_field(tab_col[0], tab_col[1])%>
-                <td class="<%= mara.banner.downcase %> mara-data tight <%= 'text-more-muted' if !Lookup.selectable(tab_col) %>"
+                <% vals << mara.get_specific_field(lookup_id)%>
+                <td class="<%= mara.banner.downcase %> mara-data tight <%= 'text-more-muted' if !Lookup.selectable(lookup_id) %>"
                     data-action="click->consolidator#select"
-                    data-consolidator-field-param="<%= tab_col[0] %>-<%= tab_col[1] %>"
                     data-consolidator-highlight-class="mara-selected"
-                    data-consolidator-value-param="<%= mara.get_specific_field(tab_col[0], tab_col[1]) %>">
-                  <%= mara.get_specific_field(tab_col[0], tab_col[1]) %>
+                    data-consolidator-mara-param="<%= mara.id %>"
+                    data-consolidator-value-param="<%= mara.get_specific_field(lookup_id) %>">
+                  <%= mara.get_specific_field(lookup_id) %>
                 </td>
               <% end %>
               <td class="text-center tight"></td>
@@ -70,12 +74,22 @@
 <!--                <input type="text" data-consolidator-target="selectedValue" name="<%#= tab_col.join('-') %>">-->
 <!--              </td>-->
               <td class="text-center">
-                <% if Lookup.selectable(tab_col) %>
-                  <%= form.text_field "field[#{tab_col.join('-')}]",
-                                      class: 'form-control',
+                <% if Lookup.selectable(lookup_id) %>
+                  <input type="text"
+                         class="form-control-inline"
+                         data-consolidator-target="selectedValue"
+                         value=""
+                         disabled="<%= !(Lookup.overrideable?(lookup_id)) %>">
+
+                  <%= form.text_field "match_fields[#{lookup_id}][mara_id]",
+                                      type: 'hidden',
+                                      value: '',
+                                      data: { 'consolidator-target': 'selectedMara' }
+                  %>
+                  <%= form.text_field "match_fields[#{lookup_id}][overridden_value]",
+                                      type: 'hidden',
                                       value: vals.uniq.size == 1 ? vals.first : '',
-                                      data: { 'consolidator-target': 'selectedValue' },
-                                      disabled: !(Lookup.overrideable?(tab_col))
+                                      data: { 'consolidator-target': 'overriddenMara' }
                   %>
                 <% end %>
                 <%# if Lookup.overrideable?(tab_col) %>

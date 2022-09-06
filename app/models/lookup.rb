@@ -1,31 +1,33 @@
 class Lookup < ApplicationRecord
   self.table_name = "lookup_and_operations"
 
-  def self.name_for(col)
-    m = where('G_TABLE = ? AND G_FIELD = ?', col[0], col[1]).first
-    if m
-      m.send('Attribute_Name').blank? ? 'Missing' : m.send('Attribute_Name')
-    else
-      col[0].blank? || col[1].blank? ? 'Missing' : col.join('-')
-    end
+  def self.name_for(id)
+    Lookup.find(id).attribute_name
   end
 
-  def self.overrideable?(col)
-    return false if nil.in?(col)
-    where('G_TABLE = ? AND G_FIELD = ?', col[0], col[1]).first.override == 'Y'
+  def self.overrideable?(id)
+    find(id).override == 'Y'
   end
 
-  def self.display(table, col)
-    where('G_FIELD = :c AND G_TABLE = :t AND display = "D"', c: col, t: table).count > 0
+  def self.display(id)
+    find(id).display == "D"
   end
 
-  def self.selectable(col)
-    return false if nil.in?(col)
-    where('G_TABLE = ? AND G_FIELD = ?', col[0], col[1]).first.updateable == 'S'
+  def self.lov?(id)
+    find(id).lov == 'LOV'
+  end
+
+  def self.lookup_value(table, col, key)
+    # l_table = where('G_FIELD = :c AND G_TABLE = :t AND display = "L"', c: col, t: table).first.lookup_table
+    # res = ActiveRecord::Base.connection.execute("SELECT ").first
+  end
+
+  def self.selectable(id)
+    find(id).updatable == 'S'
   end
 
   def self.sections
-    tabs = distinct.pluck('Tab')
+    tabs = order(:sort_order).distinct.pluck('Tab')
     filtered_tabs = []
     tabs.each do |t|
       if self.where('Tab = ? AND display = "D"', t).exists?
@@ -37,6 +39,6 @@ class Lookup < ApplicationRecord
   end
 
   def self.fields_for_section(sec)
-    where("Tab = ? AND Display = 'D'", sec).distinct.pluck('G_TABLE', 'G_FIELD')
+    where("Tab = ? AND Display = 'D'", sec).distinct.pluck('id')
   end
 end

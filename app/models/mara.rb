@@ -20,16 +20,28 @@ class Mara < ApplicationRecord
     }
   end
 
-  def get_specific_field(table, field)
+  def get_specific_field(lookup_id)
+    lookup = Lookup.find(lookup_id)
+    table, field = case banner
+                   when 'GAME'
+                     [lookup.g_table, lookup.g_field]
+                   when 'MAKRO'
+                     [lookup.m_table, lookup.m_field]
+                   when 'BUILDERS'
+                     [lookup.b_table, lookup.b_field]
+                   end
+
     # return 'Skip' if table =~ /mbew/i
     return "<span title='Blank map'>*map</span>".html_safe if table.blank? || field.blank?
-    t_table = banner[0].downcase + "_" + table.downcase
+    # t_table = banner[0].downcase + "_" + table.downcase
+    # t_table = table.downcase
 
-    res = ActiveRecord::Base.connection.execute("select #{field} from #{t_table} WHERE MATNR = '#{self.matnr}' LIMIT 1").first
+    Rails.logger.debug "--- select #{field} from #{table} WHERE MATNR = '#{self.matnr}' LIMIT 1" if table == 'g_mara'
+    res = ActiveRecord::Base.connection.execute("select #{field} from #{table} WHERE MATNR = '#{self.matnr}' LIMIT 1").first
     return "<span title='Nil result #{table} #{field}'>*</span>".html_safe if res.blank?
     res.first
   rescue ActiveRecord::StatementInvalid => e
-    return  "<span title='#{CGI::escapeHTML(e.message)}'>*map</span>".html_safe
+    return "<span title='#{CGI::escapeHTML(e.message)}'>*map</span>".html_safe
   end
 
   def self.article_types
