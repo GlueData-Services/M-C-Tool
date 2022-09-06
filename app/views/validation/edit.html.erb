@@ -1,5 +1,11 @@
 <section class="header container-fluid mt-4">
-  <h2>Validations / <%= @match.name %></h2>
+  <div class="d-flex">
+    <%= link_to validation_path, class: 'h2 me-2' do %>
+      <i class="bi bi-arrow-left-circle"></i>
+    <% end %>
+    <h2>Validations / <%= @match.name %></h2>
+  </div>
+
 </section>
 
 <%= form_with url: update_match_fields_path, method: :post do |form| %>
@@ -46,7 +52,7 @@
                 </th>
               <% end %>
               <th class="text-center">
-                <%= button_tag '+', class: 'btn btn-sm btn-success', 'data-bs-toggle': "modal", 'data-bs-target': "#exampleModal" %>
+                <%= button_tag '+', class: 'btn btn-sm btn-success', type: "button", 'data-bs-toggle': "modal", 'data-bs-target': "#addArticle" %>
               </th>
               <th class="text-center">Consolidated</th>
             </tr>
@@ -136,17 +142,17 @@
   </section>
 <% end %>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addArticle" tabindex="-1" role="dialog" aria-labelledby="addArticleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl " role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Article Search</h5>
-        <button type="button" class="close btn btn-close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="addArticleModalLabel">Article Search</h5>
+        <button type="button" class="close btn btn-close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true"></span>
         </button>
       </div>
-      <div class="modal-body">
 
+      <div class="modal-body">
         <%= form_tag search_path, method: :post, class: 'row gy-2 gx-3 bd-highlight', remote: true do %>
           <div class="col-auto">
             <%= select_tag :f_banner, options_for_select(%w[GAME BUILDERS MAKRO], params[:f_banner]), include_blank: true, placeholder: 'Banner', class: 'form-select' %>
@@ -174,7 +180,7 @@
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
