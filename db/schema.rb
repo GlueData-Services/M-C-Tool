@@ -10,8 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
-  create_table "articles", charset: "utf8mb4", force: :cascade do |t|
+ActiveRecord::Schema[7.0].define(version: 2022_09_06_141933) do
+  create_table "articles", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "code_1"
     t.string "code_2"
     t.string "code_3"
@@ -24,14 +24,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "b_ausp", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "MANDT", limit: 3
-    t.string "OBJEK", limit: 50
-    t.bigint "ATINN"
-    t.integer "ATZHL", limit: 2
-    t.string "MAFID", limit: 1
-    t.string "KLART", limit: 3
-    t.integer "ADZHL", limit: 2
+  create_table "b_ausp", primary_key: ["OBJEK", "ATINN", "ATZHL", "MAFID", "KLART", "ADZHL"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "OBJEK", limit: 50, null: false
+    t.bigint "ATINN", null: false
+    t.integer "ATZHL", limit: 2, null: false
+    t.string "MAFID", limit: 1, null: false
+    t.string "KLART", limit: 3, null: false
+    t.integer "ADZHL", limit: 2, null: false
     t.string "ATWRT", limit: 30
     t.float "ATFLV", limit: 53
     t.string "ATAWE", limit: 3
@@ -53,10 +52,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.date "DATUB"
   end
 
-  create_table "b_cabn", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "MANDT", limit: 3
-    t.bigint "ATINN"
-    t.integer "ADZHL", limit: 2
+  create_table "b_brands", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "BRAND_ID", limit: 4, null: false
+    t.string "BRAND_DESCR", limit: 30
+  end
+
+  create_table "b_cabn", primary_key: ["ATINN", "ADZHL"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.bigint "ATINN", null: false
+    t.integer "ADZHL", limit: 2, null: false
     t.string "ATNAM", limit: 30
     t.string "ATIDN", limit: 2
     t.string "ATFOR", limit: 4
@@ -126,11 +129,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "COUNTRYGRP", limit: 1
   end
 
-  create_table "b_cawn", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "MANDT", limit: 3
-    t.bigint "ATINN"
-    t.integer "ATZHL", limit: 2
-    t.integer "ADZHL", limit: 2
+  create_table "b_cawn", primary_key: ["ATINN", "ATZHL", "ADZHL"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.bigint "ATINN", null: false
+    t.integer "ATZHL", limit: 2, null: false
+    t.integer "ADZHL", limit: 2, null: false
     t.string "ATWRT", limit: 30
     t.float "ATFLV", limit: 53
     t.float "ATFLB", limit: 53
@@ -159,9 +161,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "ATVPL", limit: 1
   end
 
-  create_table "b_eina", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_eina", primary_key: ["MATNR", "INFNR"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "INFNR", limit: 10, null: false
-    t.string "MATNR", limit: 18
+    t.string "MATNR", limit: 18, null: false
     t.string "MATKL", limit: 9
     t.string "MEINS", limit: 3
     t.string "VABME", limit: 1
@@ -186,7 +188,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.date "LIFBI"
   end
 
-  create_table "b_eine", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_eine", primary_key: ["INFNR", "EKORG", "ESOKZ", "WERKS"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "INFNR", limit: 10, null: false
     t.string "EKORG", limit: 4, null: false
     t.string "ESOKZ", limit: 1, null: false
@@ -232,7 +234,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "SGT_SSREL", limit: 1
   end
 
-  create_table "b_eord", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_eord", primary_key: ["MATNR", "WERKS", "ZEORD"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 18, null: false
     t.string "WERKS", limit: 4, null: false
     t.integer "ZEORD", limit: 3, null: false
@@ -249,12 +251,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "LOGSY", limit: 10
   end
 
-  create_table "b_inob", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "MANDT", limit: 3
-    t.bigint "CUOBJ"
+  create_table "b_inob", primary_key: ["CUOBJ", "OBJEK"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.bigint "CUOBJ", null: false
     t.string "KLART", limit: 3
     t.string "OBTAB", limit: 30
-    t.string "OBJEK", limit: 50
+    t.string "OBJEK", limit: 50, null: false
     t.string "ROBTAB", limit: 30
     t.string "ROBJEK", limit: 50
     t.bigint "CLINT"
@@ -268,9 +269,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "TECHS", limit: 12
   end
 
-  create_table "b_klah", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "MANDT", limit: 3
-    t.bigint "CLINT"
+  create_table "b_klah", primary_key: "CLINT", id: :bigint, default: nil, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "KLART", limit: 3
     t.string "CLASS", limit: 18
     t.string "STATU", limit: 1
@@ -326,8 +325,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "GENRKZ", limit: 1
   end
 
-  create_table "b_ksml", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "MANDT", limit: 3, null: false
+  create_table "b_ksml", primary_key: ["CLINT", "POSNR", "ADZHL"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "CLINT", null: false
     t.integer "POSNR", limit: 2, null: false
     t.integer "ADZHL", limit: 2, null: false
@@ -358,13 +356,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "MKENN", limit: 15
   end
 
-  create_table "b_kssk", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "MANDT", limit: 3
-    t.string "OBJEK", limit: 50
-    t.string "MAFID", limit: 1
-    t.string "KLART", limit: 3
-    t.bigint "CLINT"
-    t.integer "ADZHL", limit: 2
+  create_table "b_kssk", primary_key: ["OBJEK", "MAFID", "KLART", "CLINT", "ADZHL"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "OBJEK", limit: 50, null: false
+    t.string "MAFID", limit: 1, null: false
+    t.string "KLART", limit: 3, null: false
+    t.bigint "CLINT", null: false
+    t.integer "ADZHL", limit: 2, null: false
     t.integer "ZAEHL"
     t.string "STATU", limit: 1
     t.string "STDCL", limit: 1
@@ -375,7 +372,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "DATUB", limit: 12
   end
 
-  create_table "b_mabw", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_mabw", primary_key: ["MATNR", "ZHLER"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 18, null: false
     t.integer "ZHLER", null: false
     t.string "WERKS", limit: 4
@@ -389,13 +386,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
   end
 
   create_table "b_makt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "MATNR", limit: 18
-    t.string "SPRAS", limit: 1
+    t.string "MATNR", limit: 18, null: false
+    t.string "SPRAS", limit: 1, null: false
     t.string "MAKTX", limit: 40
     t.string "MAKTG", limit: 40
   end
 
-  create_table "b_mamt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_mamt", primary_key: ["MATNR", "SPRAS", "MEINH", "MTXID", "LFDNR"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 18, null: false
     t.string "SPRAS", limit: 1, null: false
     t.string "MEINH", limit: 3, null: false
@@ -404,7 +401,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "MAKTM", limit: 40
   end
 
-  create_table "b_mapr", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_mapr", primary_key: ["MATNR", "WERKS"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 18, null: false
     t.string "WERKS", limit: 4, null: false
     t.bigint "PNUM1"
@@ -414,7 +411,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
   end
 
   create_table "b_mara", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "MATNR", limit: 18, null: false
+    t.string "MATNR", limit: 40, null: false
     t.string "MTART", limit: 4
     t.string "MATKL", limit: 9
     t.string "BSTME", limit: 3
@@ -422,7 +419,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.decimal "NTGEW", precision: 13, scale: 3
     t.string "GEWEI", limit: 3
     t.decimal "VOLUM", precision: 13, scale: 3
-    t.string "VOLEH"
+    t.string "VOLEH", limit: 3
     t.decimal "ERVOL", precision: 13, scale: 3
     t.string "ERVOE", limit: 3
     t.string "WHSTC", limit: 2
@@ -434,10 +431,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "BWSCL", limit: 1
     t.string "EAN11", limit: 18
     t.string "NUMTP", limit: 2
-    t.string "MEABM", limit: 3
     t.decimal "LAENG", precision: 13, scale: 3
     t.decimal "BREIT", precision: 13, scale: 3
     t.decimal "HOEHE", precision: 13, scale: 3
+    t.string "MEABM", limit: 3
     t.string "VABME", limit: 1
     t.string "VHART", limit: 4
     t.string "MAGRV", limit: 4
@@ -445,9 +442,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.date "LIQDT"
     t.string "SAISJ", limit: 4
     t.string "PLGTP", limit: 2
-    t.string "SATNR", limit: 18
+    t.string "SATNR", limit: 40
     t.string "ATTYP", limit: 2
-    t.string "PMATA", limit: 18
+    t.string "PMATA", limit: 40
     t.string "MSTAE", limit: 2
     t.date "MSTDE"
     t.string "TAKLV", limit: 1
@@ -469,13 +466,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.decimal "VOLTO", precision: 3, scale: 1
     t.integer "STFAK"
     t.string "SAISO", limit: 4
-    t.string "RMATP", limit: 18
+    t.string "RMATP", limit: 40
     t.string "PRDHA", limit: 18
     t.date "MSTDV"
     t.string "MSTAV", limit: 2
-    t.decimal "MAXL", precision: 15, scale: 3
     t.decimal "MAXH", precision: 15, scale: 3
     t.decimal "MAXB", precision: 15, scale: 3
+    t.string "MAXDIM_UOM", limit: 3
     t.string "LVORM", limit: 1
     t.decimal "INHBR", precision: 13, scale: 3
     t.decimal "GEWTO", precision: 3, scale: 1
@@ -483,7 +480,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.decimal "ERGEW", precision: 13, scale: 3
     t.string "ERGEI", limit: 3
     t.string "ADPROF", limit: 3
-    t.string "BISMT", limit: 18
+    t.string "BISMT", limit: 40
     t.string "MEINS", limit: 3
     t.string "ZZSADC", limit: 2
     t.string "ZZQUOTR", limit: 2
@@ -498,10 +495,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "ZZBCODE", limit: 6
     t.string "ZZBNAME", limit: 18
     t.string "ZZTRTYP", limit: 2
-    t.index ["MATNR"], name: "idx_bm_matnr"
+    t.bigint "COLOR_ATINN"
+    t.bigint "SIZE1_ATINN"
+    t.bigint "SIZE2_ATINN"
+    t.string "COLOR", limit: 18
+    t.string "SIZE1", limit: 18
+    t.string "SIZE2", limit: 18
+    t.index ["MATNR"], name: "MATNR"
   end
 
-  create_table "b_marc", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_marc", primary_key: ["MATNR", "WERKS"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 18, null: false
     t.string "WERKS", limit: 4, null: false
     t.string "BWSCL", limit: 1
@@ -564,7 +567,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.integer "LFMON", limit: 2
   end
 
-  create_table "b_mard", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_mard", primary_key: ["MATNR", "WERKS", "LGORT"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 18, null: false
     t.string "WERKS", limit: 4, null: false
     t.string "LGORT", limit: 4, null: false
@@ -573,21 +576,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.integer "LFMON", limit: 2
   end
 
-  create_table "b_marm", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_marm", primary_key: ["MATNR", "MEINH"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 18, null: false
     t.string "MEINH", limit: 3, null: false
     t.string "EAN11", limit: 18
     t.string "NUMTP", limit: 2
     t.integer "UMREN", limit: 3
     t.integer "UMREZ", limit: 3
-    t.decimal "HOEHE", precision: 13, scale: 3
-    t.decimal "BREIT", precision: 13, scale: 3
-    t.decimal "LAENG", precision: 13, scale: 3
-    t.string "MEABM", limit: 3
     t.decimal "BRGEW", precision: 13, scale: 3
     t.string "GEWEI", limit: 3
-    t.decimal "VOLUM", precision: 13, scale: 3
+    t.decimal "VOLUM", precision: 18, scale: 3
     t.string "VOLEH", limit: 3
+    t.string "MEABM", limit: 3
+    t.decimal "LAENG", precision: 13, scale: 3
+    t.decimal "BREIT", precision: 13, scale: 3
+    t.decimal "HOEHE", precision: 13, scale: 3
     t.string "MESUB", limit: 3
     t.integer "NEST_FTR", limit: 2
     t.integer "MAX_STACK"
@@ -595,7 +598,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "ZZECOM", limit: 1
   end
 
-  create_table "b_mast", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_mast", primary_key: ["MATNR", "WERKS", "STLAN", "STLNR", "STLAL"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 18, null: false
     t.string "WERKS", limit: 4, null: false
     t.string "STLAN", limit: 1, null: false
@@ -605,8 +608,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.decimal "LOSBS", precision: 13, scale: 3
   end
 
-  create_table "b_maw1", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "MATNR", limit: 18, null: false
+  create_table "b_maw1", primary_key: "MATNR", id: { type: :string, limit: 18 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "BBTYP", limit: 1
     t.string "WHERL", limit: 3
     t.string "WEKGR", limit: 3
@@ -633,7 +635,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "ZZPROD_TYPE", limit: 30
   end
 
-  create_table "b_mbew", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_mbew", primary_key: ["MATNR", "BWKEY", "BWTAR"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 18, null: false
     t.string "BWKEY", limit: 4, null: false
     t.string "BWTAR", limit: 10, null: false
@@ -674,8 +676,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.index ["MATNR"], name: "idx_bme_matnr"
   end
 
-  create_table "b_mean_flat", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "MATNR"
+  create_table "b_mean_flat", primary_key: "MATNR", id: :string, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "EA_EAN11"
     t.string "CS_EAN11"
     t.string "LAY_EAN11"
@@ -683,14 +684,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "PAL_EAN11"
   end
 
-  create_table "b_mlan", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "MATNR", limit: 18
-    t.string "ALAND", limit: 3
+  create_table "b_mlan", primary_key: ["MATNR", "ALAND"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "MATNR", limit: 18, null: false
+    t.string "ALAND", limit: 3, null: false
     t.string "TAXIM", limit: 1
     t.string "TAXM1", limit: 1
   end
 
-  create_table "b_mlea", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_mlea", primary_key: ["MATNR", "MEINH", "LIFNR", "LFNUM"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 18, null: false
     t.string "MEINH", limit: 3, null: false
     t.string "LIFNR", limit: 10, null: false
@@ -701,7 +702,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "GTIN_VARIANT", limit: 2
   end
 
-  create_table "b_mvke", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_mvke", primary_key: ["MATNR", "VKORG", "VTWEG"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 18, null: false
     t.string "VKORG", limit: 4, null: false
     t.string "VTWEG", limit: 2, null: false
@@ -727,7 +728,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "ZZVASPOS", limit: 1
   end
 
-  create_table "b_stko", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_stko", primary_key: ["STLTY", "STLNR", "STLAL", "STKOZ"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "STLTY", limit: 1, null: false
     t.string "STLNR", limit: 8, null: false
     t.string "STLAL", limit: 2, null: false
@@ -739,7 +740,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "GUIDX", limit: 32
   end
 
-  create_table "b_stpo", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_stpo", primary_key: ["STLTY", "STLNR", "STLKN", "STPOZ"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "STLTY", limit: 1, null: false
     t.string "STLNR", limit: 8, null: false
     t.integer "STLKN", null: false
@@ -764,8 +765,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "GUIDX", limit: 32
   end
 
-  create_table "b_swor", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "MANDT", limit: 3, null: false
+  create_table "b_swor", primary_key: ["CLINT", "SPRAS", "KLPOS"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "CLINT", null: false
     t.string "SPRAS", limit: 1, null: false
     t.integer "KLPOS", limit: 2, null: false
@@ -789,14 +789,73 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
   end
 
   create_table "b_t023t", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "MANDT", limit: 3
-    t.string "SPRAS", limit: 1
-    t.string "MATKL", limit: 9
+    t.string "MATKL", limit: 9, null: false
     t.string "WGBEZ", limit: 20
     t.string "WGBEZ60", limit: 60
   end
 
-  create_table "b_wlk1", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_t134t", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "MTART", limit: 4, null: false
+    t.string "MTBEZ", limit: 25
+  end
+
+  create_table "b_t142t", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "RAUBE", limit: 2, null: false
+    t.string "RBTXT", limit: 20
+  end
+
+  create_table "b_t143t", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "TEMPB", limit: 2, null: false
+    t.string "TBTXT", limit: 60
+  end
+
+  create_table "b_tmbwt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "BWSCL", limit: 1, null: false
+    t.string "BWSCB", limit: 40
+  end
+
+  create_table "b_tptmt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "MTPOS", limit: 4, null: false
+    t.string "BEZEI", limit: 20
+  end
+
+  create_table "b_tskmt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "TATYP", limit: 4, null: false
+    t.string "TAXKM", limit: 1, null: false
+    t.string "VTEXT", limit: 20
+  end
+
+  create_table "b_tspat", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "SPART", limit: 2, null: false
+    t.string "VTEXT", limit: 20
+  end
+
+  create_table "b_ttgrt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "TRAGR", limit: 4, null: false
+    t.string "VTEXT", limit: 20
+  end
+
+  create_table "b_tvegrt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "MAGRV", limit: 4, null: false
+    t.string "BEZEI", limit: 20
+  end
+
+  create_table "b_tvtyt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "TRATY", limit: 4, null: false
+    t.string "VTEXT", limit: 20
+  end
+
+  create_table "b_twhmatgrt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "WHMATGR", limit: 4, null: false
+    t.string "TEXT", limit: 40
+  end
+
+  create_table "b_twptt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "PLGTP", limit: 2, null: false
+    t.string "VTEXT", limit: 20
+  end
+
+  create_table "b_wlk1", primary_key: ["FILIA", "ARTNR", "VRKME", "DATBI", "LFDNR"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "FILIA", limit: 10, null: false
     t.string "ARTNR", limit: 18, null: false
     t.string "VRKME", limit: 3, null: false
@@ -814,7 +873,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "STRNR", limit: 18
   end
 
-  create_table "b_wlk2", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_wlk2", primary_key: ["MATNR", "VKORG", "VTWEG", "WERKS"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 18, null: false
     t.string "VKORG", limit: 4, null: false
     t.string "VTWEG", limit: 2, null: false
@@ -831,8 +890,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "SCAGR", limit: 4
   end
 
-  create_table "b_wrf_brands", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "BRAND_ID", limit: 4, null: false
+  create_table "b_wrf_brands", primary_key: "BRAND_ID", id: { type: :string, limit: 4 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "BRAND_TYPE", limit: 1
   end
 
@@ -842,13 +900,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "BRAND_DESCR", limit: 30
   end
 
-  create_table "b_wrst", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_wrst", primary_key: ["SPRAS", "ASORT"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "SPRAS", limit: 1, null: false
     t.string "ASORT", limit: 10, null: false
     t.string "NAME1", limit: 40
   end
 
-  create_table "b_wrsz", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "b_wrsz", primary_key: ["ASORT", "LFDNR"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "ASORT", limit: 10, null: false
     t.integer "LFDNR", limit: 3, null: false
     t.string "LOCNR", limit: 10
@@ -868,9 +926,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.time "AEZET", precision: 6
   end
 
-  create_table "g_eina", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "g_brands", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "BRAND_ID", limit: 4, null: false
+    t.string "BRAND_DESCR", limit: 30
+  end
+
+  create_table "g_eina", primary_key: ["MATNR", "INFNR"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "INFNR", limit: 10, null: false
-    t.string "MATNR", limit: 18
+    t.string "MATNR", limit: 18, null: false
     t.string "MATKL", limit: 9
     t.string "MEINS", limit: 3
     t.string "VABME", limit: 1
@@ -895,7 +958,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "LIFBI", limit: 24
   end
 
-  create_table "g_eine", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "g_eine", primary_key: ["INFNR", "EKORG", "ESOKZ", "WERKS"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "INFNR", limit: 10, null: false
     t.string "EKORG", limit: 4, null: false
     t.string "ESOKZ", limit: 1, null: false
@@ -942,7 +1005,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "AUT_SOURCE", limit: 1
   end
 
-  create_table "g_eord", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "g_eord", primary_key: ["MATNR", "WERKS", "ZEORD"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 18, null: false
     t.string "WERKS", limit: 4, null: false
     t.integer "ZEORD", limit: 3, null: false
@@ -960,12 +1023,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "EKORG", limit: 4
   end
 
-  create_table "g_inob", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "MANDT", limit: 3
-    t.bigint "CUOBJ"
+  create_table "g_inob", primary_key: ["CUOBJ", "OBJEK"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.bigint "CUOBJ", null: false
     t.string "KLART", limit: 3
     t.string "OBTAB", limit: 30
-    t.string "OBJEK", limit: 50
+    t.string "OBJEK", limit: 50, null: false
     t.string "ROBTAB", limit: 30
     t.string "ROBJEK", limit: 50
     t.bigint "CLINT"
@@ -979,9 +1041,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "TECHS", limit: 12
   end
 
-  create_table "g_klah", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "MANDT", limit: 3
-    t.bigint "CLINT"
+  create_table "g_klah", primary_key: "CLINT", id: :bigint, default: nil, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "KLART", limit: 3
     t.string "CLASS", limit: 18
     t.string "STATU", limit: 1
@@ -1053,7 +1113,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.decimal "NTGEW", precision: 13, scale: 3
     t.string "GEWEI", limit: 3
     t.decimal "VOLUM", precision: 13, scale: 3
-    t.string "VOLEH"
+    t.string "VOLEH", limit: 3
     t.decimal "ERVOL", precision: 13, scale: 3
     t.string "ERVOE", limit: 3
     t.string "WHSTC", limit: 2
@@ -1065,10 +1125,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "BWSCL", limit: 1
     t.string "EAN11", limit: 18
     t.string "NUMTP", limit: 2
-    t.string "MEABM", limit: 3
     t.decimal "LAENG", precision: 13, scale: 3
     t.decimal "BREIT", precision: 13, scale: 3
     t.decimal "HOEHE", precision: 13, scale: 3
+    t.string "MEABM", limit: 3
     t.string "VABME", limit: 1
     t.string "VHART", limit: 4
     t.string "MAGRV", limit: 4
@@ -1104,9 +1164,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "PRDHA", limit: 18
     t.date "MSTDV"
     t.string "MSTAV", limit: 2
-    t.decimal "MAXL", precision: 15, scale: 3
     t.decimal "MAXH", precision: 15, scale: 3
     t.decimal "MAXB", precision: 15, scale: 3
+    t.string "MAXDIM_UOM", limit: 3
     t.string "LVORM", limit: 1
     t.decimal "INHBR", precision: 13, scale: 3
     t.decimal "GEWTO", precision: 3, scale: 1
@@ -1119,10 +1179,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "ZZMODEL", limit: 20
     t.string "ZZ_UN_NUMBER", limit: 4
     t.string "ZZLID", limit: 1
-    t.index ["MATNR"], name: "idx_g_matnr"
+    t.bigint "COLOR_ATINN"
+    t.bigint "SIZE1_ATINN"
+    t.bigint "SIZE2_ATINN"
+    t.string "COLOR", limit: 18
+    t.string "SIZE1", limit: 18
+    t.string "SIZE2", limit: 18
+    t.index ["MATNR"], name: "MATNR"
   end
 
-  create_table "g_marc", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "g_marc", primary_key: ["MATNR", "WERKS"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 40, null: false
     t.string "WERKS", limit: 4, null: false
     t.string "BWSCL", limit: 1
@@ -1191,6 +1257,27 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "ZZPROHIB_COMMENT", limit: 2
   end
 
+  create_table "g_marm", primary_key: ["MATNR", "MEINH"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "MATNR", limit: 18, null: false
+    t.string "MEINH", limit: 3, null: false
+    t.string "EAN11", limit: 18
+    t.string "NUMTP", limit: 2
+    t.integer "UMREN", limit: 3
+    t.integer "UMREZ", limit: 3
+    t.decimal "BRGEW", precision: 13, scale: 3
+    t.string "GEWEI", limit: 3
+    t.decimal "VOLUM", precision: 18, scale: 3
+    t.string "VOLEH", limit: 3
+    t.string "MEABM", limit: 3
+    t.decimal "LAENG", precision: 13, scale: 3
+    t.decimal "BREIT", precision: 13, scale: 3
+    t.decimal "HOEHE", precision: 13, scale: 3
+    t.string "MESUB", limit: 3
+    t.integer "NEST_FTR", limit: 2
+    t.integer "MAX_STACK"
+    t.decimal "CAPAUSE", precision: 15, scale: 3
+  end
+
   create_table "g_mean", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 18, null: false
     t.string "MEINH", limit: 3, null: false
@@ -1232,9 +1319,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
   end
 
   create_table "g_t023t", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "MANDT", limit: 3
-    t.string "SPRAS", limit: 1
-    t.string "MATKL", limit: 9
+    t.string "MATKL", limit: 9, null: false
     t.string "WGBEZ", limit: 20
     t.string "WGBEZ60", limit: 60
   end
@@ -1254,9 +1339,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "TBTXT", limit: 60
   end
 
-  create_table "g_t179t", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "PRODH", limit: 18, null: false
+  create_table "g_t179t", primary_key: "PRODH", id: { type: :string, limit: 18 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "VTEXT", limit: 40
+  end
+
+  create_table "g_tmbwt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "BWSCL", limit: 1, null: false
+    t.string "BWSCB", limit: 40
+  end
+
+  create_table "g_tptmt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "MTPOS", limit: 4, null: false
+    t.string "BEZEI", limit: 20
   end
 
   create_table "g_tskmt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1295,22 +1389,42 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "VTEXT", limit: 20
   end
 
-  create_table "lookup_and_operations", id: false, charset: "utf8mb4", force: :cascade do |t|
-    t.text "Attribute_Name", size: :tiny
-    t.text "Tab", size: :tiny
-    t.text "Detail", size: :tiny
-    t.text "G_TABLE", size: :tiny
-    t.text "G_FIELD", size: :tiny
-    t.text "M_TABLE", size: :tiny
-    t.text "M_FIELD", size: :tiny
-    t.text "B_TABLE", size: :tiny
-    t.text "B_FIELD", size: :tiny
-    t.text "Consolidatable", size: :tiny
-    t.text "Rule", size: :tiny
-    t.text "Display", size: :tiny
-    t.text "LOV", size: :tiny
-    t.text "Update", size: :tiny
-    t.text "Note", size: :tiny
+  create_table "g_wrf_brands", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "BRAND_ID", limit: 4, null: false
+    t.string "BRAND_TYPE", limit: 1
+  end
+
+  create_table "g_wrf_brands_t", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "BRAND_ID", limit: 4, null: false
+    t.string "LANGUAGE", limit: 1, null: false
+    t.string "BRAND_DESCR", limit: 30
+  end
+
+  create_table "lookup_and_operations", id: { type: :integer, unsigned: true }, charset: "utf8mb4", force: :cascade do |t|
+    t.text "attribute_name", size: :tiny
+    t.text "tab", size: :tiny
+    t.text "g_table", size: :tiny
+    t.text "g_field", size: :tiny
+    t.text "m_table", size: :tiny
+    t.text "m_field", size: :tiny
+    t.text "b_table", size: :tiny
+    t.text "b_field", size: :tiny
+    t.text "consolidatable", size: :tiny
+    t.text "rule", size: :tiny
+    t.text "display", size: :tiny
+    t.text "lov", size: :tiny
+    t.text "override", size: :tiny
+    t.float "sort_order", limit: 53
+    t.text "tab_detail", size: :tiny
+    t.text "g_lookup", size: :tiny
+    t.text "m_lookup", size: :tiny
+    t.text "b_lookup", size: :tiny
+    t.text "updatable", size: :tiny
+  end
+
+  create_table "m_brands", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "BRAND_ID", limit: 4, null: false
+    t.string "BRAND_DESCR", limit: 30
   end
 
   create_table "m_eina", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1435,19 +1549,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
   end
 
   create_table "m_mara", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "MATNR", limit: 18, null: false
+    t.string "MATNR", limit: 40, null: false
     t.string "MTART", limit: 4
     t.string "MATKL", limit: 9
-    t.string "BISMT", limit: 18
-    t.string "MEINS", limit: 3
     t.string "BSTME", limit: 3
     t.decimal "BRGEW", precision: 13, scale: 3
     t.decimal "NTGEW", precision: 13, scale: 3
-    t.decimal "ZPACKGW", precision: 13, scale: 3
     t.string "GEWEI", limit: 3
     t.decimal "VOLUM", precision: 13, scale: 3
     t.string "VOLEH"
-    t.string "ZPACKUNIT", limit: 3
     t.decimal "ERVOL", precision: 13, scale: 3
     t.string "ERVOE", limit: 3
     t.string "WHSTC", limit: 2
@@ -1459,13 +1569,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "BWSCL", limit: 1
     t.string "EAN11", limit: 18
     t.string "NUMTP", limit: 2
+    t.string "ZPACKTYPE", limit: 2
+    t.integer "ZPACKCMP", limit: 2
     t.decimal "ZPACKLGHT", precision: 13, scale: 3
     t.decimal "ZPACKWGHT", precision: 13, scale: 3
     t.decimal "ZPACKHGTH", precision: 13, scale: 3
-    t.string "MEABM", limit: 3
+    t.string "ZPACKUNIT", limit: 3
+    t.decimal "ZPACKGW", precision: 13, scale: 3
     t.decimal "LAENG", precision: 13, scale: 3
     t.decimal "BREIT", precision: 13, scale: 3
     t.decimal "HOEHE", precision: 13, scale: 3
+    t.string "MEABM", limit: 3
     t.string "VABME", limit: 1
     t.string "VHART", limit: 4
     t.string "MAGRV", limit: 4
@@ -1473,9 +1587,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.date "LIQDT"
     t.string "SAISJ", limit: 4
     t.string "PLGTP", limit: 2
-    t.string "SATNR", limit: 18
+    t.string "SATNR", limit: 40
     t.string "ATTYP", limit: 2
-    t.string "PMATA", limit: 18
+    t.string "PMATA", limit: 40
     t.string "MSTAE", limit: 2
     t.date "MSTDE"
     t.string "TAKLV", limit: 1
@@ -1500,13 +1614,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.decimal "VOLTO", precision: 3, scale: 1
     t.integer "STFAK"
     t.string "SAISO", limit: 4
-    t.string "RMATP", limit: 18
+    t.string "RMATP", limit: 40
     t.string "PRDHA", limit: 18
     t.date "MSTDV"
     t.string "MSTAV", limit: 2
     t.decimal "MAXL", precision: 15, scale: 3
     t.decimal "MAXH", precision: 15, scale: 3
     t.decimal "MAXB", precision: 15, scale: 3
+    t.string "MAXDIM_UOM", limit: 3
     t.string "LVORM", limit: 1
     t.decimal "INHBR", precision: 13, scale: 3
     t.decimal "GEWTO", precision: 3, scale: 1
@@ -1514,8 +1629,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.decimal "ERGEW", precision: 13, scale: 3
     t.string "ERGEI", limit: 3
     t.string "ADPROF", limit: 3
-    t.string "ZPACKTYPE", limit: 2
-    t.integer "ZPACKCMP", limit: 2
+    t.string "BISMT", limit: 40
+    t.string "MEINS", limit: 3
     t.string "ZTVLIC", limit: 1
     t.string "ZSERVV", limit: 80
     t.string "ZZWINE", limit: 3
@@ -1526,7 +1641,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "ZDLV", limit: 1
     t.string "ZCOLL", limit: 1
     t.string "ZLOCK", limit: 1
-    t.index ["MATNR"], name: "idx_mm_matnr"
+    t.bigint "COLOR_ATINN"
+    t.bigint "SIZE1_ATINN"
+    t.bigint "SIZE2_ATINN"
+    t.string "COLOR", limit: 18
+    t.string "SIZE1", limit: 18
+    t.string "SIZE2", limit: 18
+    t.index ["MATNR"], name: "MATNR"
   end
 
   create_table "m_mard", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1538,21 +1659,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.integer "LFMON", limit: 2
   end
 
-  create_table "m_marm", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "m_marm", primary_key: ["MATNR", "MEINH"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 18, null: false
     t.string "MEINH", limit: 3, null: false
     t.string "EAN11", limit: 18
     t.string "NUMTP", limit: 2
     t.integer "UMREN", limit: 3
     t.integer "UMREZ", limit: 3
-    t.decimal "HOEHE", precision: 13, scale: 3
-    t.decimal "BREIT", precision: 13, scale: 3
-    t.decimal "LAENG", precision: 13, scale: 3
-    t.string "MEABM", limit: 3
     t.decimal "BRGEW", precision: 13, scale: 3
     t.string "GEWEI", limit: 3
-    t.decimal "VOLUM", precision: 13, scale: 3
+    t.decimal "VOLUM", precision: 18, scale: 3
     t.string "VOLEH", limit: 3
+    t.string "MEABM", limit: 3
+    t.decimal "LAENG", precision: 13, scale: 3
+    t.decimal "BREIT", precision: 13, scale: 3
+    t.decimal "HOEHE", precision: 13, scale: 3
     t.string "MESUB", limit: 3
     t.integer "NEST_FTR", limit: 2
     t.integer "MAX_STACK"
@@ -1721,6 +1842,27 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "GUIDX", limit: 32
   end
 
+  create_table "m_t001w", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "WERKS", limit: 4, null: false
+    t.string "NAME1", limit: 30
+    t.string "NAME2", limit: 30
+    t.string "EKORG", limit: 4
+    t.string "VKORG", limit: 4
+    t.string "STRAS", limit: 30
+    t.string "PFACH", limit: 10
+    t.string "PSTLZ", limit: 10
+    t.string "ORT01", limit: 25
+    t.string "CITYC", limit: 4
+    t.string "REGIO", limit: 3
+    t.string "LAND1", limit: 3
+  end
+
+  create_table "m_t023t", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "MATKL", limit: 9, null: false
+    t.string "WGBEZ", limit: 20
+    t.string "WGBEZ60", limit: 60
+  end
+
   create_table "m_t134t", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MTART", limit: 4, null: false
     t.string "MTBEZ", limit: 25
@@ -1762,6 +1904,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "VTEXT", limit: 20
   end
 
+  create_table "m_ttgrt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "TRAGR", limit: 4, null: false
+    t.string "VTEXT", limit: 20
+  end
+
   create_table "m_tvegrt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MAGRV", limit: 4, null: false
     t.string "BEZEI", limit: 20
@@ -1782,7 +1929,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "VTEXT", limit: 20
   end
 
-  create_table "m_wlk2", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "m_wlk2", primary_key: ["MATNR", "VKORG", "VTWEG", "WERKS"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 18, null: false
     t.string "VKORG", limit: 4, null: false
     t.string "VTWEG", limit: 2, null: false
@@ -1810,8 +1957,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "BRAND_DESCR", limit: 30
   end
 
-  create_table "m_wrs1", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "ASORT", limit: 10, null: false
+  create_table "m_wrs1", primary_key: "ASORT", id: { type: :string, limit: 10 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "VTWEG", limit: 2
     t.string "VKORG", limit: 4
     t.date "DATAB"
@@ -1824,20 +1970,20 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.string "SOTYP", limit: 1
   end
 
-  create_table "m_wrs6", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "ASORT", limit: 10
-    t.string "MATKL", limit: 9
+  create_table "m_wrs6", primary_key: ["ASORT", "MATKL"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "ASORT", limit: 10, null: false
+    t.string "MATKL", limit: 9, null: false
     t.string "SSTUF", limit: 2
     t.string "PRIOT", limit: 1
   end
 
-  create_table "m_wrst", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "m_wrst", primary_key: ["SPRAS", "ASORT"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "SPRAS", limit: 1, null: false
     t.string "ASORT", limit: 10, null: false
     t.string "NAME1", limit: 40
   end
 
-  create_table "m_wrsz", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "m_wrsz", primary_key: ["ASORT", "LFDNR"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "ASORT", limit: 10, null: false
     t.integer "LFDNR", limit: 3, null: false
     t.string "LOCNR", limit: 10
@@ -1857,35 +2003,52 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.time "AEZET", precision: 6
   end
 
-  create_table "matchable_articles", id: false, charset: "utf8mb4", force: :cascade do |t|
-    t.string "banner"
-    t.string "type"
-    t.string "article_type"
-    t.string "material_num"
-    t.string "prefix_material_num"
-    t.string "article_desc"
-    t.string "brand_desc"
-    t.integer "number_variants"
-    t.bigint "barcodes"
-    t.string "vendors"
-    t.string "matched"
-    t.string "active"
+  create_table "match_fields", charset: "utf8mb4", force: :cascade do |t|
+    t.integer "match_id"
+    t.integer "lookup_id"
+    t.string "mara_id"
+    t.string "overridden_value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table "matched_articles", charset: "utf8mb4", force: :cascade do |t|
+  create_table "match_fields2", id: { type: :integer, unsigned: true }, charset: "utf8mb4", force: :cascade do |t|
+    t.integer "match_id"
+    t.integer "lookup_id"
+    t.string "mara_id", limit: 256
+    t.string "overridden_value", limit: 1024
+  end
+
+  create_table "matchable_articles", primary_key: "prefixed_matnr", id: { type: :string, limit: 100 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "banner", limit: 8
+    t.string "type", limit: 100
+    t.string "article_type", limit: 100
+    t.string "matnr", limit: 100
+    t.text "description"
+    t.text "brand_desc"
+    t.string "number_variants", limit: 100
+    t.string "barcodes", limit: 9999
+    t.string "vendors", limit: 999
+    t.boolean "matched"
+    t.boolean "active"
+    t.boolean "group"
+    t.index ["active", "matched", "article_type"], name: "matchtable_articles_Active_IDX"
+  end
+
+  create_table "matched_articles", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "match_id"
     t.string "prefixed_matnr"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "matches", charset: "utf8mb4", force: :cascade do |t|
+  create_table "matches", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "motor_alert_locks", charset: "utf8mb4", force: :cascade do |t|
+  create_table "motor_alert_locks", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "alert_id", null: false
     t.string "lock_timestamp", null: false
     t.datetime "created_at", null: false
@@ -1894,7 +2057,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.index ["alert_id"], name: "index_motor_alert_locks_on_alert_id"
   end
 
-  create_table "motor_alerts", charset: "utf8mb4", force: :cascade do |t|
+  create_table "motor_alerts", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "query_id", null: false
     t.string "name", null: false
     t.text "description"
@@ -1911,7 +2074,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.index ["updated_at"], name: "index_motor_alerts_on_updated_at"
   end
 
-  create_table "motor_api_configs", charset: "utf8mb4", force: :cascade do |t|
+  create_table "motor_api_configs", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name", null: false
     t.string "url", null: false
     t.text "preferences", null: false
@@ -1923,7 +2086,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.index ["name"], name: "motor_api_configs_name_unique_index", unique: true
   end
 
-  create_table "motor_audits", charset: "utf8mb4", force: :cascade do |t|
+  create_table "motor_audits", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "auditable_id"
     t.string "auditable_type"
     t.string "associated_id"
@@ -1945,7 +2108,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.index ["user_id", "user_type"], name: "motor_auditable_user_index"
   end
 
-  create_table "motor_configs", charset: "utf8mb4", force: :cascade do |t|
+  create_table "motor_configs", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.text "value", null: false
     t.datetime "created_at", null: false
@@ -1954,7 +2117,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.index ["updated_at"], name: "index_motor_configs_on_updated_at"
   end
 
-  create_table "motor_dashboards", charset: "utf8mb4", force: :cascade do |t|
+  create_table "motor_dashboards", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "title", null: false
     t.text "description"
     t.text "preferences", null: false
@@ -1967,7 +2130,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.index ["updated_at"], name: "index_motor_dashboards_on_updated_at"
   end
 
-  create_table "motor_forms", charset: "utf8mb4", force: :cascade do |t|
+  create_table "motor_forms", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
     t.text "api_path", null: false
@@ -1983,7 +2146,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.index ["updated_at"], name: "index_motor_forms_on_updated_at"
   end
 
-  create_table "motor_queries", charset: "utf8mb4", force: :cascade do |t|
+  create_table "motor_queries", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
     t.text "sql_body", null: false
@@ -1997,7 +2160,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.index ["updated_at"], name: "index_motor_queries_on_updated_at"
   end
 
-  create_table "motor_resources", charset: "utf8mb4", force: :cascade do |t|
+  create_table "motor_resources", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name", null: false
     t.text "preferences", null: false
     t.datetime "created_at", null: false
@@ -2006,7 +2169,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.index ["updated_at"], name: "index_motor_resources_on_updated_at"
   end
 
-  create_table "motor_taggable_tags", charset: "utf8mb4", force: :cascade do |t|
+  create_table "motor_taggable_tags", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "tag_id", null: false
     t.bigint "taggable_id", null: false
     t.string "taggable_type", null: false
@@ -2014,14 +2177,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_18_180527) do
     t.index ["taggable_id", "taggable_type", "tag_id"], name: "motor_polymorphic_association_tag_index", unique: true
   end
 
-  create_table "motor_tags", charset: "utf8mb4", force: :cascade do |t|
+  create_table "motor_tags", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "motor_tags_name_unique_index", unique: true
   end
 
-  create_table "users", charset: "utf8mb4", force: :cascade do |t|
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.string "user_type", default: "user"
