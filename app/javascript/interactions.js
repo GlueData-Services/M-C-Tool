@@ -7,22 +7,22 @@ $(document).on('turbo:load', function(){
    //    $(this).addClass('mara-selected')
    // })
 
-   $('.match_select').on('change', function(e){
-      console.log("Selected match", e, this.checked)
-      if (this.checked) {
-         $(this).closest('tr').addClass('selected_row')
-      } else {
-         $(this).closest('tr').removeClass('selected_row')
-      }
-   });
+   // $('.match_select').on('change', function(e){
+   //    console.log("Selected match", e, this.checked)
+   //    if (this.checked) {
+   //       $(this).closest('tr').addClass('selected_row')
+   //    } else {
+   //       $(this).closest('tr').removeClass('selected_row')
+   //    }
+   // });
 
-   $('.override').on("change", function(){
-      if(this.checked) {
-         $(this).parent().find('.mara-input').removeClass('d-none')
-      } else {
-         $(this).parent().find('.mara-input').addClass('d-none')
-      }
-   })
+   // $('.override').on("change", function(){
+   //    if(this.checked) {
+   //       $(this).parent().find('.mara-input').removeClass('d-none')
+   //    } else {
+   //       $(this).parent().find('.mara-input').addClass('d-none')
+   //    }
+   // })
 
    var triggerTabList = [].slice.call(document.querySelectorAll('#tab-consolidation a'))
    triggerTabList.forEach(function (triggerEl) {
