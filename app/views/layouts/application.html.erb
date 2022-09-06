@@ -32,7 +32,14 @@
 
         <div class="">
           <% if current_user %>
-          <%= link_to current_user.name, '#', class: 'btn btn-outline-primary' %>
+            <div class="dropdown">
+              <button class="btn btn-outline-primary dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                <%= current_user.name %>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="userMenu">
+                <li><%= button_to 'Sign out', destroy_user_session_path, method: :delete, class: 'dropdown-item' %></li>
+              </ul>
+            </div>
           <% else %>
             <%= link_to 'Login', new_user_session_path, class: 'btn btn-outline-primary'%>
           <% end %>

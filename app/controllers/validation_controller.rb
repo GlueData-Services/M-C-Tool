@@ -1,4 +1,6 @@
 class ValidationController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @matches = Match.all.page(params[:page]).per(params[:per])
   end

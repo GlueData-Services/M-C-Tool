@@ -1,4 +1,5 @@
 class SearchController < ApplicationController
+  before_action :authenticate_user!
 
   def search
     @match_id = params[:match_id]
