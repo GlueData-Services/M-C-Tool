@@ -344,6 +344,7 @@ PLATFORMS
 DEPENDENCIES
   amazing_print
   annotate
+  audited (~> 5.0)
   bootsnap
   bootstrap_form (~> 5.0)
   capistrano

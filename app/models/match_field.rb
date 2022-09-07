@@ -1,4 +1,5 @@
 class MatchField < ApplicationRecord
+  audited
   belongs_to :match
 
   def overridden?

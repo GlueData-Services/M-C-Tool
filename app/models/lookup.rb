@@ -1,4 +1,6 @@
 class Lookup < ApplicationRecord
+  audited
+
   self.table_name = "lookup_and_operations"
 
   def self.name_for(id)
