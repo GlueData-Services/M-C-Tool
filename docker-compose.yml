@@ -15,17 +15,17 @@ services:
 #    depends_on:
 #      - mariadb
 
-  mariadb:
-    image: mariadb:10
-    restart: always
-    environment:
-      MARIADB_ROOT_PASSWORD: mariapass
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./mysqldev:/var/lib/mysql
-      - ./mysqldev-cnf:/etc/mysql/conf.d
-      - ./mysqldev-enc:/etc/mysql/encryption
+#  mariadb:
+#    image: mariadb:10
+#    restart: always
+#    environment:
+#      MARIADB_ROOT_PASSWORD: mariapass
+#    ports:
+#      - "3306:3306"
+#    volumes:
+#      - ./mysqldev:/var/lib/mysql
+#      - ./mysqldev-cnf:/etc/mysql/conf.d
+#      - ./mysqldev-enc:/etc/mysql/encryption
 
 #  db:
 #    image: postgres:13
