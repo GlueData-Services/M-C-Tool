@@ -62,25 +62,30 @@
 
             <% fields_for_section.each do |lookup_id| %>
               <% mf = @match.match_fields.find_by(lookup_id: lookup_id) %>
+              <% selectable = Lookup.selectable(lookup_id) %>
+              <% field_name = Lookup.name_for(lookup_id) %>
+              <% overridable = Lookup.overrideable?(lookup_id) %>
+
               <tr data-controller="consolidator">
                 <th class="tight bg-light">
-                  <%= content_tag :span, truncate(Lookup.name_for(lookup_id).humanize, length: 40), title: Lookup.name_for(lookup_id).humanize %>
+                  <%= content_tag :span, truncate(field_name.humanize, length: 40), title: field_name.humanize %>
                 </th>
                 <% vals = []; %>
                 <% @match.maras.each do |mara| %>
-                  <% vals << mara.get_specific_field(lookup_id) %>
-                  <td class="<%= mara.banner.downcase %> mara-data tight <%= 'text-more-muted' if !Lookup.selectable(lookup_id) %> <%= 'mara-selected' if mara.id == mf&.mara_id %>"
+                  <% value = mara.get_specific_field(lookup_id) %>
+                  <% vals << value %>
+                  <td class="<%= mara.banner.downcase %> mara-data tight <%= 'text-more-muted' if !selectable %> <%= 'mara-selected' if mara.id == mf&.mara_id %>"
                       data-action="click->consolidator#select"
                       data-consolidator-highlight-class="mara-selected"
                       data-consolidator-mara-param="<%= mara.id %>"
-                      data-consolidator-value-param="<%= mara.get_specific_field(lookup_id) %>">
-                    <%= mara.get_specific_field(lookup_id) %>
+                      data-consolidator-value-param="<%= value %>">
+                    <%= value %>
                   </td>
                 <% end %>
                 <td class="text-center tight"></td>
                 <td class="text-center">
-                  <% if Lookup.selectable(lookup_id) %>
-                    <% if Lookup.overrideable?(lookup_id) %>
+                  <% if selectable %>
+                    <% if overridable %>
                       <%= check_box_tag :override,
                                         1,
                                         mf&.overridden? ? true : false,
@@ -105,7 +110,7 @@
                            data-consolidator-target="selectedValue"
                            class="<%= mf&.overridden? ? 'd-none' : '' %>"
                            value="<%= mf.present? ? mf.get_value : nil %>"
-                           disabled="<%= !(Lookup.overrideable?(lookup_id)) %>">
+                           disabled="<%= !overridable %>">
                   <% end %>
 
                 </td>
