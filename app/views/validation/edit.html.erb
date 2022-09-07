@@ -42,7 +42,7 @@
                         <button class="dropdown-item" type="button">Mark as Main</button>
                       </li>
                       <li>
-                        <%= button_to 'Remove from match', remove_article_path(mara_id: mara.id, match_id: @match.id), class: 'dropdown-item' %>
+                        <%= link_to 'Remove from match', remove_article_path(mara_id: mara.id, match_id: @match.id), class: 'dropdown-item', type: 'button' %>
                       </li>
                       <li>
                         <button class="dropdown-item" type="button">Mark all</button>
