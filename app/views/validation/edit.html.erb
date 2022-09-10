@@ -10,7 +10,7 @@
 
 <%= form_with url: update_match_fields_path, method: :post do |form| %>
   <%= form.hidden_field :id, value: @match.id %>
-  <section class="container-fluid">
+  <section class="container-fluid consolidator">
     <ul class="nav nav-tabs" id="tab-consolidation">
       <% Lookup.sections.each_with_index do |sec, i| %>
         <li class="nav-item">
@@ -57,7 +57,6 @@
               <th class="text-center">Consolidated</th>
             </tr>
             </thead>
-
             <tbody>
 
             <% fields_for_section.each do |lookup_id| %>
@@ -71,37 +70,32 @@
                   <%= content_tag :span, truncate(field_name.humanize, length: 40), title: field_name.humanize %>
                 </th>
                 <% vals = []; %>
+                <% val_id = nil %>
+
                 <% @match.maras.each do |mara| %>
                   <% value = mara.get_specific_field(lookup_id) %>
                   <% vals << value %>
+                  <% val_id = mara.id %>
+
                   <td class="<%= mara.banner.downcase %> mara-data tight <%= 'text-more-muted' if !selectable %> <%= 'mara-selected' if mara.id == mf&.mara_id %>"
                       data-action="click->consolidator#select"
                       data-consolidator-highlight-class="mara-selected"
+                      data-consolidator-selectable-param="<%= selectable %>"
                       data-consolidator-mara-param="<%= mara.id %>"
                       data-consolidator-value-param="<%= value %>">
                     <%= value %>
                   </td>
                 <% end %>
                 <td class="text-center tight"></td>
-                <td class="text-center">
+                <td class="">
                   <% if selectable %>
-                    <% if overridable %>
-                      <%= check_box_tag :override,
-                                        1,
-                                        mf&.overridden? ? true : false,
-                                        class: 'override',
-                                        data: { action: 'change->consolidator#override' } %>
-
-                      <%= text_field_tag "match_fields[#{lookup_id}][overridden_value]",
-                                         mf&.overridden? ? mf.overridden_value : nil,
-                                         data: { 'consolidator-target': 'overrideInput' },
-                                         class: !mf&.overridden? ? 'd-none' : '',
-                                         disabled: !mf&.overridden? %>
-                    <% end %>
-
                     <%= text_field_tag "match_fields[#{lookup_id}][mara_id]", nil,
                                        type: 'hidden',
-                                       value: mf&.present? ? mf.mara_id : nil,
+                                       value: if mf&.present?
+                                                mf.mara_id
+                                              else
+                                                vals.uniq.length == 1 ? val_id : nil
+                                              end,
                                        data: { 'consolidator-target': 'selectedMara' },
                                        disabled: true
                     %>
@@ -109,8 +103,22 @@
                     <input type="text"
                            data-consolidator-target="selectedValue"
                            class="<%= mf&.overridden? ? 'd-none' : '' %>"
-                           value="<%= mf.present? ? mf.get_value : nil %>"
+                           value="<%= mf.present? ? mf.get_value : vals.uniq.length == 1 ? vals[0] : '' %>"
                            disabled="<%= !overridable %>">
+
+                    <% if overridable %>
+                      <%= text_field_tag "match_fields[#{lookup_id}][overridden_value]",
+                                         mf&.overridden? ? mf.overridden_value : nil,
+                                         data: { 'consolidator-target': 'overrideInput' },
+                                         class: !mf&.overridden? ? 'd-none' : '',
+                                         disabled: !mf&.overridden? %>
+                      <%= check_box_tag :override,
+                                        1,
+                                        mf&.overridden? ? true : false,
+                                        class: 'override',
+                                        title: 'Override',
+                                        data: { action: 'change->consolidator#override' } %>
+                    <% end %>
                   <% end %>
 
                 </td>

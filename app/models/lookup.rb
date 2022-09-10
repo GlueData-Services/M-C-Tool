@@ -1,5 +1,6 @@
 class Lookup < ApplicationRecord
   audited
+  has_many :match_fields
 
   self.table_name = "lookup_and_operations"
 
@@ -41,6 +42,6 @@ class Lookup < ApplicationRecord
   end
 
   def self.fields_for_section(sec)
-    where("Tab = ? AND Display = 'D'", sec).distinct.pluck('id')
+    where("Tab = ? AND Display = 'D'", sec).order(:sort_order).distinct.pluck('id')
   end
 end
