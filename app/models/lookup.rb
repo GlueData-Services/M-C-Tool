@@ -1,5 +1,6 @@
 class Lookup < ApplicationRecord
   audited
+  has_many :match_fields
 
   self.table_name = "lookup_and_operations"
 
@@ -29,7 +30,8 @@ class Lookup < ApplicationRecord
   end
 
   def self.sections
-    tabs = order(:sort_order).distinct.pluck('Tab')
+    tabs = where.not(tab: %w[Unit_of_Measure Variant]).order(:sort_order).distinct.pluck('Tab')
+    # tabs = order(:sort_order).distinct.pluck('Tab')
     filtered_tabs = []
     tabs.each do |t|
       if self.where('Tab = ? AND display = "D"', t).exists?
@@ -41,6 +43,6 @@ class Lookup < ApplicationRecord
   end
 
   def self.fields_for_section(sec)
-    where("Tab = ? AND Display = 'D'", sec).distinct.pluck('id')
+    where("Tab = ? AND Display = 'D'", sec).order(:sort_order).distinct.pluck('id')
   end
 end

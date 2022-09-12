@@ -47,3 +47,4 @@ mysqldev-enc/
 *.csv
 *.tsv
 .DS_Store
+.vagrant

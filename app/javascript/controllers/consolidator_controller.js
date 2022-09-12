@@ -4,6 +4,8 @@ export default class extends Controller {
     static targets = ["selectedValue", "selectedMara", "overriddenMara", "overrideInput"]
 
     select(event) {
+        if (!event.params.selectable) { return }
+
         $(this.element).find('td').each(function(i, el){
             $(el).removeClass('mara-selected');
         })
