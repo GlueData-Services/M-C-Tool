@@ -48,3 +48,4 @@ mysqldev-enc/
 *.tsv
 .DS_Store
 .vagrant
+.env
