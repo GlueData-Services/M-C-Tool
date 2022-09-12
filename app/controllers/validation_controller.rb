@@ -19,6 +19,8 @@ class ValidationController < ApplicationController
         if match_details['mara_id'].present?
           match_details['overridden_value'] = nil
         end
+        Rails.logger.debug match_details
+        Rails.logger.debug field
         field.update(match_details)
         field.save
       end

@@ -28,7 +28,6 @@ class Mara < ApplicationRecord
     return "<span title='Nil result #{table} #{field}'>*</span>".html_safe if res.blank?
 
     res.count == 1 ? res.first.first : res.map { |r| r[0].blank? ? 'nil' : r[0] }.join(' / ')
-
   rescue ActiveRecord::StatementInvalid => e
     return "<span title='#{CGI::escapeHTML(e.message)}'>*map</span>".html_safe
   end
