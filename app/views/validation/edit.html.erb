@@ -17,6 +17,12 @@
           <a class="nav-link <%= 'active' if i == 0 %>" href="#<%= sec.downcase %>"><%= sec %></a>
         </li>
       <% end %>
+      <li class="nav-item">
+        <a href="#uom" class="nav-link">UOM</a>
+      </li>
+      <li class="nav-item">
+        <a href="#variants" class="nav-link">Variants</a>
+      </li>
     </ul>
 
     <div class="tab-content">
@@ -129,6 +135,8 @@
           </table>
         </div>
       <% end %>
+
+      <%= render partial: 'uom', locals: {match: @match} %>
     </div>
   </section>
 

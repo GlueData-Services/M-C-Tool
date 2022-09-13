@@ -29,9 +29,13 @@ class Lookup < ApplicationRecord
     find(id).updatable == 'S'
   end
 
+  def self.uom_fields
+    where(tab: 'Unit_of_Measure', 'Display': 'D').order(:sort_order).all
+  end
+
   def self.sections
-    tabs = where.not(tab: %w[Unit_of_Measure Variant]).order(:sort_order).distinct.pluck('Tab')
-    # tabs = order(:sort_order).distinct.pluck('Tab')
+    # tabs = where.not(tab: %w[Unit_of_Measure Variant]).order(:sort_order).distinct.pluck('Tab')
+    tabs = order(:sort_order).distinct.pluck('Tab')
     filtered_tabs = []
     tabs.each do |t|
       if self.where('Tab = ? AND display = "D"', t).exists?

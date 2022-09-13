@@ -1,0 +1,26 @@
+<div class="tab-pane fade show" id="uom" role="tabpanel">
+  <% Uom.new(match.id).sections.each do |match_type, records| %>
+    <h5><%= match_type %></h5>
+    <% keys = records.first.keys %>
+
+    <table class="table table-sm table-responsive">
+      <thead>
+      <tr>
+        <% keys.each do |heading| %>
+          <th><%= heading %></th>
+        <% end %>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% records.each do |record| %>
+        <tr>
+          <% keys.each do |key| %>
+            <td><%= record[key] %></td>
+          <% end %>
+        </tr>
+      <% end %>
+      </tbody>
+      </table>
+  <% end %>
+</div>

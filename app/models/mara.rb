@@ -27,7 +27,7 @@ class Mara < ApplicationRecord
     res = ActiveRecord::Base.connection.execute("select #{field} from #{table} WHERE MATNR = '#{self.matnr}'")
     return "<span title='Nil result #{table} #{field}'>*</span>".html_safe if res.blank?
 
-    res.count == 1 ? res.first.first : res.map { |r| r[0].blank? ? 'nil' : r[0] }.join(' / ')
+    res.count == 1 ? res.first.first : res.map { |r| r[0].blank? ? 'nil' : r[0] }
   rescue ActiveRecord::StatementInvalid => e
     return "<span title='#{CGI::escapeHTML(e.message)}'>*map</span>".html_safe
   end
@@ -50,7 +50,6 @@ class Mara < ApplicationRecord
 
   def get_specific_field(lookup_id)
     lookup = Lookup.find(lookup_id)
-    Rails.logger.debug lookup.attribute_name.red
     case banner
     when 'GAME'
       val = get_value(lookup.g_table, lookup.g_field)
