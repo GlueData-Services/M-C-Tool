@@ -20,11 +20,6 @@ class Lookup < ApplicationRecord
     find(id).lov == 'LOV'
   end
 
-  def self.lookup_value(table, col, key)
-    # l_table = where('G_FIELD = :c AND G_TABLE = :t AND display = "L"', c: col, t: table).first.lookup_table
-    # res = ActiveRecord::Base.connection.execute("SELECT ").first
-  end
-
   def self.selectable(id)
     find(id).updatable == 'S'
   end
@@ -33,9 +28,13 @@ class Lookup < ApplicationRecord
     where(tab: 'Unit_of_Measure', 'Display': 'D').order(:sort_order).all
   end
 
+  def self.variant_fields
+    where(tab: 'Variant', 'Display': 'D').order(:sort_order).all
+  end
+
   def self.sections
-    # tabs = where.not(tab: %w[Unit_of_Measure Variant]).order(:sort_order).distinct.pluck('Tab')
-    tabs = order(:sort_order).distinct.pluck('Tab')
+    tabs = where.not(tab: %w[Unit_of_Measure Variant]).order(:sort_order).distinct.pluck('Tab')
+    # tabs = order(:sort_order).distinct.pluck('Tab')
     filtered_tabs = []
     tabs.each do |t|
       if self.where('Tab = ? AND display = "D"', t).exists?

@@ -26,6 +26,7 @@ module MatcherHelper
   end
 
   def match_codes(all_codes, highlights)
+    return if all_codes.nil?
     hl_codes = highlights.gsub(/<[\/]?strong>/, " ").split(/[\s,]+/)
     all_codes.split(",").map do |code|
       code.strip!

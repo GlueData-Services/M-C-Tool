@@ -5,7 +5,6 @@
     <% end %>
     <h2>Validations / <%= @match.name %></h2>
   </div>
-
 </section>
 
 <%= form_with url: update_match_fields_path, method: :post do |form| %>
@@ -137,6 +136,7 @@
       <% end %>
 
       <%= render partial: 'uom', locals: {match: @match} %>
+      <%= render partial: 'variants', locals: {match: @match} %>
     </div>
   </section>
 

@@ -24,7 +24,8 @@ class Mara < ApplicationRecord
 
   def get_value(table, field)
     return "<span title='Blank map'>*map</span>".html_safe if table.blank? || field.blank?
-    res = ActiveRecord::Base.connection.execute("select #{field} from #{table} WHERE MATNR = '#{self.matnr}'")
+    table_ref = table.in?(%w[m_variant_detail g_variant_detail b_variant_detail]) ? 'GENERIC_MATNR' : 'MATNR'
+    res = ActiveRecord::Base.connection.execute("SELECT #{field} FROM #{table} WHERE #{table_ref} = '#{self.matnr}'")
     return "<span title='Nil result #{table} #{field}'>*</span>".html_safe if res.blank?
 
     res.count == 1 ? res.first.first : res.map { |r| r[0].blank? ? 'nil' : r[0] }

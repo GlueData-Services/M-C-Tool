@@ -33,7 +33,7 @@
       <tbody>
       <% @matched && @matched.with_highlights.each do |mara, highlight| %>
 
-        <tr class="<%= mara.banner.downcase %> <%= mara.barcodes.split(',').join(" ") %> <%= @scores[mara.prefixed_matnr] >= 1000 ? "selected_row" : "" %>">
+        <tr class="<%= mara.banner.downcase %> <%= mara.barcodes&.split(',')&.join(" ") %> <%= @scores[mara.prefixed_matnr] >= 1000 ? "selected_row" : "" %>">
           <td><span><%= mara.banner %></span></td>
           <td><%== highlight[:description].blank? ? mara.description : highlight[:description] %></td>
           <td><%= mara.article_type %></td>

@@ -1,0 +1,28 @@
+<div class="tab-pane fade show" id="variants" role="tabpanel">
+  <% Variant.new(match.id).rows.each do |pmatnr, records| %>
+    <% next if records.blank? %>
+    <h4><%= pmatnr %></h4>
+
+    <table class="table table-sm">
+      <thead>
+      <tr>
+        <% records.first.each do |k, v| %>
+          <th><%= t(k) %></th>
+        <% end %>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% records.each do |rec| %>
+        <tr>
+          <% rec.each do |k, v| %>
+            <td><%= v %></td>
+          <% end %>
+          <td><%= text_field_tag 'var_num[]'%></td>
+        </tr>
+      <% end %>
+      </tbody>
+
+    </table>
+  <% end %>
+</div>

@@ -5,6 +5,7 @@
       <th>Banner</th>
       <th>Description</th>
       <th>Article Type</th>
+      <th>Variants</th>
       <th>Barcodes</th>
     </tr>
     </thead>
@@ -28,6 +29,7 @@
           <td><%= mara.banner %></td>
           <td><%= mara.description %></td>
           <td><%= mara.article_type %></td>
+          <td><%= mara.number_variants %></td>
           <td>
             <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="<%= mara.barcodes %>">
             <%= truncate mara.barcodes, length: 50 %>
