@@ -21,7 +21,7 @@ class Lookup < ApplicationRecord
   end
 
   def self.selectable(id)
-    find(id).updatable == 'S'
+    find(id).updatable
   end
 
   def self.uom_fields

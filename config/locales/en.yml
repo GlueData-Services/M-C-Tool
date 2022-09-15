@@ -31,3 +31,12 @@
 
 en:
   hello: "Hello world"
+  'CHAR1_CHARACTERISTIC_NAME': 'Char 1 Name'
+  'CHAR1_CHARACTERISTIC_VALUE': 'Char 1 Value'
+  'CHAR2_CHARACTERISTIC_NAME': 'Char 2 Name'
+  'CHAR2_CHARACTERISTIC_VALUE': 'Char 2 Value'
+  'CHAR3_CHARACTERISTIC_NAME': 'Char 3 Name'
+  'CHAR3_CHARACTERISTIC_VALUE': 'Char 3 Value'
+  'VARIANT_NUM': 'Var num'
+  'Alternative_Unit_of_Measure_AUoM': 'Alt UOM'
+  'Lower_level_Unit_of_Measure_LUN': 'Lower UOM'
