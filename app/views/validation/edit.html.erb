@@ -67,7 +67,7 @@
             <% fields_for_section.each do |lookup_id| %>
               <% mf = @match.match_fields.find_by(lookup_id: lookup_id) %>
               <% lookup = Lookup.find(lookup_id) %>
-              <% selectable = lookup.selectable? %>
+              <% selectable = lookup.updatable? %>
               <% field_name = lookup.attribute_name %>
               <% overridable = lookup.override? %>
 
