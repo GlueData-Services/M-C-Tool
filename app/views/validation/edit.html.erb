@@ -66,9 +66,10 @@
 
             <% fields_for_section.each do |lookup_id| %>
               <% mf = @match.match_fields.find_by(lookup_id: lookup_id) %>
-              <% selectable = Lookup.selectable(lookup_id) %>
-              <% field_name = Lookup.name_for(lookup_id) %>
-              <% overridable = Lookup.overrideable?(lookup_id) %>
+              <% lookup = Lookup.find(lookup_id) %>
+              <% selectable = lookup.selectable? %>
+              <% field_name = lookup.attribute_name %>
+              <% overridable = lookup.override? %>
 
               <tr data-controller="consolidator">
                 <th class="tight bg-light">
@@ -82,13 +83,12 @@
                   <% vals << value %>
                   <% val_id = mara.id %>
 
-                  <td class="<%= mara.banner.downcase %> mara-data tight <%= 'text-more-muted' if !selectable %> <%= 'mara-selected' if mara.id == mf&.mara_id %>"
+                  <td class="<%= mara.banner.downcase %> mara-data tight <%= 'text-more-muted' unless selectable %> <%= 'mara-selected' if mara.id == mf&.mara_id %>"
                       data-action="click->consolidator#select"
                       data-consolidator-highlight-class="mara-selected"
                       data-consolidator-selectable-param="<%= selectable %>"
                       data-consolidator-mara-param="<%= mara.id %>"
                       data-consolidator-value-param="<%= value %>">
-
                     <%= value %>
                   </td>
                 <% end %>

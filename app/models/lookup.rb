@@ -13,31 +13,32 @@ class Lookup < ApplicationRecord
   end
 
   def self.display(id)
-    find(id).display == "D"
+    find(id).display == true
   end
 
   def self.lov?(id)
     find(id).lov == 'LOV'
   end
 
-  def self.selectable(id)
-    find(id).updatable
+  def self.selectable?(id)
+    sel = Lookup.find(id)
+    sel.updatable?
   end
 
   def self.uom_fields
-    where(tab: 'Unit_of_Measure', 'Display': 'D').order(:sort_order).all
+    where(tab: 'Unit_of_Measure', 'Display': true).order(:sort_order).all
   end
 
   def self.variant_fields
-    where(tab: 'Variant', 'Display': 'D').order(:sort_order).all
+    where(tab: 'Variant', 'Display': true).order(:sort_order).all
   end
 
   def self.sections
-    tabs = where.not(tab: %w[Unit_of_Measure Variant]).order(:sort_order).distinct.pluck('Tab')
+    tabs = where.not(tab: %w[Unit_of_Measure Variant]).order(:sort_order).distinct.pluck(:tab)
     # tabs = order(:sort_order).distinct.pluck('Tab')
     filtered_tabs = []
     tabs.each do |t|
-      if self.where('Tab = ? AND display = "D"', t).exists?
+      if self.where('tab = ? AND display = 1', t).exists?
         filtered_tabs << t
       end
     end
@@ -46,6 +47,6 @@ class Lookup < ApplicationRecord
   end
 
   def self.fields_for_section(sec)
-    where("Tab = ? AND Display = 'D'", sec).order(:sort_order).distinct.pluck('id')
+    where("tab = ? AND display = true", sec).order(:sort_order).distinct.pluck(:id)
   end
 end
