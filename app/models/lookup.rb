@@ -9,7 +9,7 @@ class Lookup < ApplicationRecord
   end
 
   def self.overrideable?(id)
-    find(id).override == 'Y'
+    find(id).override == true
   end
 
   def self.display(id)

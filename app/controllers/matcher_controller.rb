@@ -16,9 +16,6 @@ class MatcherController < ApplicationController
 
       q = params[:match_q].blank? ? '*' : params[:match_q]
 
-      logger.debug "Query: " + q
-      logger.debug "Filter: " + _where.ai
-
       @need_match = Mara.search(q,
                                 where: _where,
                                 misspellings: { edit_distance: 2, fields: [:description] },
