@@ -1,4 +1,4 @@
-<div class="tab-pane fade show" id="variants" role="tabpanel">
+<div class="bg-white border-start border-end border-bottom border-1 p-3 mb-3 tab-pane fade show" id="variants" role="tabpanel">
   <% Variant.new(match.id).rows.each do |pmatnr, records| %>
     <% next if records.blank? %>
     <h4><%= pmatnr %></h4>

@@ -8,10 +8,10 @@ class Variant
     @banner_fields = get_select_fields
 
     @rows = {}
+    return @rows if @banner_fields.blank?
     match.maras.each do |mara|
       @rows[mara.id] = get_variants_for_mara(mara)
     end
-    Rails.logger.debug 'Done'
   end
 
   def get_select_fields
@@ -26,6 +26,7 @@ class Variant
   end
 
   def get_variants_for_mara(mara)
+    return if mara.banner[0].blank?
     sel_fields = banner_fields[mara.banner[0].downcase].join(', ')
     table = "#{mara.banner[0].downcase}_variant_detail"
 

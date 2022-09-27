@@ -62,7 +62,7 @@
   <%= yield %>
 </main>
 
-<footer class="footer mt-auto bg-light py-4 px-3">
+<footer class="footer mt-auto bg-white py-4 px-3 shadow-lg">
   <div class="container-fluid">
     <div class="row">
       <div class="col-4 text-dark">
@@ -71,7 +71,7 @@
       <div class="col-4 text-dark">
       </div>
       <div class="col-4 text-end">
-        <%= mail_to "support@gluedata.com", "Email Support"  %>
+        <%= mail_to "support@gluedata.com", "Email Support", class: 'color-gd'  %>
       </div>
     </div>
   </div>

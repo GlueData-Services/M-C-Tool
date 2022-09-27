@@ -1,44 +1,55 @@
 class Uom
   attr_accessor :match, :lookup
 
+  NUM = 'Numerator_for_conversion_to_base_units_of_measure'
+  DEN = 'Denominator_for_conversion_to_base_unit_of_measure'
+
   def initialize(match_id)
     @match = Match.find(match_id)
     @lookup = Lookup.uom_fields
   end
 
   def sections
-    out = {}
+    loaded_uoms = {}
 
-    @lookup.each do |l|
+    @lookup.each do |uom_field|
       @match.maras.each do |mara|
-        out[mara.id] ||= {}
+        loaded_uoms[mara.id] ||= {}
 
-        field = mara.get_specific_field(l.id)
+        ##
+        # UOM fields generally reference arrays of keys or values, eg [EA, PAK, LAY], every uom_field, for the same mara,
+        # should have the same number of fields.
+        # So we load the values from mara for the current field, and create a new "MARA" and for each variation, create a
+        # sub-mara for that field. Which should coincide with a NUM/DEM combination
+        field = mara.get_specific_field(uom_field.id)
         next unless field.is_a?(Array)
 
         field.each_with_index do |item, i|
-          out[mara.id][i] ||= {}
-          out[mara.id][i][l.attribute_name] = item
+          loaded_uoms[mara.id][i] ||= {}
+          loaded_uoms[mara.id][i][uom_field.attribute_name] = item
         end
       end
     end
 
-    fout = []
-    out.each do |k, v|
+    split_records = []
+    loaded_uoms.each do |k, v|
       v.each do |kk, vv|
-        fout << { "matnr" => k }.merge(vv)
+        split_records << { "matnr" => k }.merge(vv)
       end
     end
-    fout
+
+    ##
+    # Sorts the UoM entries by Size, calculated by Numerator * Denominator, then groups the records from the various
+    # maras into those categories
+    split_records.sort_by!{|e| e[NUM].to_i * e[DEN].to_i}
 
     org_out = {}
-    fout.each do |v|
-      key = "#{v['Numerator_for_conversion_to_base_units_of_measure']} / #{v['Denominator_for_conversion_to_base_unit_of_measure']}"
+    split_records.each do |v|
+      key = "#{v[NUM]} / #{v[DEN]}"
       org_out[key] ||= []
-      org_out[key] << v.except('Numerator_for_conversion_to_base_units_of_measure', 'Denominator_for_conversion_to_base_unit_of_measure')
+      org_out[key] << v.except(NUM, DEN)
     end
 
     org_out
   end
-
 end

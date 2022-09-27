@@ -24,6 +24,9 @@ $(document).on('turbo:load', function(){
    //    }
    // })
 
+   // $('table').bootstrapTable();
+   $("table").resizableColumns();
+
    var triggerTabList = [].slice.call(document.querySelectorAll('#tab-consolidation a'))
    triggerTabList.forEach(function (triggerEl) {
       var tabTrigger = new bootstrap.Tab(triggerEl)

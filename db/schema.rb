@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_07_072503) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_22_150929) do
   create_table "articles", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "code_1"
     t.string "code_2"
@@ -837,10 +837,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_07_072503) do
     t.string "BEZEI", limit: 50
   end
 
-  create_table "b_tskmt", primary_key: ["TATYP", "TAXKM"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "TATYP", limit: 50, null: false
-    t.string "TAXKM", limit: 50, null: false
-    t.string "VTEXT", limit: 50
+  create_table "b_tskmt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.text "TAXKM", size: :tiny
+    t.text "VTEXT", size: :tiny
   end
 
   create_table "b_tspat", primary_key: "SPART", id: { type: :string, limit: 50 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1389,10 +1388,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_07_072503) do
     t.string "BEZEI", limit: 20
   end
 
-  create_table "g_tskmt", primary_key: ["TATYP", "TAXKM"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "TATYP", limit: 4, null: false
-    t.string "TAXKM", limit: 1, null: false
-    t.string "VTEXT", limit: 20
+  create_table "g_tskmt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.text "TAXKM", size: :tiny
+    t.text "VTEXT", size: :tiny
   end
 
   create_table "g_tspat", primary_key: "SPART", id: { type: :string, limit: 2 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1457,9 +1455,81 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_07_072503) do
     t.string "BRAND_DESCR", limit: 30
   end
 
-  create_table "lookup_and_operations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.integer "sort_order", null: false
+  create_table "lnos", id: :integer, default: nil, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.integer "sort_order"
+    t.string "attribute_name", limit: 256
+    t.string "attribute_short_name", limit: 256
+    t.string "tab", limit: 256
+    t.string "tab_detail", limit: 256
+    t.string "g_table", limit: 64
+    t.string "g_field", limit: 64
+    t.string "g_lookup", limit: 64
+    t.string "m_table", limit: 64
+    t.string "m_field", limit: 64
+    t.string "m_lookup", limit: 64
+    t.string "b_table", limit: 64
+    t.string "b_field", limit: 64
+    t.string "b_lookup", limit: 64
+    t.string "consolidatable", limit: 64
+    t.string "rule", limit: 64
+    t.boolean "display", default: false, null: false
+    t.string "lov", limit: 32
+    t.boolean "updatable", default: false, null: false
+    t.boolean "override", default: false
+    t.boolean "selectable", default: false
+  end
+
+  create_table "lookup_and_operations", id: :integer, default: nil, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.integer "sort_order"
+    t.string "attribute_name", limit: 256
+    t.string "attribute_short_name", limit: 256
+    t.string "tab", limit: 256
+    t.string "tab_detail", limit: 256
+    t.string "g_table", limit: 64
+    t.string "g_field", limit: 64
+    t.string "g_lookup", limit: 64
+    t.string "m_table", limit: 64
+    t.string "m_field", limit: 64
+    t.string "m_lookup", limit: 64
+    t.string "b_table", limit: 64
+    t.string "b_field", limit: 64
+    t.string "b_lookup", limit: 64
+    t.string "consolidatable", limit: 64
+    t.string "rule", limit: 64
+    t.boolean "display", default: false, null: false
+    t.string "lov", limit: 32
+    t.boolean "updatable", default: false, null: false
+    t.boolean "override", default: false
+    t.boolean "selectable", default: false
+  end
+
+  create_table "lookup_and_operations_copy", id: :integer, default: nil, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.integer "sort_order"
+    t.string "attribute_name", limit: 256
+    t.string "attribute_short_name", limit: 256
+    t.string "tab", limit: 256
+    t.string "tab_detail", limit: 256
+    t.string "g_table", limit: 64
+    t.string "g_field", limit: 64
+    t.string "g_lookup", limit: 64
+    t.string "m_table", limit: 64
+    t.string "m_field", limit: 64
+    t.string "m_lookup", limit: 64
+    t.string "b_table", limit: 64
+    t.string "b_field", limit: 64
+    t.string "b_lookup", limit: 64
+    t.string "consolidatable", limit: 64
+    t.string "rule", limit: 64
+    t.boolean "display", default: false, null: false
+    t.string "lov", limit: 32
+    t.boolean "updatable", default: false, null: false
+    t.boolean "override", default: false
+  end
+
+  create_table "lookup_and_operations_old", id: :integer, default: nil, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.integer "sort_order"
     t.text "attribute_name", size: :tiny
+    t.text "attribute_short_name", size: :tiny
     t.text "tab", size: :tiny
     t.text "tab_detail", size: :tiny
     t.text "g_table", size: :tiny
@@ -1475,9 +1545,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_07_072503) do
     t.text "rule", size: :tiny
     t.text "display", size: :tiny
     t.text "lov", size: :tiny
-    t.text "updatable", size: :tiny
-    t.text "override", size: :tiny
-    t.index ["id"], name: "lookup_and_operations_id_IDX"
+    t.boolean "updatable"
+    t.boolean "override"
   end
 
   create_table "m_brands", primary_key: "BRAND_ID", id: { type: :string, limit: 4 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1947,10 +2016,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_07_072503) do
     t.string "BEZEI", limit: 20
   end
 
-  create_table "m_tskmt", primary_key: ["TATYP", "TAXKM"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "TATYP", limit: 4, null: false
-    t.string "TAXKM", limit: 1, null: false
-    t.string "VTEXT", limit: 20
+  create_table "m_tskmt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.text "TAXKM", size: :tiny
+    t.text "VTEXT", size: :tiny
   end
 
   create_table "m_tspat", primary_key: "SPART", id: { type: :string, limit: 2 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -2240,6 +2308,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_07_072503) do
     t.string "prefixed_matnr"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "main", default: false
   end
 
   create_table "matches", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
