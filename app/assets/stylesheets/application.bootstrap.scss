@@ -1,9 +1,37 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+@import 'bootstrap-table/dist/bootstrap-table';
+@import 'bootstrap-table/dist/themes/bootstrap-table/bootstrap-table';
+@import 'jquery-resizable-columns/dist/jquery.resizableColumns';
 
 .pagination {
   margin-bottom: 0px !important;
   padding-bottom: 0 !important;
+}
+body {
+  background-color: #F8F8F8;
+}
+
+$glue-color: #fe4600;
+
+.color-gd {
+  color: $glue-color;
+}
+
+.bg-gd {
+  background-color: $glue-color;
+}
+
+.hover-gd:hover {
+  color: $glue-color;
+}
+
+.btn-outline-dark:hover {
+  color: $glue-color;
+}
+
+.dotwrap {
+  max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
 th.tight, td.tight {
@@ -18,6 +46,7 @@ th.tight, td.tight {
   color: #008848;
 }
 
+
 .text-more-muted {
   color: #c5c5c5;
 }
@@ -29,6 +58,17 @@ th.tight, td.tight {
 .consolidator {
   input[type=text] {
     width: 90%;
+  }
+}
+
+.main_article {
+  color: #6c01ac !important;
+}
+
+.table-consolidate {
+  font-size: 13px;
+  td, th {
+    vertical-align: middle;
   }
 }
 
@@ -72,4 +112,21 @@ th.tight, td.tight {
 .active-code {
   outline-style: solid;
   outline-color: red;
+}
+
+.btn-outline-glue {
+  @include button-outline-variant($color: $glue-color, $color-hover: white);
+}
+.btn-glue {
+  @include button-variant($glue-color, white);
+}
+
+.poh {
+  transition: 0.3s ease-in-out;
+}
+
+.poh:hover {
+  //transform: scale(1.05) rotate(-0.005turn);
+  transform: scale(1.05);
+  transition: 0.3s ease-in-out;
 }

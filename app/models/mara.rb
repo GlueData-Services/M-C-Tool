@@ -8,6 +8,7 @@ class Mara < ApplicationRecord
 
   # scope :unmatched, -> { joins('LEFT JOIN matched_articles ON matchable_articles.prefixed_matnr = matched_articles.prefixed_matnr').where('matched_articles.prefixed_matnr IS NULL') }
   scope :unmatched, -> { where.not('matched') }
+  scope :matched, -> { where('matched') }
   scope :active, -> { where(active: true) }
 
   def self.has_field(col)

@@ -10,7 +10,7 @@ export default class extends Controller {
             $(el).removeClass('mara-selected');
         })
         // $(event.target).addClass('mara-selected');
-        event.target.classList.add('mara-selected')
+        event.target.closest('td').classList.add('mara-selected')
 
         this.selectedValueTarget.value = event.params.value;
         this.selectedMaraTarget.value = event.params.mara;

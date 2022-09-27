@@ -1,7 +1,7 @@
 <section class="header container-fluid mt-4">
   <div class="d-flex">
     <%= link_to validation_path, class: 'h2 me-2' do %>
-      <i class="bi bi-arrow-left-circle"></i>
+      <i class="bi bi-arrow-left-circle hover-gd"></i>
     <% end %>
     <h2>Validations / <%= @match.name %></h2>
   </div>
@@ -28,29 +28,44 @@
       <% Lookup.sections.each_with_index do |sec, i| %>
 
         <!--  Pane for a specific tab, contains table for a section (Basic, Logistics etc) -->
-        <div class="tab-pane fade show <%= 'show active' if i == 0 %>" id="<%= sec.downcase %>" role="tabpanel">
+        <div class="bg-white border-start border-end border-bottom border-1 p-3 mb-3 tab-pane fade show <%= 'show active' if i == 0 %>" id="<%= sec.downcase %>" role="tabpanel">
 
           <!--    fields_for_section is an array of ids to the lookup table for all the fields in this section-->
           <% fields_for_section = Lookup.fields_for_section(sec) %>
-          <table class="table table-sm table-bordered table-hover">
+          <table class="table table-sm table-bordered table-hover table-consolidate">
             <thead>
             <tr>
               <th></th>
               <% @match.maras.each do |mara| %>
-                <th class="tight">
-                  <span title="<%= mara.description %>"><%= truncate mara.description, length: 20 %></span>
+                <% main_mara = @match.matched_articles.find_by(prefixed_matnr: mara.id).main? %>
+                <th class="">
+                  <span title="<%= mara.description %>" class="<%= main_mara ? 'main_article' : '' %>">
+                    <%= truncate mara.description, length: 20 %>
+                  </span>
                   <div class="dropdown float-end">
-                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                            type="button" id="dropdownMenu2"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
                       <li>
-                        <button class="dropdown-item" type="button">Mark as Main</button>
+                        <% if main_mara %>
+                          <%= link_to 'Unmark Main',
+                                      main_article_path(mara_id: mara.id, match_id: @match.id, unmark: true),
+                                      class: 'dropdown-item',
+                                      type: 'button' %>
+                        <% else %>
+                          <%= link_to 'Mark as Main',
+                                      main_article_path(mara_id: mara.id, match_id: @match.id),
+                                      class: 'dropdown-item',
+                                      type: 'button' %>
+                        <% end %>
                       </li>
                       <li>
-                        <%= link_to 'Remove from match', remove_article_path(mara_id: mara.id, match_id: @match.id), class: 'dropdown-item', type: 'button' %>
-                      </li>
-                      <li>
-                        <button class="dropdown-item" type="button">Mark all</button>
+                        <%= link_to 'Remove from match',
+                                    remove_article_path(mara_id: mara.id, match_id: @match.id),
+                                    class: 'dropdown-item',
+                                    type: 'button' %>
                       </li>
                     </ul>
                   </div>
@@ -59,7 +74,7 @@
               <th class="text-center">
                 <%= button_tag '+', class: 'btn btn-sm btn-success', type: "button", 'data-bs-toggle': "modal", 'data-bs-target': "#addArticle" %>
               </th>
-              <th class="text-center">Consolidated</th>
+              <th class="text-center tight">Consolidated</th>
             </tr>
             </thead>
             <tbody>
@@ -73,7 +88,8 @@
 
               <tr data-controller="consolidator">
                 <th class="tight bg-light">
-                  <%= content_tag :span, truncate(field_name.humanize, length: 40), title: field_name.humanize %>
+                  <%#= content_tag :span, truncate(field_name.humanize, length: 40), title: field_name.humanize %>
+                  <%= content_tag :span, t(field_name) %>
                 </th>
                 <% vals = []; %>
                 <% val_id = nil %>
@@ -89,7 +105,7 @@
                       data-consolidator-selectable-param="<%= selectable %>"
                       data-consolidator-mara-param="<%= mara.id %>"
                       data-consolidator-value-param="<%= value %>">
-                    <%= value %>
+                    <span style="cursor: pointer;"><%= value %></span>
                   </td>
                 <% end %>
                 <td class="text-center tight"></td>

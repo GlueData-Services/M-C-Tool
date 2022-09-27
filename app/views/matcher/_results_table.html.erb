@@ -1,19 +1,22 @@
 <div id="results-table">
-  <table class="table table-sm table-bordered table-hover mt-4">
+  <!--  <table class="table table-sm table-bordered table-hover mt-4" data-toggle="table">-->
+  <table class="table table-sm">
     <thead>
     <tr>
       <th>Banner</th>
       <th>Description</th>
       <th>Article Type</th>
-      <th>Variants</th>
+      <th style="max-width: 5%;">Variants</th>
       <th>Barcodes</th>
+      <th style="max-width: 160px;"></th>
     </tr>
     </thead>
 
     <tbody>
     <% if @need_match.count == 0 %>
       <tr>
-        <td colspan=7 class="text-center">No records found, try modifying the search and filtering parameters above.</td>
+        <td colspan=7 class="text-center">No records found, try modifying the search and filtering parameters above.
+        </td>
       </tr>
     <% else %>
       <% @need_match.each do |mara| %>
@@ -25,9 +28,10 @@
             data-matcher-f_banner-param="<%= params[:f_banner] %>"
             data-matcher-f_article_type-param="<%= params[:f_article_type] %>"
             class="<%= 'bg-selected' if params[:q]&.include?(mara.barcodes) && mara.barcodes.present? %>"
+            style="cursor: pointer;"
         >
           <td><%= mara.banner %></td>
-          <td><%= mara.description %></td>
+          <td class="dotwrap"><%= mara.description %></td>
           <td><%= mara.article_type %></td>
           <td><%= mara.number_variants %></td>
           <td>
@@ -38,24 +42,24 @@
           <td class="text-end"><a href="">Needs Correction</a></td>
         </tr>
       <% end %>
-
     <% end %>
-    <tr>
-      <td>
-        <div class="limit d-inline-flex">
-          <span style="padding: 0.5rem 1rem;">Limit</span>
-          <ul class="nav">
-            <li class="nav-item"><%= link_to '1', matcher_path(unmatched_limit: 1), class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to '5', matcher_path(unmatched_limit: 5), class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to '10', matcher_path(unmatched_limit: 10), class: "nav-link" %></li>
-          </ul>
-        </div>
-      </td>
-      <td colspan="6" class="text-muted text-end">
-        <%= paginate @need_match, param_name: :n_page %>
-        Total articles: <%= @need_match.total_count %>
-      </td>
-    </tr>
     </tbody>
   </table>
+
+  <div class="card mt-1">
+    <div id="matcher-tools" class="card-body d-flex justify-content-between border-1 border-dark">
+      <%= paginate @need_match, param_name: :n_page %>
+      <ul class="nav">
+        <li class="nav-item"><%= link_to '1', matcher_path(unmatched_limit: 1), class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to '5', matcher_path(unmatched_limit: 5), class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to '10', matcher_path(unmatched_limit: 10), class: "nav-link" %></li>
+      </ul>
+      <div class="limit ">
+        <span style="padding: 0.5rem 1rem;">Limit</span>
+        Total articles: <%= @need_match.total_count %>
+      </div>
+    </div>
+  </div>
+
 </div>
+

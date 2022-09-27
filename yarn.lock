@@ -48,6 +48,11 @@ bootstrap-icons@^1.8.1:
   resolved "https://registry.yarnpkg.com/bootstrap-icons/-/bootstrap-icons-1.8.1.tgz#773c1625bcbf3e86090ea9da4386c2c6459c5582"
   integrity sha512-IXUqislddPJfwq6H+2nTkHyr9epO9h6u1AG0OZCx616w+TgzeoCjfmI3qJMQqt1J586gN2IxzB4M99Ip4sTZ1w==
 
+bootstrap-table@^1.21.0:
+  version "1.21.0"
+  resolved "https://registry.yarnpkg.com/bootstrap-table/-/bootstrap-table-1.21.0.tgz#f29bbd22f89506e3be7f78ecea247b9408604154"
+  integrity sha512-lQlqfxg7PujDpfVPn2FFjvYI2xARZ1lnTjwLDvi9kzCvznNR+lw3OJvBcTOiGT/TsckGSpZCnGZVZH8mRNT1xw==
+
 bootstrap@^5.1.3:
   version "5.1.3"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.1.3.tgz#ba081b0c130f810fa70900acbc1c6d3c28fa8f34"
@@ -248,6 +253,11 @@ is-number@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/is-number/-/is-number-7.0.0.tgz#7535345b896734d5f80c4d06c50955527a14f12b"
   integrity sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==
+
+jquery-resizable-columns@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/jquery-resizable-columns/-/jquery-resizable-columns-0.2.3.tgz#77c0807f18f1fa52b64b4637b19eb327f44ae2e8"
+  integrity sha512-K9TH2Ug//rrDvH33yEE7CK3LAJT0e1fnhWtBhwum7J/a7mB+TfWPh+EHzG9AsTtqC5h+QZejUzzpjj/DKqDS2w==
 
 jquery@^3.6.0:
   version "3.6.0"
