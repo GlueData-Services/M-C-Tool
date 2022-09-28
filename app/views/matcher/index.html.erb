@@ -4,16 +4,25 @@
 
     <%= form_tag matcher_path, method: :get, class: 'row gy-2 gx-3 align-items-center bd-highlight' do %>
       <div class="col-auto">
-        <%= select_tag :f_banner, options_for_select(%w[GAME BUILDERS MAKRO], params[:f_banner]), include_blank: true, placeholder: 'Banner', class: 'form-select' %>
+        <%= select_tag :f_banner,
+                       options_for_select([["Banner", nil], ["GAME", "GAME"], ["BUILDERS", "BUILDERS"], ["MAKRO", "MAKRO"]], params[:f_banner]),
+                       class: 'form-select-sm'
+        %>
       </div>
+
       <div class="col-auto">
-        <%= select_tag :f_article_type, options_for_select(Mara.article_types), placeholder: 'Article Type', include_blank: true, class: 'form-select' %>
+        <%= select_tag :f_article_type,
+                       options_for_select([["Article Type", nil]] + Mara.article_types.zip(Mara.article_types)),
+                       class: 'form-select-sm'
+        %>
       </div>
+
       <div class="col-auto">
         <%= search_field_tag :match_q, params[:match_q], class: 'form-control-inline', placeholder: 'Search' %>
       </div>
+
       <div class="col-auto">
-        <%= submit_tag 'Go' %>
+        <%= submit_tag 'Go', class: 'btn btn-sm btn-primary' %>
       </div>
     <% end %>
   </div>

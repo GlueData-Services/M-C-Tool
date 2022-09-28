@@ -1,8 +1,17 @@
+$primary: #4800FF;
+$success: #00FF48;
+
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
 @import 'bootstrap-table/dist/bootstrap-table';
 @import 'bootstrap-table/dist/themes/bootstrap-table/bootstrap-table';
 @import 'jquery-resizable-columns/dist/jquery.resizableColumns';
+
+#welcome {
+  .card {
+    border-left: 4px solid #4800FF;
+  }
+}
 
 .pagination {
   margin-bottom: 0px !important;
@@ -13,6 +22,8 @@ body {
 }
 
 $glue-color: #fe4600;
+$glue-accent-a: #00FF48;
+$glue-accent-b: #4800FF;
 
 .color-gd {
   color: $glue-color;
@@ -109,6 +120,10 @@ th.tight, td.tight {
   font-weight: 800;
 }
 
+.nav-link:hover {
+ cursor: pointer;
+}
+
 .active-code {
   outline-style: solid;
   outline-color: red;
@@ -118,7 +133,7 @@ th.tight, td.tight {
   @include button-outline-variant($color: $glue-color, $color-hover: white);
 }
 .btn-glue {
-  @include button-variant($glue-color, white);
+  @include button-variant($glue-color, $glue-color, $color: white);
 }
 
 .poh {
@@ -129,4 +144,5 @@ th.tight, td.tight {
   //transform: scale(1.05) rotate(-0.005turn);
   transform: scale(1.05);
   transition: 0.3s ease-in-out;
+  box-shadow: 0 1.5rem 1.5rem rgb(0 0 0 / 15%) !important;
 }
