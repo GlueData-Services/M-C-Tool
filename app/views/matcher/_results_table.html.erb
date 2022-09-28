@@ -1,14 +1,13 @@
 <div id="results-table">
   <!--  <table class="table table-sm table-bordered table-hover mt-4" data-toggle="table">-->
-  <table class="table table-sm">
+  <table id="matchables" class="table table-sm">
     <thead>
     <tr>
       <th>Banner</th>
-      <th>Description</th>
-      <th>Article Type</th>
-      <th style="max-width: 5%;">Variants</th>
+      <th class="text-nowrap">Description</th>
+      <th class="text-nowrap">Article Type</th>
+      <th class="text-nowrap" style="max-width: 5%;">Variants</th>
       <th>Barcodes</th>
-      <th style="max-width: 160px;"></th>
     </tr>
     </thead>
 
@@ -31,15 +30,14 @@
             style="cursor: pointer;"
         >
           <td><%= mara.banner %></td>
-          <td class="dotwrap"><%= mara.description %></td>
-          <td><%= mara.article_type %></td>
-          <td><%= mara.number_variants %></td>
+          <td class="text-nowrap"><%= mara.description %></td>
+          <td class="text-nowrap"><%= mara.article_type %></td>
+          <td class="text-center"><%= mara.number_variants %></td>
           <td>
             <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="<%= mara.barcodes %>">
-            <%= truncate mara.barcodes, length: 50 %>
+            <%= mara.barcodes %>
           </span>
           </td>
-          <td class="text-end"><a href="">Needs Correction</a></td>
         </tr>
       <% end %>
     <% end %>

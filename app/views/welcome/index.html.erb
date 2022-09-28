@@ -1,6 +1,4 @@
 <section class="header container mt-4">
-  <h2>Dashboard / Batch 2022-01-01-1</h2>
-
   <div class="d-none">
     <%= form_tag dash_search_path do %>
       <%= text_field_tag :q %>
@@ -19,7 +17,7 @@
   </div>
 </section>
 
-<section class="content">
+<section class="content" id="welcome">
   <div class="container">
     <div class="row mt-5">
       <div class="col-4">
@@ -48,7 +46,7 @@
     <div class="row mt-5">
       <h2>Match Status</h2>
       <div class="col-6">
-        <div class="card">
+        <div class="card"6>
           <div class="card-body">
             <table class="table table-borderless">
               <tr>
@@ -56,20 +54,38 @@
                 <td class="text-end"><%= Mara.count %></td>
               </tr>
               <tr>
-                <th>Total Matchable Articles</th>
-                <td class="text-end"><%= Mara.active.count %></td>
+                <th>Total Matches</th>
+                <td class="text-end"><%= Match.count %></td>
               </tr>
               <tr>
-                <th>Unmatched Articles</th>
-                <td class="text-end"><%= Mara.unmatched.active.count %></td>
+                <td colspan=2>
+                  <div class="progress">
+                    <div class="progress-bar progress-bar-striped  progress-bar-animated" role="progressbar" style="width: <%= (Match.count.to_f / Mara.count) * 100 %>%"></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <th>Total Matchable Articles</th>
+                <td class="text-end"><%= Mara.active.count %></td>
               </tr>
               <tr>
                 <th>Matched Articles</th>
                 <td class="text-end"><%= Mara.active.matched.count %></td>
               </tr>
               <tr>
-                <th>Total Matches</th>
-                <td class="text-end"><%= Match.count %></td>
+                <th>Unmatched Articles</th>
+                <td class="text-end"><%= Mara.unmatched.active.count %></td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <div class="progress">
+                    <div class="progress-bar progress-bar-striped  progress-bar-animated" role="progressbar" style="width: <%= (Mara.active.matched.count.to_f / Mara.active.count) * 100 %>%"></div>
+                  </div>
+                </td>
               </tr>
             </table>
           </div>
