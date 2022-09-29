@@ -44,20 +44,23 @@
     </tbody>
   </table>
 
-  <div class="card mt-1">
-    <div id="matcher-tools" class="card-body d-flex justify-content-between border-1 border-dark">
+    <div id="matcher-tools" class="d-flex justify-content-between align-items-center">
       <%= paginate @need_match, param_name: :n_page %>
-      <ul class="nav">
-        <li class="nav-item"><%= link_to '1', matcher_path(unmatched_limit: 1), class: "nav-link" %></li>
-        <li class="nav-item"><%= link_to '5', matcher_path(unmatched_limit: 5), class: "nav-link" %></li>
-        <li class="nav-item"><%= link_to '10', matcher_path(unmatched_limit: 10), class: "nav-link" %></li>
-      </ul>
+
+      <div id="perpage">
+        Results per page
+        <div class="btn-group" role="group" aria-label="Basic outlined example">
+          <%= link_to '1', matcher_path(unmatched_limit: 1), class: 'btn btn-outline-secondary', type: 'button' %>
+          <%= link_to '5', matcher_path(unmatched_limit: 5), class: 'btn btn-outline-secondary' %>
+          <%= link_to '10', matcher_path(unmatched_limit: 10), class: 'btn btn-outline-secondary' %>
+        </div>
+      </div>
+
       <div class="limit ">
         <span style="padding: 0.5rem 1rem;">Limit</span>
         Total articles: <%= @need_match.total_count %>
       </div>
     </div>
-  </div>
 
 </div>
 
