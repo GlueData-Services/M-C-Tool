@@ -36,44 +36,51 @@
             <thead>
             <tr>
               <th></th>
+
               <% @match.maras.each do |mara| %>
                 <% main_mara = @match.matched_articles.find_by(prefixed_matnr: mara.id).main? %>
-                <th class="">
-                  <span title="<%= mara.description %>" class="<%= main_mara ? 'main_article' : '' %>">
-                    <%= truncate mara.description, length: 20 %>
-                  </span>
-                  <div class="dropdown float-end">
-                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
-                            type="button" id="dropdownMenu2"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                      <li>
-                        <% if main_mara %>
-                          <%= link_to 'Unmark Main',
-                                      main_article_path(mara_id: mara.id, match_id: @match.id, unmark: true),
+
+                <th class="w-280">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <span title="<%= mara.description %>" class="<%= main_mara ? 'main_article' : '' %>">
+                      <%= mara.description %>
+                    </span>
+                    <div class="dropdown float-end">
+                      <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                              type="button" id="dropdownMenu2"
+                              data-bs-toggle="dropdown" aria-expanded="false">
+                      </button>
+
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <li>
+                          <% if main_mara %>
+                            <%= link_to 'Unmark Main',
+                                        main_article_path(mara_id: mara.id, match_id: @match.id, unmark: true),
+                                        class: 'dropdown-item',
+                                        type: 'button' %>
+                          <% else %>
+                            <%= link_to 'Mark as Main',
+                                        main_article_path(mara_id: mara.id, match_id: @match.id),
+                                        class: 'dropdown-item',
+                                        type: 'button' %>
+                          <% end %>
+                        </li>
+                        <li>
+                          <%= link_to 'Remove from match',
+                                      remove_article_path(mara_id: mara.id, match_id: @match.id),
                                       class: 'dropdown-item',
                                       type: 'button' %>
-                        <% else %>
-                          <%= link_to 'Mark as Main',
-                                      main_article_path(mara_id: mara.id, match_id: @match.id),
-                                      class: 'dropdown-item',
-                                      type: 'button' %>
-                        <% end %>
-                      </li>
-                      <li>
-                        <%= link_to 'Remove from match',
-                                    remove_article_path(mara_id: mara.id, match_id: @match.id),
-                                    class: 'dropdown-item',
-                                    type: 'button' %>
-                      </li>
-                    </ul>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </th>
               <% end %>
+
               <th class="text-center">
                 <%= button_tag '+', class: 'btn btn-sm btn-success', type: "button", 'data-bs-toggle': "modal", 'data-bs-target': "#addArticle" %>
               </th>
+
               <th class="text-center tight">Consolidated</th>
             </tr>
             </thead>
@@ -87,9 +94,9 @@
               <% overridable = lookup.override? %>
 
               <tr data-controller="consolidator">
-                <th class="tight bg-light">
+                <th class="tight bg-light text-nowrap">
                   <%#= content_tag :span, truncate(field_name.humanize, length: 40), title: field_name.humanize %>
-                  <%= content_tag :span, t(field_name) %>
+                  <%= content_tag :span, t(lookup.attribute_short_name) %>
                 </th>
                 <% vals = []; %>
                 <% val_id = nil %>
@@ -99,7 +106,7 @@
                   <% vals << value %>
                   <% val_id = mara.id %>
 
-                  <td class="<%= mara.banner.downcase %> mara-data tight <%= 'text-more-muted' unless selectable %> <%= 'mara-selected' if mara.id == mf&.mara_id %>"
+                  <td class="<%= mara.banner.downcase %> mara-data w-280 <%= 'text-more-muted' unless selectable %> <%= 'mara-selected' if mara.id == mf&.mara_id %>"
                       data-action="click->consolidator#select"
                       data-consolidator-highlight-class="mara-selected"
                       data-consolidator-selectable-param="<%= selectable %>"
@@ -109,7 +116,7 @@
                   </td>
                 <% end %>
                 <td class="text-center tight"></td>
-                <td class="">
+                <td class="w-280">
                   <% if selectable %>
                     <%= text_field_tag "match_fields[#{lookup_id}][mara_id]", nil,
                                        type: 'hidden',
