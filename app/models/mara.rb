@@ -1,5 +1,5 @@
 class Mara < ApplicationRecord
-  searchkick highlight: [:description, :barcodes], filterable: [:banner, :article_type]
+  searchkick highlight: [:description, :barcodes], filterable: [:banner, :article_type, :matched]
 
   has_many :match_fields
 
@@ -19,7 +19,9 @@ class Mara < ApplicationRecord
     {
       description: description,
       barcodes: barcodes,
-      banner: banner
+      banner: banner,
+      matched: matched,
+      article_type: article_type
     }
   end
 

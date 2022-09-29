@@ -1,5 +1,9 @@
-$primary: #4800FF;
-$success: #00FF48;
+$glue-color: #fe4600;
+$glue-accent-a: darken(#00FF48, 10%);
+$glue-accent-b: #4800FF;
+
+$primary: $glue-accent-b;
+$success: $glue-accent-a;
 
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
@@ -22,9 +26,6 @@ body {
   background-color: #f7faff;
 }
 
-$glue-color: #fe4600;
-$glue-accent-a: #00FF48;
-$glue-accent-b: #4800FF;
 
 .color-gd {
   color: $glue-color;
@@ -48,7 +49,11 @@ $glue-accent-b: #4800FF;
 
 th.tight, td.tight {
   width: 1px;
-  white-space: nowrap;
+}
+
+.w-280 {
+  width: 280px;
+  max-width: 280px
 }
 
 .form-control:disabled, .form-control[readonly] {

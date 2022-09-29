@@ -31,6 +31,7 @@ class MatcherController < ApplicationController
     if params[:q]
       @matched = Mara.search(params[:q],
                              operator: "or",
+                             where: { 'matched' => 'false' },
                              fields: ['barcodes^10', :description],
                              # fields: ['barcodes', :description],
                              page: params[:m_page], per_page: 20,
