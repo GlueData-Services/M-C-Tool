@@ -12,7 +12,7 @@ class ValidationController < ApplicationController
   def update
     result = UpdateMatch.call(match_id: params[:id],
                               field_params: field_params,
-                              unit_params: unit_params)
+                              unit_params: unit_params[:match_units])
     @match = result.match
 
     if result.success?
@@ -54,6 +54,6 @@ class ValidationController < ApplicationController
   end
 
   def unit_params
-    params.require(:match_unit).permit!
+    params.permit(match_units: [:quantity, :unit, :prefixed_matnr, :ean])
   end
 end

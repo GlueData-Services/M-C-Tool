@@ -6,7 +6,7 @@ class UpdateMatch
     match_params = context.field_params
     unit_params = context.unit_params
 
-    Rails.logger.debug unit_params.awesome_inspect
+
 
     Match.transaction do
       modified = false
@@ -22,19 +22,11 @@ class UpdateMatch
       match.reload
       match.update!(status: 'in_progress') if modified
 
-      # unit_params.each do |unit_records|
-      #
-      #   next if unit_vals['prefixed_matnr'].blank?
-      #   # unit_p = unit_vals.except('prefixed_matnrx')
-      #   # unit_p[:quantity] = qty
-      #
-      #   # Rails.logger.debug unit_p.awesome_inspect
-      #   # unit_record = match.match_units.where(quantity: qty).exists? ?
-      #   #                 match.match_units.where(quantity: qty).first :
-      #   #                 match.match_units.new(quantity: qty)
-      #   #
-      #   # unit_record.update(unit_p)
-      # end
+      unit_params.each do |unit_record|
+        next if unit_record['prefixed_matnr'].blank?
+        unit_rec = match.match_units.find_or_initialize_by(match_id: match.id, quantity: unit_record[:quantity])
+        unit_rec.update(unit_record)
+      end
     end
 
     # rescue Exception => e
