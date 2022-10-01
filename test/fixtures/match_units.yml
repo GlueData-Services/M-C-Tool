@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  match: one
+  numerator: 1
+  denominator: 1
+  prefixed_matnr: MyString
+  barcode: MyString
+  unit: MyString
+
+two:
+  match: two
+  numerator: 1
+  denominator: 1
+  prefixed_matnr: MyString
+  barcode: MyString
+  unit: MyString

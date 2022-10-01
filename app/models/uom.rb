@@ -1,8 +1,8 @@
 class Uom
   attr_accessor :match, :lookup
 
-  NUM = 'Numerator_for_conversion_to_base_units_of_measure'
-  DEN = 'Denominator_for_conversion_to_base_unit_of_measure'
+  NUM = 'Numerator'
+  DEN = 'Denominator'
 
   def initialize(match_id)
     @match = Match.find(match_id)
@@ -26,7 +26,7 @@ class Uom
 
         field.each_with_index do |item, i|
           loaded_uoms[mara.id][i] ||= {}
-          loaded_uoms[mara.id][i][uom_field.attribute_name] = item
+          loaded_uoms[mara.id][i][uom_field.attribute_short_name] = item
         end
       end
     end
@@ -41,7 +41,8 @@ class Uom
     ##
     # Sorts the UoM entries by Size, calculated by Numerator * Denominator, then groups the records from the various
     # maras into those categories
-    split_records.sort_by!{|e| e[NUM].to_i * e[DEN].to_i}
+    # split_records.sort_by!{|e| e[NUM].to_i * e[DEN].to_i}
+    split_records.sort_by!{|e| e['QTY_per_LUN']}
 
     org_out = {}
     split_records.each do |v|

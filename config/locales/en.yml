@@ -40,3 +40,7 @@ en:
   'VARIANT_NUM': 'Var num'
   'Alternative_Unit_of_Measure_AUoM': 'Alt UOM'
   'Lower_level_Unit_of_Measure_LUN': 'Lower UOM'
+  'EAN': 'EAN'
+  'EAN_Category': 'EAN Cat'
+  'Alt_UoM': 'Alt UoM'
+  'Lower_Lvl_UOM': 'Lower UoM'

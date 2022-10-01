@@ -10,25 +10,16 @@ class ValidationController < ApplicationController
   end
 
   def update
-    @match = Match.find(params[:id])
-    Match.transaction do
-      match_params.each do |lookup_id, match_details|
-        field = @match.match_fields.where(lookup_id: lookup_id).exists? ?
-                  @match.match_fields.where(lookup_id: lookup_id).first :
-                  @match.match_fields.new(lookup_id: lookup_id)
-        if match_details['mara_id'].present?
-          match_details['overridden_value'] = nil
-        end
-        Rails.logger.debug match_details
-        Rails.logger.debug field
-        field.update(match_details)
-        field.save
-      end
-    end
+    result = UpdateMatch.call(match_id: params[:id],
+                              field_params: field_params,
+                              unit_params: unit_params)
+    @match = result.match
 
-    redirect_to consolidate_match_path(@match), notice: 'Updated consolidated fields'
-  rescue Exception => e
-    redirect_to consolidate_match_path(@match), error: e.message
+    if result.success?
+      redirect_to consolidate_match_path(@match), notice: 'Updated consolidated fields'
+    else
+      redirect_to consolidate_match_path(@match), error: result.message[0..1000]
+    end
   end
 
   def add_article
@@ -58,7 +49,11 @@ class ValidationController < ApplicationController
 
   private
 
-  def match_params
-    params[:match_fields].permit!
+  def field_params
+    params.require(:match_fields).permit!
+  end
+
+  def unit_params
+    params.require(:match_unit).permit!
   end
 end

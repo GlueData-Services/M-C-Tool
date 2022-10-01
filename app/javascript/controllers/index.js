@@ -12,3 +12,6 @@ application.register("matcher", MatcherController)
 
 import ConsolidatorController from "./consolidator_controller"
 application.register("consolidator", ConsolidatorController)
+
+import UnitsController from "./units_controller"
+application.register("units", UnitsController)

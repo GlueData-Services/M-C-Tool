@@ -2,8 +2,9 @@ class Match < ApplicationRecord
   audited
 
   has_many :matched_articles
-  has_many :match_fields
   has_many :maras, through: :matched_articles
+  has_many :match_fields
+  has_many :match_units
 
   def name
     if maras.where(banner: 'GAME').count > 0
