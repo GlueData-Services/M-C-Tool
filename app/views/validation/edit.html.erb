@@ -11,16 +11,25 @@
   <%= form.hidden_field :id, value: @match.id %>
   <section class="container-fluid consolidator">
     <ul class="nav nav-tabs" id="tab-consolidation">
+
       <% Lookup.sections.each_with_index do |sec, i| %>
         <li class="nav-item">
-          <a class="nav-link <%= 'active' if i == 0 %>" href="#<%= sec.downcase %>"><%= sec %></a>
+<!--          <a class="nav-link <%#= 'active' if i == 0 %>" href="#<%#= sec.downcase %>"><%#= sec %></a>-->
+          <button id="<%= sec.downcase %>-tab" class="nav-link <%= 'active' if i == 0 %>"
+                  type="button" role="tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#<%= sec.downcase %>">
+            <%= sec %>
+          </button>
         </li>
       <% end %>
+
       <li class="nav-item">
-        <a href="#uom" class="nav-link">UOM</a>
+        <button class="nav-link" id="uom-tab" data-bs-toggle="tab" data-bs-target="#uom" type="button" role="tab">UOM</button>
       </li>
+
       <li class="nav-item">
-        <a href="#variants" class="nav-link">Variants</a>
+        <button class="nav-link" id="variants-tab" data-bs-toggle="tab" data-bs-target="#variants" type="button" role="tab">Variants</button>
       </li>
     </ul>
 
@@ -78,7 +87,10 @@
               <% end %>
 
               <th class="text-center">
-                <%= button_tag '+', class: 'btn btn-sm btn-success', type: "button", 'data-bs-toggle': "modal", 'data-bs-target': "#addArticle" %>
+                <%#== button_tag(content_tag(:i, '', class: 'bi bi-plus-square'), class: 'btn btn-sm btn-success', type: "button", 'data-bs-toggle': "modal", 'data-bs-target': "#addArticle") %>
+                <a href="#" class="btn btn-outline-success btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#addArticle">
+                  <i class="bi bi-plus-circle-fill"></i>
+                </a>
               </th>
 
               <th class="text-center tight">Consolidated</th>
@@ -103,7 +115,7 @@
 
                 <% @match.maras.each do |mara| %>
                   <% value = mara.get_specific_field(lookup_id) %>
-                  <% vals << value %>
+                  <% vals << value.to_s&.strip if value.to_s.present? && !value.to_s.include?("*map") %>
                   <% val_id = mara.id %>
 
                   <td class="<%= mara.banner.downcase %> mara-data w-280 <%= 'text-more-muted' unless selectable %> <%= 'mara-selected' if mara.id == mf&.mara_id %>"
@@ -123,15 +135,13 @@
                                        value: if mf&.present?
                                                 mf.mara_id
                                               else
-                                                vals.uniq.length == 1 ? val_id : nil
+                                                vals.compact.uniq.length == 1 ? val_id : nil
                                               end,
-                                       data: { 'consolidator-target': 'selectedMara' },
-                                       disabled: true
+                                       data: { 'consolidator-target': 'selectedMara' }
                     %>
-
                     <input type="text"
                            data-consolidator-target="selectedValue"
-                           class="<%= mf&.overridden? ? 'd-none' : '' %>"
+                           class="<%= mf&.overridden? ? 'd-none' : '' %> <%= 'form-control-plaintext' unless overridable %>"
                            value="<%= mf.present? ? mf.get_value : vals.uniq.length == 1 ? vals[0] : '' %>"
                            disabled="<%= !overridable %>">
 
@@ -141,6 +151,7 @@
                                          data: { 'consolidator-target': 'overrideInput' },
                                          class: !mf&.overridden? ? 'd-none' : '',
                                          disabled: !mf&.overridden? %>
+
                       <%= check_box_tag :override,
                                         1,
                                         mf&.overridden? ? true : false,
@@ -158,8 +169,8 @@
         </div>
       <% end %>
 
-      <%= render partial: 'uom', locals: {match: @match} %>
-      <%= render partial: 'variants', locals: {match: @match} %>
+      <%= render partial: 'uom', locals: { match: @match } %>
+      <%= render partial: 'variants', locals: { match: @match } %>
     </div>
   </section>
 
@@ -180,7 +191,10 @@
         Reject
       </a>
       <button type="submit" href="#" class="btn btn-success ms-2">
-        Consolidate
+        Save
+      </button>
+      <button type="submit" href="#" class="btn btn-success ms-2">
+        Complete
       </button>
     </div>
   </section>

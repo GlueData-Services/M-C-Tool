@@ -7,8 +7,6 @@ export default class extends Controller {
   }
 
   refine(event) {
-    console.log('Refining...');
-    console.log(event.params);
     let location = "/matcher?q=" + event.params.ean11 + " " + event.params.description +
         "&n_page=" + event.params.npage +
         "&match_q=" + event.params.matchq +

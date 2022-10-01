@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_22_150929) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_29_230506) do
   create_table "articles", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "code_1"
     t.string "code_2"
@@ -2287,6 +2287,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_22_150929) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "match_units", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "match_id", null: false
+    t.integer "quantity"
+    t.string "prefixed_matnr"
+    t.string "ean"
+    t.string "unit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["match_id"], name: "index_match_units_on_match_id"
+  end
+
   create_table "matchable_articles", primary_key: "prefixed_matnr", id: { type: :string, limit: 20 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "banner", limit: 10
     t.string "type", limit: 10
@@ -2476,6 +2487,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_22_150929) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "match_units", "matches"
   add_foreign_key "motor_alert_locks", "motor_alerts", column: "alert_id"
   add_foreign_key "motor_alerts", "motor_queries", column: "query_id"
   add_foreign_key "motor_taggable_tags", "motor_tags", column: "tag_id"
