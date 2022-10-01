@@ -20,7 +20,7 @@
         <% records.each do |record| %>
           <tr class="<%= banner(record['matnr'][0]).downcase %>">
             <td>
-              <%= radio_button_tag "match_unit[#{qty}][prefixed_matnrx]", record['matnr'],
+              <%= radio_button_tag "mu[#{qty}]", nil,
                                    false,
                                    data: {
                                      action: "click->units#selectRecord",
@@ -40,21 +40,24 @@
       </table>
 
       <div class="d-flex border-1 border align-items-center p-1">
+        <div class="pmatnr d-none">
+          <%= hidden_field_tag "match_units[][quantity]", qty %>
+        </div>
         <div class="use-matnr">
-          <%= text_field_tag "match_unit[#{qty}][prefixed_matnr]", nil, data: { units_target: 'matnr' }, readonly: true, placeholder: 'Copy Fields from' %>
+          <%= text_field_tag "match_units[][prefixed_matnr]", nil, data: { units_target: 'matnr' }, readonly: true, placeholder: 'Copy Fields from' %>
         </div>
 
         <div class="use-ean">
-          <%= text_field_tag "match_unit[#{qty}][ean]", nil, data: { units_target: 'ean' }, readonly: true, placeholder: 'EAN' %>
+          <%= text_field_tag "match_units[][ean]", nil, data: { units_target: 'ean' }, readonly: true, placeholder: 'EAN' %>
         </div>
 
         <div class="use-unit d-flex flex-nowrap">
-          <%= text_field_tag "match_unit[#{qty}][unit]", nil, data: { units_target: 'unit' }, readonly: true, placeholder: 'Unit' %>
+          <%= text_field_tag "match_units[][unit]", nil, data: { units_target: 'unit' }, readonly: true, placeholder: 'Unit' %>
           <div class="form-check d-flex flex-nowrap align-items-center mx-2">
             <%= check_box_tag "override[#{qty}]", "1", false, id: "override_#{qty}", class: "me-1 form-check-input", data: { action: "units#toggleUnitsOverride"} %>
             <label class="form-check-label" for="override_<%= qty %>">Override?</label>
           </div>
-          <%= select_tag "match_unit[#{qty}][unit]", options_for_select(%w{EA PAK CAR CS LAY PAL}), class: 'd-none', data: { units_target: 'overrideUnit' } %>
+          <%= select_tag "match_units[][unit]", options_for_select(%w{EA PAK CAR CS LAY PAL}), disabled: true, class: 'd-none', data: { units_target: 'overrideUnit' } %>
         </div>
       </div>
     </div>
