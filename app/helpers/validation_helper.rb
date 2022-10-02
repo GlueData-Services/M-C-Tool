@@ -1,6 +1,6 @@
 module ValidationHelper
 
-  def build_uom_field(key, record)
+  def build_uom_field(key, record, highlight)
     return if ['matnr'].include? key
 
     content_tag :td do
@@ -16,7 +16,7 @@ module ValidationHelper
           action: 'click->units#selectEan',
           units_value_param: record[key],
           units_target: 'eanField'
-        }, class: "fw-bold", role: 'button'
+        }, class: "fw-bold #{'text-success' if highlight}", role: 'button'
       else
         record[key].to_s
       end

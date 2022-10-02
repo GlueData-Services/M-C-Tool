@@ -1,8 +1,10 @@
 <div id="uom" class="bg-white border-start border-end border-bottom border-1 p-3 mb-3 tab-pane fade show" role="tabpanel">
-  <% Uom.new(match.id).sections.each do |match_type, records| %>
+  <% uom = Uom.new(match.id) %>
+  <% uom.sections.each do |match_type, records| %>
     <h5><%= match_type %></h5>
     <% keys = records.first.keys %>
     <% qty = records.first['QTY_per_LUN'] %>
+    <% rec = uom.records(qty) %>
 
     <div class="unit_of_measure mb-4" data-controller="units">
       <table class="table table-sm table-responsive table-consolidate">
@@ -21,7 +23,7 @@
           <tr class="<%= banner(record['matnr'][0]).downcase %>">
             <td>
               <%= radio_button_tag "mu[#{qty}]", nil,
-                                   false,
+                                   record['matnr'] == rec['prefixed_matnr'] && record['Alt_UoM'] == rec['unit'],
                                    data: {
                                      action: "click->units#selectRecord",
                                      units_value_param: record['matnr'],
@@ -32,7 +34,8 @@
             </td>
 
             <% keys.each do |key| %>
-              <%= build_uom_field(key, record) %>
+              <% highlight = record[key] == rec['ean'] %>
+              <%= build_uom_field(key, record, highlight) %>
             <% end %>
           </tr>
         <% end %>
@@ -44,15 +47,15 @@
           <%= hidden_field_tag "match_units[][quantity]", qty %>
         </div>
         <div class="use-matnr">
-          <%= text_field_tag "match_units[][prefixed_matnr]", nil, data: { units_target: 'matnr' }, readonly: true, placeholder: 'Copy Fields from' %>
+          <%= text_field_tag "match_units[][prefixed_matnr]", rec['prefixed_matnr'], data: { units_target: 'matnr' }, readonly: true, placeholder: 'Copy Fields from' %>
         </div>
 
         <div class="use-ean">
-          <%= text_field_tag "match_units[][ean]", nil, data: { units_target: 'ean' }, readonly: true, placeholder: 'EAN' %>
+          <%= text_field_tag "match_units[][ean]", rec['ean'], data: { units_target: 'ean' }, readonly: true, placeholder: 'EAN' %>
         </div>
 
         <div class="use-unit d-flex flex-nowrap">
-          <%= text_field_tag "match_units[][unit]", nil, data: { units_target: 'unit' }, readonly: true, placeholder: 'Unit' %>
+          <%= text_field_tag "match_units[][unit]", rec['unit'], data: { units_target: 'unit' }, readonly: true, placeholder: 'Unit' %>
           <div class="form-check d-flex flex-nowrap align-items-center mx-2">
             <%= check_box_tag "override[#{qty}]", "1", false, id: "override_#{qty}", class: "me-1 form-check-input", data: { action: "units#toggleUnitsOverride"} %>
             <label class="form-check-label" for="override_<%= qty %>">Override?</label>
