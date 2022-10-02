@@ -23,16 +23,15 @@ class UpdateMatch
       match.update!(status: 'in_progress') if modified
 
       unit_params.each do |unit_record|
+        Rails.logger.debug unit_record.inspect.yellow
         next if unit_record['prefixed_matnr'].blank?
-        unit_rec = match.match_units.find_or_initialize_by(match_id: match.id, quantity: unit_record[:quantity])
-        unit_rec.update(unit_record)
+        match_unit = match.match_units.find_or_initialize_by(match_id: match.id, quantity: unit_record[:quantity])
+        match_unit.update(unit_record)
+        Rails.logger.debug match_unit.inspect.green
+        Rails.logger.debug match_unit.persisted?.inspect.red
       end
     end
 
-    # rescue Exception => e
-    #   context.match = match
-    #   context.fail!(message: e.message)
-    # ensure
     context.match = match
   end
 end

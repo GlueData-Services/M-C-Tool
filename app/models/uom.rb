@@ -1,5 +1,5 @@
 class Uom
-  attr_accessor :match, :lookup
+  attr_accessor :match, :lookup, :sections, :records
 
   NUM = 'Numerator'
   DEN = 'Denominator'
@@ -9,7 +9,7 @@ class Uom
     @lookup = Lookup.uom_fields
   end
 
-  def sections
+  def build_sections
     loaded_uoms = {}
 
     @lookup.each do |uom_field|
@@ -51,6 +51,25 @@ class Uom
       org_out[key] << v.except(NUM, DEN)
     end
 
+
     org_out
+  end
+
+  def sections
+    @sections ||= build_sections
+  end
+
+  def build_records
+    recs = {}
+    sections.each do |_, v|
+      mu = MatchUnit.find_by(match_id: match.id, quantity: v[0]['QTY_per_LUN'])
+      recs[v[0]['QTY_per_LUN']] = mu.attributes if mu.present?
+    end
+    recs
+  end
+
+  def records(qty)
+    @records ||= build_records
+    @records[qty] || { unit: nil, prefixed_matnr: nil, ean: nil }
   end
 end
