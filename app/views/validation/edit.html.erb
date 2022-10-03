@@ -1,6 +1,6 @@
 <section class="header container-fluid mt-4">
   <div class="d-flex">
-    <%= link_to validation_path, class: 'h2 me-2' do %>
+    <%= link_to consolidation_path, class: 'h2 me-2' do %>
       <i class="bi bi-arrow-left-circle hover-gd"></i>
     <% end %>
     <h2>Validations / <%= @match.name %></h2>
@@ -115,7 +115,7 @@
 
                 <% @match.maras.each do |mara| %>
                   <% value = mara.get_specific_field(lookup_id) %>
-                  <% vals << value.to_s&.strip if value.to_s.present? && !value.to_s.include?("*map") %>
+                  <% vals << value.to_s&.strip if (value.to_s.present? && !value.to_s.include?("*map")) %>
                   <% val_id = mara.id %>
 
                   <td class="<%= mara.banner.downcase %> mara-data w-280 <%= 'text-more-muted' unless selectable %> <%= 'mara-selected' if mara.id == mf&.mara_id %>"
@@ -141,7 +141,7 @@
                     %>
                     <input type="text"
                            data-consolidator-target="selectedValue"
-                           class="<%= mf&.overridden? ? 'd-none' : '' %> <%= 'form-control-plaintext' unless overridable %>"
+                           class="p-0 <%= mf&.overridden? ? 'd-none' : '' %> <%= 'form-control-plaintext' unless overridable %>"
                            value="<%= mf.present? ? mf.get_value : vals.uniq.length == 1 ? vals[0] : '' %>"
                            disabled="<%= !overridable %>">
 
@@ -155,7 +155,7 @@
                       <%= check_box_tag :override,
                                         1,
                                         mf&.overridden? ? true : false,
-                                        class: 'override',
+                                        class: 'override form-check-input',
                                         title: 'Override',
                                         data: { action: 'change->consolidator#override' } %>
                     <% end %>
@@ -187,13 +187,15 @@
         </ul>
       </div>
 
-      <a href="#" class="btn btn-warning ms-2">
-        Reject
-      </a>
-      <button type="submit" href="#" class="btn btn-success ms-2">
+      <%= link_to 'Reject', match_path(@match),
+                  data: { turbo_confirm: 'This will delete the match and free all any articles to be re-matched',
+                          turbo_method: :delete },
+                  class: 'btn btn-warning ms-2'
+      %>
+      <button type="submit" name="status" value="" class="btn btn-success ms-2">
         Save
       </button>
-      <button type="submit" href="#" class="btn btn-success ms-2">
+      <button type="submit" name="status" value="complete" class="btn btn-success ms-2">
         Complete
       </button>
     </div>

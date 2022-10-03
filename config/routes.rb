@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
+  resources :matches
   devise_for :users
   mount Motor::Admin => '/motor_admin'
 
-  get 'validation', to: 'validation#index', as: :validation
-  get 'edit_validation', to: 'validation#edit', as: :edit_validation
+  get 'consolidate', to: 'validation#index', as: :consolidation
+  # get 'edit_validation', to: 'validation#edit', as: :edit_validation
   get 'consolidate/:id', to: 'validation#edit', as: :consolidate_match
   post 'consolidate', to: 'validation#update', as: :update_match_fields
   post 'add_article', to: 'validation#add_article', as: :add_article

@@ -2,7 +2,8 @@ class ValidationController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @matches = Match.all.page(params[:page]).per(params[:per])
+    @current_matches = Match.incomplete.page(params[:page]).per(params[:per])
+    @complete_matches = Match.complete.page(params[:page]).per(params[:per])
   end
 
   def edit
@@ -12,7 +13,8 @@ class ValidationController < ApplicationController
   def update
     result = UpdateMatch.call(match_id: params[:id],
                               field_params: field_params,
-                              unit_params: unit_params)
+                              unit_params: unit_params,
+                              status: params['status'])
     @match = result.match
 
     if result.success?

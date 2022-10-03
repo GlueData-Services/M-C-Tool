@@ -20,18 +20,17 @@ class UpdateMatch
         modified = true if field.update(match_details) # Cant set it to update's return, because the last one may fail
       end
       match.reload
-      match.update!(status: 'in_progress') if modified
 
       unit_params.each do |unit_record|
-        Rails.logger.debug unit_record.inspect.yellow
         next if unit_record['prefixed_matnr'].blank?
         match_unit = match.match_units.find_or_initialize_by(match_id: match.id, quantity: unit_record[:quantity])
         match_unit.update(unit_record)
-        Rails.logger.debug match_unit.inspect.green
-        Rails.logger.debug match_unit.persisted?.inspect.red
       end
-    end
 
+      match.update(status: :in_progress) if modified && context.status != 'complete'
+      match.update(status: :complete) if context.status == 'complete'
+    end
+    context.fail!
     context.match = match
   end
 end
