@@ -40,7 +40,8 @@ class MatcherController < ApplicationController
                              body_options: { min_score: cookies.fetch(:min_score, 300) })
 
       @scores = {}
-      @matched.response.body.dig('hits', 'hits').each do |score|
+      body = @matched.response.respond_to?(:body) ? @matched.response.body : @matched.response
+      body.dig('hits', 'hits').each do |score|
         @scores[score["_id"]] = score["_score"]
       end
     end

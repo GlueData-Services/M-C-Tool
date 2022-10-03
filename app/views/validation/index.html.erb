@@ -28,7 +28,7 @@
         </thead>
 
         <tbody>
-        <% @matches.each do |match| %>
+        <% @current_matches.each do |match| %>
           <tr>
             <td><%= match.id %></td>
             <td><%= match.name %></td>
@@ -41,7 +41,7 @@
         <% end %>
         </tbody>
       </table>
-      <%= paginate @matches %>
+      <%= paginate @current_matches %>
     </div>
 
     <div id="complete" class="tab-pane fade p-3 bg-white" role="tabpanel">
@@ -59,20 +59,20 @@
         </thead>
 
         <tbody>
-        <% [].each do |match| %>
+        <% @complete_matches.each do |match| %>
           <tr>
             <td><%= match.id %></td>
             <td><%= match.name %></td>
             <td><%= match.article_type %></td>
             <td><%= match.matched_articles.count %></td>
             <td><%= match.match_fields.count %></td>
-            <td><%= match.status %></td>
+            <td><%= t(match.status) %></td>
             <td><%= link_to 'Consolidate', consolidate_match_path(match) %></td>
           </tr>
         <% end %>
         </tbody>
       </table>
-      <%= paginate @matches %>
+      <%= paginate @complete_matches %>
     </div>
   </div>
 
