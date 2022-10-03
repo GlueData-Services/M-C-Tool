@@ -18,7 +18,6 @@ $(document).on('turbo:load', function(){
    })
 
    $(".barcode").hover(function(e){
-      console.log('in');
       let code_class = ".barcode-" + $(this).data('barcode');
       $(code_class).addClass('active-code');
    }, function(e){

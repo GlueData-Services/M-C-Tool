@@ -22,4 +22,15 @@ module ValidationHelper
       end
     end
   end
+
+  def summarize_errors(match)
+    errors = []
+    match.matched_articles.each do |art|
+      errors << content_tag(:span, "#{art.prefixed_matnr} DUPE", class: 'badge bg-danger') if art.duplicate?
+      errors << content_tag(:span, "#{art.prefixed_matnr} BADCAT", class: 'badge bg-danger') if art.bad_category?
+      errors << content_tag(:span, "#{art.prefixed_matnr} BADMAT", class: 'badge bg-danger') if art.bad_material?
+      errors << content_tag(:span, "#{art.prefixed_matnr} UOM", class: 'badge bg-danger') if art.uom_mismatch?
+    end
+    errors.join(' ').html_safe
+  end
 end

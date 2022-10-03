@@ -14,7 +14,7 @@
 
       <% Lookup.sections.each_with_index do |sec, i| %>
         <li class="nav-item">
-<!--          <a class="nav-link <%#= 'active' if i == 0 %>" href="#<%#= sec.downcase %>"><%#= sec %></a>-->
+          <!--          <a class="nav-link <%#= 'active' if i == 0 %>" href="#<%#= sec.downcase %>"><%#= sec %></a>-->
           <button id="<%= sec.downcase %>-tab" class="nav-link <%= 'active' if i == 0 %>"
                   type="button" role="tab"
                   data-bs-toggle="tab"
@@ -102,13 +102,11 @@
               <% mf = @match.match_fields.find_by(lookup_id: lookup_id) %>
               <% lookup = Lookup.find(lookup_id) %>
               <% selectable = lookup.updatable? %>
-              <% field_name = lookup.attribute_name %>
               <% overridable = lookup.override? %>
 
               <tr data-controller="consolidator">
-                <th class="tight bg-light text-nowrap">
-                  <%#= content_tag :span, truncate(field_name.humanize, length: 40), title: field_name.humanize %>
-                  <%= content_tag :span, t(lookup.attribute_short_name) %>
+                <th class="tight bg-light text-nowrap" data-lookup-id="<%= lookup_id %>">
+                  <%= t(lookup.attribute_short_name) %>
                 </th>
                 <% vals = []; %>
                 <% val_id = nil %>
@@ -176,21 +174,15 @@
 
   <section class="content container-fluid">
     <div class="d-flex justify-content-end">
-      <div class="dropdown">
-        <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-          Needs Correction
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="#">UOM Mismatch</a></li>
-          <li><a class="dropdown-item" href="#">Type Mismatch</a></li>
-          <li><a class="dropdown-item" href="#">Other</a></li>
-        </ul>
-      </div>
+
+      <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#problem">
+        Report problems
+      </a>
 
       <%= link_to 'Reject', match_path(@match),
                   data: { turbo_confirm: 'This will delete the match and free all any articles to be re-matched',
                           turbo_method: :delete },
-                  class: 'btn btn-warning ms-2'
+                  class: 'btn btn-danger ms-2'
       %>
       <button type="submit" name="status" value="" class="btn btn-success ms-2">
         Save
@@ -204,7 +196,7 @@
 
 <div class="modal fade" id="addArticle" tabindex="-1" role="dialog" aria-labelledby="addArticleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl " role="document">
-    <div class="modal-content">
+    <div class="modal-content w-100">
       <div class="modal-header">
         <h5 class="modal-title" id="addArticleModalLabel">Article Search</h5>
         <button type="button" class="close btn btn-close" data-bs-dismiss="modal" aria-label="Close">
@@ -233,6 +225,40 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="problem" tabindex="-1" aria-labelledby="problemModalLabel" aria-modal="true" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content w-100">
+      <div class="modal-header">
+        <h5 class="modal-title h4" id="problemModalLabel">Report problems with articles</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= bootstrap_form_tag url: problems_path(id: @match) do |f| %>
+          <% @match.maras.each do |mara| %>
+            <div class="mb-4">
+              <h5>Problems with <b><%= mara.prefixed_matnr %></b></h5>
+              <table class="table table-sm table-borderless">
+                <tr>
+                  <td><b>UoM: </b> <%= mara.get_specific_field(24) %></td>
+                  <td><b>Category: </b> <%= mara.get_specific_field(72) %></td>
+                  <td><b>Material: </b> <%= mara.get_specific_field(19) %></td>
+                </tr>
+              </table>
+              <%#= f.hidden_field "problem[][id]", value: mara.prefixed_matnr %>
+              <%= f.check_box "problem[#{mara.prefixed_matnr}][duplicate]", label: '[DUPE] This article is duplicated' %>
+              <%= f.check_box "problem[#{mara.prefixed_matnr}][uom_mismatch]", label: '[UOMERR] The UoM in this article is incorrect' %>
+              <%= f.check_box "problem[#{mara.prefixed_matnr}][bad_category]", label: '[BADCAT] Mismatched article category' %>
+              <%= f.check_box "problem[#{mara.prefixed_matnr}][bad_material]", label: '[BADMAT] This article has the wrong material type' %>
+            </div>
+          <% end %>
+
+          <%= submit_tag 'Report problems' %>
+        <% end %>
       </div>
     </div>
   </div>

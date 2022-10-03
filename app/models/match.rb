@@ -10,6 +10,7 @@ class Match < ApplicationRecord
   scope :in_progress, -> { where(status: :in_progress) }
   scope :incomplete, -> { Match.awaiting.or(Match.in_progress) }
   scope :complete, -> { where(status: :complete) }
+  scope :in_error, -> { where(status: :error) }
 
   def name
     if maras.where(banner: 'GAME').count > 0
