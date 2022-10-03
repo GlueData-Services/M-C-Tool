@@ -4,6 +4,7 @@ class ValidationController < ApplicationController
   def index
     @current_matches = Match.incomplete.page(params[:page]).per(params[:per])
     @complete_matches = Match.complete.page(params[:page]).per(params[:per])
+    @error_matches = Match.in_error.page(params[:page]).per(params[:per])
   end
 
   def edit

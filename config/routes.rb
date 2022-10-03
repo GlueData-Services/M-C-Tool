@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :matches
   devise_for :users
   mount Motor::Admin => '/motor_admin'
 
@@ -18,6 +17,9 @@ Rails.application.routes.draw do
 
   get 'reports', to: 'reports#index', as: :reports
 
+  #post 'problem', to: 'problems#problem', as: :problem
+  resources :problems, only: [:create]
+  resources :matches, only: [:destroy]
   resources :articles
 
   root "welcome#index"

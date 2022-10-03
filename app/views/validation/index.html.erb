@@ -10,6 +10,9 @@
     <li>
       <a class="nav-link" data-bs-toggle="tab" data-bs-target="#complete">Complete</a>
     </li>
+    <li>
+      <a class="nav-link" data-bs-toggle="tab" data-bs-target="#error">In error</a>
+    </li>
   </ul>
 
   <div id="nav-tab-content" class="tab-content border-1 border-start border-end border-bottom bg-white">
@@ -73,6 +76,35 @@
         </tbody>
       </table>
       <%= paginate @complete_matches %>
+    </div>
+
+    <div id="error" class="tab-pane fade p-3 bg-white" role="tabpanel">
+      <table class="table table-sm table-bordered mt-4">
+        <thead>
+        <tr>
+          <th>Match ID</th>
+          <th>Name</th>
+          <th>Articles</th>
+          <th>Fields Complete</th>
+          <th>Errors</th>
+          <th></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <% @error_matches.each do |match| %>
+          <tr>
+            <td><%= match.id %></td>
+            <td><%= match.name %></td>
+            <td><%= match.matched_articles.count %></td>
+            <td><%= match.match_fields.count %></td>
+            <td><%= summarize_errors(match) %></td>
+            <td><%= link_to 'Consolidate', consolidate_match_path(match) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <%= paginate @error_matches %>
     </div>
   </div>
 
