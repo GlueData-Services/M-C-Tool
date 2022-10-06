@@ -52,7 +52,7 @@ gem "bootsnap", require: false
 
 # gem 'sunspot_rails', github: 'sunspot/sunspot'
 gem "searchkick"
-gem "elasticsearch"
+gem "elasticsearch"#, "< 7.14"
 gem "typhoeus"
 gem "bootstrap_form", "~> 5.0"
 gem 'motor-admin'
@@ -63,10 +63,13 @@ gem "audited", "~> 5.0"
 gem 'colored'
 gem "sentry-ruby"
 gem "sentry-rails"
+gem 'interactor-rails'
 
 group :development, :test do
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem 'rspec-rails'
   gem 'dotenv-rails'
+
+  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
 end
 
