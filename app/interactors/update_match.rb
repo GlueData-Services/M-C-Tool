@@ -6,8 +6,6 @@ class UpdateMatch
     match_params = context.field_params
     unit_params = context.unit_params
 
-
-
     Match.transaction do
       modified = false
       match_params.each do |lookup_id, match_details|
@@ -30,7 +28,6 @@ class UpdateMatch
       match.update(status: :in_progress) if modified && context.status != 'complete'
       match.update(status: :complete) if context.status == 'complete'
     end
-    context.fail!
     context.match = match
   end
 end

@@ -58,6 +58,7 @@ class ValidationController < ApplicationController
 
   def unit_params
     # params.permit(match_units: [:quantity, :unit, :prefixed_matnr, :ean])
-    params[:match_units].map(&:permit!)
+    # params[:match_units].map(&:permit!)
+    params.fetch(:match_units, []).map(&:permit!)
   end
 end
