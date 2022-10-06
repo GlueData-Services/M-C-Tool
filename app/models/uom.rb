@@ -22,7 +22,9 @@ class Uom
         # So we load the values from mara for the current field, and create a new "MARA" and for each variation, create a
         # sub-mara for that field. Which should coincide with a NUM/DEM combination
         field = mara.get_specific_field(uom_field.id)
-        next unless field.is_a?(Array)
+        unless field.is_a?(Array)
+          field = [field]
+        end
 
         field.each_with_index do |item, i|
           loaded_uoms[mara.id][i] ||= {}
