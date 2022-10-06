@@ -28,9 +28,11 @@
         <button class="nav-link" id="uom-tab" data-bs-toggle="tab" data-bs-target="#uom" type="button" role="tab">UOM</button>
       </li>
 
-      <li class="nav-item">
-        <button class="nav-link" id="variants-tab" data-bs-toggle="tab" data-bs-target="#variants" type="button" role="tab">Variants</button>
-      </li>
+      <% if @match.maras.map{|m| m.get_specific_field(72).downcase }.include?('generic')  %>
+        <li class="nav-item">
+          <button class="nav-link" id="variants-tab" data-bs-toggle="tab" data-bs-target="#variants" type="button" role="tab">Variants</button>
+        </li>
+      <% end %>
     </ul>
 
     <div class="tab-content">
@@ -51,7 +53,7 @@
 
                 <th class="w-280">
                   <div class="d-flex align-items-center justify-content-between">
-                    <span title="<%= mara.description %>" class="<%= main_mara ? 'main_article' : '' %>">
+                    <span title="<%= mara.prefixed_matnr %>" class="<%= main_mara ? 'main_article' : '' %>">
                       <%= mara.description %>
                     </span>
                     <div class="dropdown float-end">
