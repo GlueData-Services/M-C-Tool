@@ -49,11 +49,13 @@ class MatchesController < ApplicationController
 
   # DELETE /matches/1 or /matches/1.json
   def destroy
-    @match.destroy
+    result = DissolveMatch.call(match_id: params[:id])
 
     respond_to do |format|
-      format.html { redirect_to consolidation_url, notice: "Match was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
+      if result.success?
+        format.html { redirect_to consolidation_url, notice: "Match was successfully destroyed.", status: :see_other }
+        format.json { head :no_content }
+      end
     end
   end
 
