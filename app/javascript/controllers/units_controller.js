@@ -24,8 +24,8 @@ export default class extends Controller {
 
     selectUnit(event) {
         this.unitTarget.value = event.params.value;
-        this.checkUnits()
         this.uomFieldTargets.forEach(function(el){ el.classList.remove("text-success", "fw-bold") })
+        this.checkUnits()
 
         event.target.classList.add("text-success", "fw-bold")
     }
@@ -34,6 +34,7 @@ export default class extends Controller {
         this.matnrTarget.value = event.params.value
         this.unitTarget.value = event.params.unit
         this.eanTarget.value = event.params.ean
+        this.checkUnits()
     }
 
     toggleUnitsOverride(event) {
