@@ -2,7 +2,10 @@ class ValidationController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @current_matches = Match.incomplete.page(params[:page]).per(params[:per])
+    @current_matches = Match.incomplete
+    @current_matches = @current_matches.mara_groups(params[:incomplete][:group_filter]) if params[:incomplete][:group_filter].present?
+    @current_matches = @current_matches.distinct.page(params[:page]).per(params[:per])
+
     @complete_matches = Match.complete.page(params[:page]).per(params[:per])
     @error_matches = Match.in_error.page(params[:page]).per(params[:per])
   end

@@ -11,6 +11,7 @@ class Match < ApplicationRecord
   scope :incomplete, -> { Match.awaiting.or(Match.in_progress) }
   scope :complete, -> { where(status: :complete) }
   scope :in_error, -> { where(status: :error) }
+  scope :mara_groups, ->(group) { joins(:maras).where(maras: { group: group }) }
 
   def name
     if maras.where(banner: 'GAME').count > 0

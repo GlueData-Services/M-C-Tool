@@ -17,6 +17,19 @@
 
   <div id="nav-tab-content" class="tab-content border-1 border-start border-end border-bottom bg-white">
     <div id="incomplete" class="tab-pane fade show active p-3" role="tabpanel">
+      <div class="d-flex justify-content-end">
+        <div class="d-flex">
+          <%= select_tag 'incomplete[group_filter]',
+                         options_for_select(Mara.group_names, params[:incomplete][:group_filter]),
+                         prompt: 'Group Filter',
+                         class: 'form-select',
+                         data: {
+                           controller: 'filter',
+                           action: 'filter#changed'
+                         }
+          %>
+        </div>
+      </div>
       <table class="table table-sm mt-4">
         <thead>
         <tr>
