@@ -10,28 +10,22 @@ $success: $glue-accent-a;
 @import 'bootstrap-table/dist/bootstrap-table';
 @import 'bootstrap-table/dist/themes/bootstrap-table/bootstrap-table';
 @import 'jquery-resizable-columns/dist/jquery.resizableColumns';
-
-#welcome {
-  .card {
-    border-left: 4px solid #4800FF;
-  }
-}
+@import 'welcome';
 
 .pagination {
   margin-bottom: 0px !important;
   padding-bottom: 0 !important;
 }
+
 body {
-  //background-color: #F8F8F8;
   background-color: #f7faff;
 }
-
 
 .color-gd {
   color: $glue-color;
 }
 
-.bg-gd {
+.bg-gd, .bg-glue {
   background-color: $glue-color;
 }
 
@@ -57,8 +51,6 @@ th.tight, td.tight {
 }
 
 .form-control:disabled, .form-control[readonly] {
-  //background-color: #e9ecef;
-  //opacity: 1;
   padding: 0.25rem 0.75rem;
   color: #008848;
 }
