@@ -70,4 +70,9 @@ class Mara < ApplicationRecord
   def self.article_types
     select(:article_type).distinct.pluck(:article_type)
   end
+
+  def self.group_names
+    select(:group).distinct.pluck(:group)
+  end
 end
+

@@ -4,14 +4,14 @@
 
 import { application } from "./application"
 
-// import HelloController from "./hello_controller.js"
-// application.register("hello", HelloController)
-
-import MatcherController from "./matcher_controller.js"
+import MatcherController from "./matcher_controller"
 application.register("matcher", MatcherController)
 
 import ConsolidatorController from "./consolidator_controller"
 application.register("consolidator", ConsolidatorController)
+
+import FilterController from "./filter_controller"
+application.register("filter", FilterController)
 
 import UnitsController from "./units_controller"
 application.register("units", UnitsController)
