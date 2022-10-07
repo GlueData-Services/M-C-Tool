@@ -3,7 +3,7 @@ class ValidationController < ApplicationController
 
   def index
     @current_matches = Match.incomplete
-    @current_matches = @current_matches.mara_groups(params[:incomplete][:group_filter]) if params[:incomplete][:group_filter].present?
+    @current_matches = @current_matches.mara_groups(params[:incomplete_group_filter]) if params[:incomplete_group_filter].present?
     @current_matches = @current_matches.distinct.page(params[:page]).per(params[:per])
 
     @complete_matches = Match.complete.page(params[:page]).per(params[:per])
