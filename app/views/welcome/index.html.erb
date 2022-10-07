@@ -44,18 +44,22 @@
     </div>
 
     <div class="row mt-5">
-      <h2>Match Status</h2>
       <div class="col-6">
-        <div class="card"6>
+        <h2>Match Status</h2>
+
+        <div class="card">
           <div class="card-body">
             <table class="table table-borderless">
+              <tr>
+                <th colspan=2>Stats for <span class="color-gd">all</span> articles</th>
+              </tr>
               <tr>
                 <th>Total Articles</th>
                 <td class="text-end"><%= Mara.count %></td>
               </tr>
               <tr>
-                <th>Total Matches</th>
-                <td class="text-end"><%= Match.count %></td>
+                <th>Total Matched Articles</th>
+                <td class="text-end"><%= MatchedArticle.all.count %></td>
               </tr>
               <tr>
                 <td colspan=2>
@@ -69,15 +73,18 @@
                 <td></td>
               </tr>
               <tr>
-                <th>Total Matchable Articles</th>
+                <th colspan=2>Stats for <span class="color-gd">active</span> articles</th>
+              </tr>
+              <tr>
+                <th>Total Active Articles</th>
                 <td class="text-end"><%= Mara.active.count %></td>
               </tr>
               <tr>
-                <th>Matched Articles</th>
+                <th>Matched Active Articles</th>
                 <td class="text-end"><%= Mara.active.matched.count %></td>
               </tr>
               <tr>
-                <th>Unmatched Articles</th>
+                <th>Unmatched Active Articles</th>
                 <td class="text-end"><%= Mara.unmatched.active.count %></td>
               </tr>
               <tr>
@@ -92,6 +99,36 @@
         </div>
       </div>
 
+
+      <div class="col-6">
+        <h2>Consolidation Status</h2>
+        <div class="card card-sidebar-secondary">
+          <div class="card-body">
+            <table class="table table-borderless">
+              <tr>
+                <th>Total Match Sets</th>
+                <td><%= Match.all.count %></td>
+              </tr>
+              <tr>
+                <th>Awaiting Consolidation</th>
+                <td><%= Match.incomplete.count %></td>
+              </tr>
+              <tr>
+                <th>Consolidated</th>
+                <td><%= Match.complete.count %></td>
+              </tr>
+              <tr>
+                <th>Problem Matches</th>
+                <td><%= Match.in_error.count %></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row mt-5">
       <div class="col-6">
         <div class="card">
           <div class="card-body">
@@ -112,33 +149,9 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="row mt-5">
-      <h2>Consolidation Status</h2>
-      <div class="col-6">
-        <div class="card">
-          <div class="card-body">
-            <table class="table table-borderless">
-              <tr>
-                <th>Total Match Sets</th>
-                <td><%= Match.all.count %></td>
-              </tr>
-              <tr>
-                <th>Awaiting Consolidation</th>
-                <td></td>
-              </tr>
-              <tr>
-                <th>Consolidated</th>
-                <td></td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
 
       <div class="col-6">
-        <div class="card">
+        <div class="card card-sidebar-secondary">
           <div class="card-body">
             <table class="table table-borderless">
               <tr>
@@ -147,10 +160,6 @@
               </tr>
               <tr>
                 <th>Consolidated yesterday</th>
-                <td></td>
-              </tr>
-              <tr>
-                <th>In Progress</th>
                 <td></td>
               </tr>
               <tr>
