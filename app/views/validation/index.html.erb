@@ -3,15 +3,15 @@
 </section>
 
 <section class="container-fluid">
-  <ul class="nav nav-tabs" id="nav-tab" role="tablist">
+  <ul class="nav nav-tabs" id="consolidator-nav-tabs" role="tablist">
     <li>
-      <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#incomplete">Incomplete</a>
+      <a class="nav-link" href="#incomplete" data-bs-toggle="tab" data-bs-target="#incomplete">Incomplete</a>
     </li>
     <li>
-      <a class="nav-link" data-bs-toggle="tab" data-bs-target="#complete">Complete</a>
+      <a class="nav-link" href="#complete" data-bs-toggle="tab" data-bs-target="#complete">Complete</a>
     </li>
     <li>
-      <a class="nav-link" data-bs-toggle="tab" data-bs-target="#error">In error</a>
+      <a class="nav-link" href="#error" data-bs-toggle="tab" data-bs-target="#error">In error</a>
     </li>
   </ul>
 
@@ -99,6 +99,7 @@
           <th>Name</th>
           <th>Articles</th>
           <th>Fields Complete</th>
+          <th>Reported</th>
           <th>Errors</th>
           <th></th>
         </tr>
@@ -111,8 +112,13 @@
             <td><%= match.name %></td>
             <td><%= match.matched_articles.count %></td>
             <td><%= match.match_fields.count %></td>
+            <td>
+              <% if match.earliest_report %>
+                <%= time_ago_in_words(match.earliest_report) %> ago
+              <% end %>
+            </td>
             <td><%= summarize_errors(match) %></td>
-            <td><%= link_to 'Consolidate', consolidate_match_path(match) %></td>
+            <td><%= link_to 'View', consolidate_match_path(match) %></td>
           </tr>
         <% end %>
         </tbody>

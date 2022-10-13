@@ -144,3 +144,9 @@ th.tight, td.tight {
   transition: 0.3s ease-in-out;
   box-shadow: 0 1.5rem 1.5rem rgb(0 0 0 / 15%) !important;
 }
+
+#problem {
+  .form-check {
+    margin-bottom: 0.25em!important;
+  }
+}

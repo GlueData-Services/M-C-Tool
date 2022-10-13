@@ -15,7 +15,7 @@
       <% Lookup.sections.each_with_index do |sec, i| %>
         <li class="nav-item">
           <!--          <a class="nav-link <%#= 'active' if i == 0 %>" href="#<%#= sec.downcase %>"><%#= sec %></a>-->
-          <button id="<%= sec.downcase %>-tab" class="nav-link <%= 'active' if i == 0 %>"
+          <button id="<%= sec.downcase %>-tab" class="nav-link <%#= 'active' if i == 0 %>"
                   type="button" role="tab"
                   data-bs-toggle="tab"
                   data-bs-target="#<%= sec.downcase %>">
@@ -243,7 +243,7 @@
         <%= bootstrap_form_tag url: problems_path(id: @match) do |f| %>
           <% @match.maras.each do |mara| %>
             <div class="mb-4">
-              <h5>Problems with <b><%= mara.prefixed_matnr %></b></h5>
+              <h5><b><%= mara.prefixed_matnr %> - </b> <%= mara.description %> </h5>
               <table class="table table-sm table-borderless">
                 <tr>
                   <td><b>UoM: </b> <%= mara.get_specific_field(24) %></td>
@@ -251,11 +251,13 @@
                   <td><b>Material: </b> <%= mara.get_specific_field(19) %></td>
                 </tr>
               </table>
-              <%#= f.hidden_field "problem[][id]", value: mara.prefixed_matnr %>
               <%= f.check_box "problem[#{mara.prefixed_matnr}][duplicate]", label: '[DUPE] This article is duplicated' %>
+              <%= f.check_box "problem[#{mara.prefixed_matnr}][tax_diff]", label: '[TAXDIFF] Tax difference' %>
               <%= f.check_box "problem[#{mara.prefixed_matnr}][uom_mismatch]", label: '[UOMERR] The UoM in this article is incorrect' %>
+              <%= f.check_box "problem[#{mara.prefixed_matnr}][uom_review]", label: '[UOMREV] The AUoM needs to be reviewed' %>
               <%= f.check_box "problem[#{mara.prefixed_matnr}][bad_category]", label: '[BADCAT] Mismatched article category' %>
               <%= f.check_box "problem[#{mara.prefixed_matnr}][bad_material]", label: '[BADMAT] This article has the wrong material type' %>
+              <%= f.text_field "problem[#{mara.prefixed_matnr}][comment]", label: 'Comment' %>
             </div>
           <% end %>
 
