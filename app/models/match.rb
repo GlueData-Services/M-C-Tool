@@ -13,6 +13,10 @@ class Match < ApplicationRecord
   scope :in_error, -> { where(status: :error) }
   scope :mara_groups, ->(group) { joins(:maras).where(maras: { group: group }) }
 
+  def earliest_report
+     matched_articles.minimum(:reported_at)
+  end
+
   def name
     if maras.where(banner: 'GAME').count > 0
       return maras.where(banner: 'GAME').first.description
