@@ -7,7 +7,10 @@ class ValidationController < ApplicationController
     @current_matches = @current_matches.distinct.page(params[:page]).per(params[:per])
 
     @complete_matches = Match.complete.page(params[:page]).per(params[:per])
-    @error_matches = Match.in_error.page(params[:page]).per(params[:per])
+
+    @error_matches = Match.in_error
+    @error_matches = @error_matches.has_error(params[:error_filter]) if params[:error_filter]
+    @error_matches = @error_matches.page(params[:page]).per(params[:per])
   end
 
   def edit
