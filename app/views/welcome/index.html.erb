@@ -97,18 +97,18 @@
               <tbody>
                 <tr>
                   <th>Total to match</th>
-                  <td class="text-end"><%= number_with_delimiter Mara.unmatched.count %></td>
-                  <td class="text-end"><%= number_with_delimiter Mara.unmatched.sum(:number_variants) %></td>
+                  <td class="text-end"><%= number_with_delimiter Mara.active.count %></td>
+                  <td class="text-end"><%= number_with_delimiter Mara.active.sum(:number_variants) %></td>
                 </tr>
                 <tr>
                   <th>Total matched</th>
-                  <td class="text-end"><%= number_with_delimiter Mara.matched.count %></td>
-                  <td class="text-end"><%= number_with_delimiter Mara.matched.sum(:number_variants) %></td>
+                  <td class="text-end"><%= number_with_delimiter Mara.active.matched.count %></td>
+                  <td class="text-end"><%= number_with_delimiter Mara.active.matched.sum(:number_variants) %></td>
                 </tr>
                 <tr>
                   <th>Total unmatched</th>
-                  <td class="text-end"><%= number_with_delimiter Mara.unmatched.count %></td>
-                  <td class="text-end"><%= number_with_delimiter Mara.unmatched.sum(:number_variants) %></td>
+                  <td class="text-end"><%= number_with_delimiter Mara.active.unmatched.count %></td>
+                  <td class="text-end"><%= number_with_delimiter Mara.active.unmatched.sum(:number_variants) %></td>
                 </tr>
               </tbody>
             </table>
