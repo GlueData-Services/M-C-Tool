@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_03_220019) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_13_112406) do
   create_table "articles", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "code_1"
     t.string "code_2"
@@ -1030,12 +1030,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_03_220019) do
     t.boolean "bad_category", default: false
     t.boolean "bad_material", default: false
     t.boolean "duplicate", default: false
+    t.boolean "tax_diff"
+    t.boolean "uom_review"
+    t.string "comment"
+    t.datetime "reported_at"
   end
 
   create_table "matches", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "matched_articles_count"
   end
 
   create_table "motor_alert_locks", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|

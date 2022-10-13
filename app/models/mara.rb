@@ -10,6 +10,10 @@ class Mara < ApplicationRecord
   scope :unmatched, -> { where.not('matched') }
   scope :matched, -> { where('matched') }
   scope :active, -> { where(active: true) }
+  scope :builders, -> { where(banner: 'BUILDERS') }
+  scope :game, -> { where(banner: 'GAME') }
+  scope :makro, -> { where(banner: 'MAKRO') }
+  scope :in_group, ->(group) { where(group: group) }
 
   def self.has_field(col)
     self.column_names.include?(col)
@@ -57,7 +61,7 @@ class Mara < ApplicationRecord
     case banner
     when 'GAME'
       val = get_value(lookup.g_table, lookup.g_field)
-      lookup.g_lookup.present? ? get_lookup_value(lookup.g_lookup, val) : val  
+      lookup.g_lookup.present? ? get_lookup_value(lookup.g_lookup, val) : val
     when 'MAKRO'
       val = get_value(lookup.m_table, lookup.m_field)
       lookup.m_lookup.present? ? get_lookup_value(lookup.m_lookup, val) : val

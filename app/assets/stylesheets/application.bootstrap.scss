@@ -17,6 +17,11 @@ $success: $glue-accent-a;
   padding-bottom: 0 !important;
 }
 
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
   background-color: #f7faff;
 }
