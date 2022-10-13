@@ -21,12 +21,11 @@
 
         <ul class="nav mb-2 mb-md-0">
           <li><a href="/" class="nav-link px-2 text-secondary">Dashboard</a></li>
-          <% if current_user&.is_admin? %>
-            <li><a href="/motor_admin" target="_blank" class="nav-link px-2 text-secondary">Admin</a></li>
-            <li><a href="/users" class="nav-link px-2 text-secondary">User Management</a></li>
-          <% else %>
-
+          <% if current_user %>
+            <li><%= link_to 'Matcher', matcher_path, class: 'nav-link px-2 text-secondary'%></li>
+            <li><%= link_to 'Consolidator', consolidation_path, class: 'nav-link px-2 text-secondary'%></li>
           <% end %>
+
         </ul>
 
 
@@ -38,6 +37,9 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="userMenu">
                 <li><%= button_to 'Sign out', destroy_user_session_path, method: :delete, class: 'dropdown-item' %></li>
+                <% if current_user&.is_admin? %>
+                  <li><a href="/motor_admin" target="_blank" class="nav-link px-2 text-secondary">Admin</a></li>
+                <% end %>
               </ul>
             </div>
           <% else %>

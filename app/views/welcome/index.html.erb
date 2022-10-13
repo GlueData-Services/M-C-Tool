@@ -19,108 +19,167 @@
 
 <section class="content" id="welcome">
   <div class="container">
-    <div class="row mt-5">
+    <div class="row mt-4">
       <div class="col-4">
-        <a href="/matcher" class="btn btn-lg btn-outline-dark w-100 p-4 bg-white shadow poh">
-          <i class="bi bi-diagram-3" style="font-size: 3rem;"></i>
-          <br>
+        <a href="/matcher" class="btn btn-lg btn-outline-dark w-100 p-2 bg-white shadow poh d-flex align-items-center justify-content-center gap-3">
+          <i class="bi bi-diagram-3" style="font-size: 2rem;"></i>
           Matcher
         </a>
       </div>
       <div class="col-4">
-        <a href="<%= consolidation_path %>" class="btn btn-lg btn-outline-dark w-100 p-4 bg-white shadow poh">
-          <i class="bi bi-link-45deg" style="font-size: 3rem;"></i>
-          <br>
+        <a href="<%= consolidation_path %>" class="btn btn-lg btn-outline-dark w-100 p-2 bg-white shadow poh d-flex align-items-center justify-content-center gap-3">
+          <i class="bi bi-link-45deg" style="font-size: 2rem;"></i>
           Consolidation
         </a>
       </div>
       <div class="col-4">
-        <a href="/reports" class="btn btn-lg btn-outline-dark w-100 p-4 bg-white shadow poh">
-          <i class="bi bi-graph-up" style="font-size: 3rem;"></i>
-          <br>
+        <a href="/reports" class="btn btn-lg btn-outline-dark w-100 p-2 bg-white shadow poh d-flex align-items-center justify-content-center gap-3">
+          <i class="bi bi-graph-up" style="font-size: 2rem;"></i>
           Reports
         </a>
       </div>
     </div>
 
+    <div id="banner-stats" class="row mt-5">
+      <div class="col-6">
+        <h3>Total Articles Extracted</h3>
+        <div class="card card-sidebar-alt">
+          <div class="card-body">
+            <table class="table table-borderless">
+              <thead>
+              <tr>
+                <th></th>
+                <th class="text-end">Articles</th>
+                <th class="text-end">Variants</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <th>Game</th>
+                <td class="text-end"><%= number_with_delimiter Mara.game.count %></td>
+                <td class="text-end"><%= number_with_delimiter Mara.game.sum(:number_variants) %></td>
+              </tr>
+              <tr>
+                <th>Makro</th>
+                <td class="text-end"><%= number_with_delimiter Mara.makro.count %></td>
+                <td class="text-end"><%= number_with_delimiter Mara.makro.sum(:number_variants) %></td>
+              </tr>
+              <tr>
+                <th>Builders</th>
+                <td class="text-end"><%= number_with_delimiter Mara.builders.count %></td>
+                <td class="text-end"><%= number_with_delimiter Mara.builders.sum(:number_variants) %></td>
+              </tr>
+              <tr>
+                <th>Total</th>
+                <td class="text-end"><%= number_with_delimiter Mara.count %></td>
+                <td class="text-end"><%= number_with_delimiter Mara.sum(:number_variants) %></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="row mt-5">
       <div class="col-6">
-        <h2>Match Status</h2>
-
+        <h3>Articles to be matched and consolidated</h3>
         <div class="card">
           <div class="card-body">
             <table class="table table-borderless">
+              <thead>
               <tr>
-                <th colspan=2>Stats for <span class="color-gd">all</span> articles</th>
+                <th></th>
+                <th class="text-end">Articles</th>
+                <th class="text-end">Variants</th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>Total to match</th>
+                  <td class="text-end"><%= number_with_delimiter Mara.unmatched.count %></td>
+                  <td class="text-end"><%= number_with_delimiter Mara.unmatched.sum(:number_variants) %></td>
+                </tr>
+                <tr>
+                  <th>Total matched</th>
+                  <td class="text-end"><%= number_with_delimiter Mara.matched.count %></td>
+                  <td class="text-end"><%= number_with_delimiter Mara.matched.sum(:number_variants) %></td>
+                </tr>
+                <tr>
+                  <th>Total unmatched</th>
+                  <td class="text-end"><%= number_with_delimiter Mara.unmatched.count %></td>
+                  <td class="text-end"><%= number_with_delimiter Mara.unmatched.sum(:number_variants) %></td>
+                </tr>
+              </tbody>
+            </table>
+            <h5>Match Sets</h5>
+            <table class="table table-borderless">
+              <tbody>
+              <tr>
+                <th>One article matches</th>
+                <td class="text-end"><%= Match.single.count %></td>
               </tr>
               <tr>
-                <th>Total Articles</th>
-                <td class="text-end"><%= Mara.count %></td>
+                <th>Two article matches</th>
+                <td class="text-end"><%= Match.double.count %></td>
               </tr>
               <tr>
-                <th>Total Matched Articles</th>
-                <td class="text-end"><%= MatchedArticle.all.count %></td>
+                <th>Three article matches</th>
+                <td class="text-end"><%= Match.triple.count %></td>
               </tr>
-              <tr>
-                <td colspan=2>
-                  <div class="progress">
-                    <div class="progress-bar progress-bar-striped  progress-bar-animated" role="progressbar" style="width: <%= (Match.count.to_f / Mara.count) * 100 %>%"></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <th colspan=2>Stats for <span class="color-gd">active</span> articles</th>
-              </tr>
-              <tr>
-                <th>Total Active Articles</th>
-                <td class="text-end"><%= Mara.active.count %></td>
-              </tr>
-              <tr>
-                <th>Matched Active Articles</th>
-                <td class="text-end"><%= Mara.active.matched.count %></td>
-              </tr>
-              <tr>
-                <th>Unmatched Active Articles</th>
-                <td class="text-end"><%= Mara.unmatched.active.count %></td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  <div class="progress">
-                    <div class="progress-bar progress-bar-striped  progress-bar-animated bg-success" role="progressbar" style="width: <%= (Mara.active.matched.count.to_f / Mara.active.count) * 100 %>%"></div>
-                  </div>
-                </td>
-              </tr>
+              </tbody>
             </table>
           </div>
         </div>
       </div>
 
-
       <div class="col-6">
-        <h2>Consolidation Status</h2>
+        <h3>Consolidation Status</h3>
         <div class="card card-sidebar-secondary">
           <div class="card-body">
+
             <table class="table table-borderless">
+              <thead>
               <tr>
-                <th>Total Match Sets</th>
-                <td><%= Match.all.count %></td>
+                <th></th>
+                <th class="text-end">Match Sets</th>
+                <th class="text-end">Articles</th>
+                <th class="text-end">Variants</th>
               </tr>
+              </thead>
+
+              <tbody>
               <tr>
                 <th>Awaiting Consolidation</th>
-                <td><%= Match.incomplete.count %></td>
+                <td class="text-end"><%= Match.awaiting.count %></td>
+                <td class="text-end"><%= Match.awaiting.sum(:matched_articles_count) %></td>
+                <td class="text-end"><%= Mara.joins(match_fields: :match).merge(Match.awaiting).sum(:number_variants) %></td>
               </tr>
               <tr>
-                <th>Consolidated</th>
-                <td><%= Match.complete.count %></td>
+                <th>Consolidation in progress</th>
+                <td class="text-end"><%= Match.in_progress.count %></td>
+                <td class="text-end"><%= Match.in_progress.sum(:matched_articles_count) %></td>
+                <td class="text-end"><%= Mara.joins(match_fields: :match).merge(Match.in_progress.or(Match.awaiting)).sum(:number_variants) %></td>
               </tr>
               <tr>
-                <th>Problem Matches</th>
-                <td><%= Match.in_error.count %></td>
+                <th>Consolidation completed</th>
+                <td class="text-end"><%= Match.complete.count %></td>
+                <td class="text-end"><%= Match.complete.sum(:matched_articles_count) %></td>
+                <td class="text-end"><%= Mara.joins(match_fields: :match).merge(Match.complete).sum(:number_variants) %></td>
               </tr>
+              <tr>
+                <th>Consolidation problems</th>
+                <td class="text-end"><%= Match.in_error.count %></td>
+                <td class="text-end"><%= Match.in_error.sum(:matched_articles_count) %></td>
+                <td class="text-end"><%= Mara.joins(match_fields: :match).merge(Match.in_error).sum(:number_variants) %></td>
+              </tr>
+              <tr>
+                <th>Total Match Sets</th>
+                <td class="text-end"><%= Match.all.count %></td>
+                <td class="text-end"><%= Match.all.sum(:matched_articles_count) %></td>
+                <td class="text-end"><%= Mara.joins(match_fields: :match).merge(Match.all).sum(:number_variants) %></td>
+              </tr>
+              </tbody>
             </table>
           </div>
         </div>
@@ -128,49 +187,9 @@
 
     </div>
 
+    <%#= render 'old_stats' %>
     <div class="row mt-5">
-      <div class="col-6">
-        <div class="card">
-          <div class="card-body">
-            <table class="table table-borderless">
-              <tr>
-                <th>Matches yesterday</th>
-                <td class="text-end"><%= Match.where('DATE(created_at) = ?', Date.today - 1.day).count %></td>
-              </tr>
-              <tr>
-                <th>Matches today</th>
-                <td class="text-end"><%= Match.where('DATE(created_at) = ?', Date.today).count %></td>
-              </tr>
-              <tr>
-                <th>Match Velocity</th>
-                <td class="text-end">0</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-6">
-        <div class="card card-sidebar-secondary">
-          <div class="card-body">
-            <table class="table table-borderless">
-              <tr>
-                <th>Consolidated today</th>
-                <td></td>
-              </tr>
-              <tr>
-                <th>Consolidated yesterday</th>
-                <td></td>
-              </tr>
-              <tr>
-                <th>Velocity</th>
-                <td></td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
-
+      <%= render 'grouped_stats' %>
     </div>
   </div>
 

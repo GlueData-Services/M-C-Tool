@@ -1,0 +1,113 @@
+<% groups = Mara.group(:group).where.not(group: nil).pluck(:group) %>
+
+<ul class="nav nav-tabs" id="grouped-stats-nav-tabs" role="tablist">
+  <% groups.each do |grp| %>
+    <% next if grp.blank? %>
+    <li>
+      <%= link_to grp, "##{grp.parameterize}", class: 'nav-link', data: { bs_toggle: :tab, bs_target: "##{grp.parameterize}" }, role: 'button' %>
+    </li>
+  <% end %>
+</ul>
+
+<div id="nav-tab-content" class="tab-content border-1 border-start border-end border-bottom bg-white">
+  <% groups.each do |group| %>
+    <% next if group.blank? %>
+
+    <div id="<%= group.parameterize %>" class="tab-pane fade show active p-3" role="tabpanel">
+      <h5>Articles to be matched and consolidated</h5>
+
+      <div class="row mt-4">
+        <div class="col-6">
+          <h5>Match Status</h5>
+          <table class="table table-borderless table-striped">
+            <tr>
+              <th>Match Status</th>
+              <th class="text-end">Articles</th>
+              <th class="text-end">Variants</th>
+            </tr>
+            <tr>
+              <th>Total to match</th>
+              <td class="text-end"><%= Mara.in_group(group).count %></td>
+              <td class="text-end"><%= Mara.in_group(group).sum(:number_variants) %></td>
+            </tr>
+            <tr>
+              <th>Total matched</th>
+              <td class="text-end"><%= Mara.in_group(group).matched.count %></td>
+              <td class="text-end"><%= Mara.in_group(group).matched.sum(:number_variants) %></td>
+            </tr>
+            <tr>
+              <th>Total unmatched</th>
+              <td class="text-end"><%= Mara.in_group(group).unmatched.count %></td>
+              <td class="text-end"><%= Mara.in_group(group).unmatched.sum(:number_variants) %></td>
+            </tr>
+          </table>
+
+          <table class="table table-borderless table-striped">
+            <tr>
+              <th>One article matches</th>
+              <td class="text-end"><%= Match.single.joins(:maras).merge(Mara.in_group(group)).count %></td>
+            </tr>
+            <tr>
+              <th>Two article matches</th>
+              <td class="text-end"><%= Match.double.joins(:maras).merge(Mara.in_group(group)).count %></td>
+            </tr>
+            <tr>
+              <th>Three article matches</th>
+              <td class="text-end"><%= Match.triple.joins(:maras).merge(Mara.in_group(group)).count %></td>
+            </tr>
+            <tr>
+              <th>Total match sets</th>
+              <td class="text-end"><%= Match.joins(:maras).merge(Mara.in_group(group)).count %></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="col-6">
+          <h5>Consolidation Status</h5>
+          <table class="table table-borderless table-striped">
+            <thead>
+            <tr>
+              <th></th>
+              <th class="text-end">Match sets</th>
+              <th class="text-end">Articles</th>
+              <th class="text-end">Variants</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <th>Awaiting Consolidation</th>
+              <td class="text-end"><%= Match.awaiting.joins(:maras).merge(Mara.in_group(group)).count %></td>
+              <td class="text-end"><%= Match.awaiting.joins(:maras).merge(Mara.in_group(group)).sum(:matched_articles_count) %></td>
+              <td class="text-end"><%= Mara.in_group(group).joins(match_fields: :match).merge(Match.awaiting).sum(:number_variants) %></td>
+            </tr>
+            <tr>
+              <th>Consolidation in progress</th>
+              <td class="text-end"><%= Match.in_progress.joins(:maras).merge(Mara.in_group(group)).count %></td>
+              <td class="text-end"><%= Match.in_progress.joins(:maras).merge(Mara.in_group(group)).sum(:matched_articles_count) %></td>
+              <td class="text-end"><%= Mara.in_group(group).joins(match_fields: :match).merge(Match.in_progress).sum(:number_variants) %></td>
+            </tr>
+            <tr>
+              <th>Consolidation completed</th>
+              <td class="text-end"><%= Match.complete.joins(:maras).merge(Mara.in_group(group)).count %></td>
+              <td class="text-end"><%= Match.complete.joins(:maras).merge(Mara.in_group(group)).sum(:matched_articles_count) %></td>
+              <td class="text-end"><%= Mara.in_group(group).joins(match_fields: :match).merge(Match.complete).sum(:number_variants) %></td>
+            </tr>
+            <tr>
+              <th>Consolidation problems</th>
+              <td class="text-end"><%= Match.in_error.joins(:maras).merge(Mara.in_group(group)).count %></td>
+              <td class="text-end"><%= Match.in_error.joins(:maras).merge(Mara.in_group(group)).sum(:matched_articles_count) %></td>
+              <td class="text-end"><%= Mara.in_group(group).joins(match_fields: :match).merge(Match.in_error).sum(:number_variants) %></td>
+            </tr>
+            <tr>
+              <th>Total match sets</th>
+              <td class="text-end"><%= Match.joins(:maras).merge(Mara.in_group(group)).count %></td>
+              <td class="text-end"></td>
+              <td class="text-end"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
