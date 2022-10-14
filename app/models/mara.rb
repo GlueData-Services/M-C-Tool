@@ -76,7 +76,7 @@ class Mara < ApplicationRecord
   end
 
   def self.group_names
-    select(:group).distinct.pluck(:group)
+    group(:group).pluck(:group)
   end
 end
 
