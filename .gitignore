@@ -36,6 +36,7 @@
 /node_modules
 
 .idea/
+vendor/cache/*
 
 solr/
 elastic/
