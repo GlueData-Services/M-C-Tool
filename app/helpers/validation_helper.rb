@@ -28,15 +28,21 @@ module ValidationHelper
 
   def summarize_errors(match)
     errors = []
-    css_class = "badge bg-light text-dark border-0 border-dark"
+    css_class = "badge bg-light text-dark border shadow-sm"
+
     match.matched_articles.each do |art|
-      errors << content_tag(:span, "#{art.prefixed_matnr} DUPE", class: css_class) if art.duplicate?
-      errors << content_tag(:span, "#{art.prefixed_matnr} BADCAT", class: css_class) if art.bad_category?
-      errors << content_tag(:span, "#{art.prefixed_matnr} BADMAT", class: css_class) if art.bad_material?
-      errors << content_tag(:span, "#{art.prefixed_matnr} UOM", class: css_class) if art.uom_mismatch?
-      errors << content_tag(:span, "#{art.prefixed_matnr} UOMREV", class: css_class) if art.uom_review?
-      errors << content_tag(:span, "#{art.prefixed_matnr} TAXDIFF", class: css_class) if art.tax_diff?
+      err = []
+
+      [[:duplicate?, 'DUPE'], [:bad_category?, 'BADCAT'], [:bad_material?, 'BADMAT'], [:uom_mismatch?, 'UOM'], [:uom_review?, 'UOMREV'], [:tax_diff?, 'TAX']].each do |err_type|
+        err << err_type[1] if art.send(err_type[0])
+      end
+
+      errors << content_tag(:span,
+                            "#{art.prefixed_matnr} - #{err.join(' / ')}",
+                            class: css_class
+      ) if err.count > 0
     end
+
     errors.join(' ').html_safe
   end
 

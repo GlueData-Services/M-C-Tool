@@ -24,9 +24,9 @@ class Match < ApplicationRecord
 
   def name
     if maras.where(banner: 'GAME').count > 0
-      return maras.where(banner: 'GAME').first.description
+      maras.where(banner: 'GAME').first.description
     else
-      return maras.first&.description
+      maras.first&.description
     end
   end
 

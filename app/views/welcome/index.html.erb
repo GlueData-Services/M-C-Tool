@@ -56,23 +56,23 @@
               <tbody>
               <tr>
                 <th>Game</th>
-                <td class="text-end"><%= number_with_delimiter Mara.game.count %></td>
-                <td class="text-end"><%= number_with_delimiter Mara.game.sum(:number_variants) %></td>
+                <td class="text-end"><%= total_for_banner('game') %></td>
+                <td class="text-end"><%= variations_for_banner('game') %></td>
               </tr>
               <tr>
                 <th>Makro</th>
-                <td class="text-end"><%= number_with_delimiter Mara.makro.count %></td>
-                <td class="text-end"><%= number_with_delimiter Mara.makro.sum(:number_variants) %></td>
+                <td class="text-end"><%= total_for_banner('makro') %></td>
+                <td class="text-end"><%= variations_for_banner('makro') %></td>
               </tr>
               <tr>
                 <th>Builders</th>
-                <td class="text-end"><%= number_with_delimiter Mara.builders.count %></td>
-                <td class="text-end"><%= number_with_delimiter Mara.builders.sum(:number_variants) %></td>
+                <td class="text-end"><%= total_for_banner('builders') %></td>
+                <td class="text-end"><%= variations_for_banner('builders') %></td>
               </tr>
               <tr>
                 <th>Total</th>
-                <td class="text-end"><%= number_with_delimiter Mara.count %></td>
-                <td class="text-end"><%= number_with_delimiter Mara.sum(:number_variants) %></td>
+                <td class="text-end"><%= total_for_all %></td>
+                <td class="text-end"><%= variations_for_all %></td>
               </tr>
               </tbody>
             </table>
