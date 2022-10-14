@@ -86,6 +86,9 @@ GEM
       actionpack (>= 5.2)
       activemodel (>= 5.2)
     builder (3.2.4)
+    bullet (7.0.3)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.11)
     cancancan (3.4.0)
     capistrano (3.17.1)
       airbrussh (>= 1.0.0)
@@ -135,23 +138,42 @@ GEM
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
       railties (>= 3.2)
-    elastic-transport (8.1.0)
-      faraday (< 3)
+    elasticsearch (7.13.3)
+      elasticsearch-api (= 7.13.3)
+      elasticsearch-transport (= 7.13.3)
+    elasticsearch-api (7.13.3)
       multi_json
-    elasticsearch (8.4.0)
-      elastic-transport (~> 8)
-      elasticsearch-api (= 8.4.0)
-    elasticsearch-api (8.4.0)
+    elasticsearch-transport (7.13.3)
+      faraday (~> 1)
       multi_json
     erubi (1.11.0)
     et-orbi (1.2.7)
       tzinfo
     ethon (0.15.0)
       ffi (>= 1.15.0)
-    faraday (2.6.0)
-      faraday-net_http (>= 2.0, < 3.1)
+    faraday (1.10.2)
+      faraday-em_http (~> 1.0)
+      faraday-em_synchrony (~> 1.0)
+      faraday-excon (~> 1.1)
+      faraday-httpclient (~> 1.0)
+      faraday-multipart (~> 1.0)
+      faraday-net_http (~> 1.0)
+      faraday-net_http_persistent (~> 1.0)
+      faraday-patron (~> 1.0)
+      faraday-rack (~> 1.0)
+      faraday-retry (~> 1.0)
       ruby2_keywords (>= 0.0.4)
-    faraday-net_http (3.0.0)
+    faraday-em_http (1.0.0)
+    faraday-em_synchrony (1.0.0)
+    faraday-excon (1.1.0)
+    faraday-httpclient (1.0.1)
+    faraday-multipart (1.0.4)
+      multipart-post (~> 2)
+    faraday-net_http (1.0.1)
+    faraday-net_http_persistent (1.2.0)
+    faraday-patron (1.0.0)
+    faraday-rack (1.0.0)
+    faraday-retry (1.0.3)
     ffi (1.15.5)
     fugit (1.6.0)
       et-orbi (~> 1, >= 1.2.7)
@@ -203,6 +225,7 @@ GEM
       rails (>= 5.2)
     msgpack (1.5.6)
     multi_json (1.15.0)
+    multipart-post (2.2.3)
     mysql2 (0.5.4)
     net-imap (0.2.3)
       digest
@@ -238,6 +261,8 @@ GEM
     raabro (1.4.0)
     racc (1.6.0)
     rack (2.2.4)
+    rack-mini-profiler (3.0.0)
+      rack (>= 1.2.0)
     rack-test (2.0.2)
       rack (>= 1.3)
     rails (7.0.4)
@@ -329,6 +354,7 @@ GEM
       ethon (>= 0.9.0)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
+    uniform_notifier (1.16.0)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.0)
@@ -358,6 +384,7 @@ DEPENDENCIES
   audited (~> 5.0)
   bootsnap
   bootstrap_form (~> 5.0)
+  bullet
   capistrano
   capistrano-bundler
   capistrano-rails
@@ -369,7 +396,7 @@ DEPENDENCIES
   debug
   devise
   dotenv-rails
-  elasticsearch
+  elasticsearch (< 7.14)
   interactor-rails
   jbuilder
   jsbundling-rails
@@ -378,6 +405,7 @@ DEPENDENCIES
   mysql2 (~> 0.5)
   pry-rails
   puma (~> 5.0)
+  rack-mini-profiler
   rails (~> 7.0.2, >= 7.0.2.3)
   rspec-rails
   searchkick
