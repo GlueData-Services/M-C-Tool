@@ -73,4 +73,17 @@ module ValidationHelper
                  action: 'filter#changed'
                })
   end
+
+  def match_count_select
+    opts = [%w[1 1], %w[2 2], %w[3+ 3]]
+    select_tag(:match_count_filter,
+               options_for_select(opts, params[:match_count_filter]),
+               include_blank: true,
+               prompt: 'Match count filter',
+               class: 'form-select',
+               data: {
+                 controller: 'filter',
+                 action: 'filter#changed'
+               })
+  end
 end
