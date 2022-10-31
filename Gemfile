@@ -52,7 +52,7 @@ gem "bootsnap", require: false
 
 # gem 'sunspot_rails', github: 'sunspot/sunspot'
 gem "searchkick"
-gem "elasticsearch"#, "< 7.14"
+gem "elasticsearch", "< 7.14"
 gem "typhoeus"
 gem "bootstrap_form", "~> 5.0"
 gem 'motor-admin'

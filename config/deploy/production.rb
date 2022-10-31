@@ -1,5 +1,5 @@
 set :deploy_to, "/var/www/harmonics-production"
-set :rvm_custom_path, '/home/marc.howell/.rvm/bin/rvm'
+set :rvm_custom_path, '/home/marc.howell/.rvm/'
 set :rails_env, "production"
 set :repo_url, "marc.howell@localhost:~/harmonics.git"
 
