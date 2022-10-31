@@ -1,3 +1,11 @@
+set :deploy_to, "/var/www/harmonics-production"
+set :rvm_custom_path, '/usr/share/rvm/'
+set :rails_env, "production"
+set :repo_url, "marc.howell@localhost:~/harmonics.git"
+
+server "127.0.0.1", user: "marc.howell", roles: %w{app db web}
+
+
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
