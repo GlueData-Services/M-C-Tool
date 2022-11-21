@@ -10,6 +10,9 @@ Rails.application.routes.draw do
   match 'remove_article', to: 'validation#remove_article', as: :remove_article, via: [:post, :get]
   match 'main_article', to: 'validation#main_article', as: :main_article, via: [:post, :get]
 
+  get 'validation/:id/comments', to: 'validation#comments', as: :match_comments
+  post 'validation/:id/comments', to: 'validation#new_comment', as: :new_match_comment
+
   get 'matcher', to: 'matcher#index', as: :matcher
   post 'match', to: 'matcher#create', as: :create_match
   match 'search', to: 'search#search', as: :search, via: [:get, :post]
@@ -21,6 +24,7 @@ Rails.application.routes.draw do
   resources :problems, only: [:create]
   resources :matches, only: [:destroy]
   resources :articles
+  resources :comments
 
   root "welcome#index"
 end

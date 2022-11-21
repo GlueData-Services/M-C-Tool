@@ -15,3 +15,6 @@ application.register("filter", FilterController)
 
 import UnitsController from "./units_controller"
 application.register("units", UnitsController)
+
+import CommentsController from "./comments_controller"
+application.register("comments", CommentsController)

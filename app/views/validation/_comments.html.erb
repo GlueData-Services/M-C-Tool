@@ -1,0 +1,16 @@
+<div id="comments-list" class="bg-white border-start border-end border-bottom border-1 p-3 mb-3 tab-pane fade show" role="tabpanel">
+
+  <turbo-frame id="comments" src="/validation/<%= match.id %>/comments" loading="lazy"></turbo-frame>
+
+  <div class="row bg-light py-3" data-controller="comments">
+    <div class="col-6 offset-3">
+      <h5>Add a comment</h5>
+      <%= text_area_tag :comment, nil, rows: 3, class: 'form-control', data: { 'comments-target': "comment" } %>
+      <%= button_tag 'Add Comment', type: 'button', class: 'btn btn-outline-primary mt-3 float-end',
+                     data: {
+                       action: "click->comments#post",
+                       'comments-url-param': "#{new_match_comment_path(id: match.id)}"
+                     } %>
+    </div>
+  </div>
+</div>

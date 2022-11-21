@@ -28,5 +28,15 @@ $(document).on('turbo:load', function(){
    } else if (tabs[0]) {
       bootstrap.Tab.getOrCreateInstance(tabs[0]).show()
    }
+
+   const triggerTabList = document.querySelectorAll('#myTab button')
+   triggerTabList.forEach(triggerEl => {
+      const tabTrigger = new bootstrap.Tab(triggerEl)
+
+      triggerEl.addEventListener('click', event => {
+         event.preventDefault()
+         tabTrigger.show()
+      })
+   })
 })
 

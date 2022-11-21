@@ -5,6 +5,7 @@ class Match < ApplicationRecord
   has_many :match_units, dependent: :destroy
   has_many :matched_articles, dependent: :destroy
   has_many :maras, through: :matched_articles
+  has_many :comments, as: :commentable
 
   scope :awaiting, -> { where(status: :awaiting) }
   scope :in_progress, -> { where(status: :in_progress) }

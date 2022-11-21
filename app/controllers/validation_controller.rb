@@ -60,6 +60,26 @@ class ValidationController < ApplicationController
     end
   end
 
+  def comments
+    @comments = Match.find(params[:id]).comments
+    render 'comments/index'
+  end
+
+  def new_comment
+    @comment = Match.find(params[:id]).comments.new(user: current_user, comment: params[:comment])
+
+    respond_to do |format|
+      if @comment.save
+        format.turbo_stream {
+          render turbo_stream: turbo_stream.append('comments',
+                                                    render_to_string(partial: 'comments/comment', locals: {comment: @comment}))
+        }
+      else
+        format.json message: 'Could not save comment', success: false
+      end
+    end
+  end
+
   private
 
   def field_params

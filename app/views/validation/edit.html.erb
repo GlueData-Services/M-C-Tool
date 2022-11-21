@@ -7,37 +7,43 @@
   </div>
 </section>
 
-<%= form_with url: update_match_fields_path, method: :post do |form| %>
-  <%= form.hidden_field :id, value: @match.id %>
-  <section class="container-fluid consolidator">
-    <ul class="nav nav-tabs" id="tab-consolidation">
 
-      <% Lookup.sections.each_with_index do |sec, i| %>
-        <li class="nav-item">
-          <!--          <a class="nav-link <%#= 'active' if i == 0 %>" href="#<%#= sec.downcase %>"><%#= sec %></a>-->
-          <button id="<%= sec.downcase %>-tab" class="nav-link <%#= 'active' if i == 0 %>"
-                  type="button" role="tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#<%= sec.downcase %>">
-            <%= sec %>
-          </button>
-        </li>
-      <% end %>
-
+<section class="container-fluid consolidator">
+  <!--                      -->
+  <!--      Nav Tabs        -->
+  <!--                      -->
+  <ul class="nav nav-tabs" id="tab-consolidation">
+    <% Lookup.sections.each_with_index do |sec, i| %>
       <li class="nav-item">
-        <button class="nav-link" id="uom-tab" data-bs-toggle="tab" data-bs-target="#uom" type="button" role="tab">UOM</button>
+        <button id="<%= sec.downcase %>-tab" class="nav-link" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#<%= sec.downcase %>">
+          <%= sec %>
+        </button>
       </li>
+    <% end %>
 
-      <% if @match.maras.map{|m| m.get_specific_field(72).downcase }.include?('generic')  %>
-        <li class="nav-item">
-          <button class="nav-link" id="variants-tab" data-bs-toggle="tab" data-bs-target="#variants" type="button" role="tab">Variants</button>
-        </li>
-      <% end %>
-    </ul>
+    <li class="nav-item">
+      <button class="nav-link" id="uom-tab" data-bs-toggle="tab" data-bs-target="#uom" type="button" role="tab">UOM</button>
+    </li>
 
+    <% if @match.maras.map { |m| m.get_specific_field(72).downcase }.include?('generic') %>
+      <li class="nav-item">
+        <button class="nav-link" id="variants-tab" data-bs-toggle="tab" data-bs-target="#variants" type="button" role="tab">Variants</button>
+      </li>
+    <% end %>
+
+    <li class="nav-item">
+      <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments-list" type="button" role="tab">Comments</button>
+    </li>
+  </ul>
+
+
+  <!--                         -->
+  <!--      Tab Content        -->
+  <!--                         -->
+  <%= form_with url: update_match_fields_path, method: :post do |form| %>
+    <%= form.hidden_field :id, value: @match.id %>
     <div class="tab-content">
       <% Lookup.sections.each_with_index do |sec, i| %>
-
         <!--  Pane for a specific tab, contains table for a section (Basic, Logistics etc) -->
         <div class="bg-white border-start border-end border-bottom border-1 p-3 mb-3 tab-pane fade show <%= 'show active' if i == 0 %>" id="<%= sec.downcase %>" role="tabpanel">
 
@@ -53,9 +59,9 @@
 
                 <th class="w-280">
                   <div class="d-flex align-items-center justify-content-between">
-                    <span title="<%= mara.prefixed_matnr %>" class="<%= main_mara ? 'main_article' : '' %>">
-                      <%= mara.description %>
-                    </span>
+                      <span title="<%= mara.prefixed_matnr %>" class="<%= main_mara ? 'main_article' : '' %>">
+                        <%= mara.description %>
+                      </span>
                     <div class="dropdown float-end">
                       <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
                               type="button" id="dropdownMenu2"
@@ -171,30 +177,32 @@
 
       <%= render partial: 'uom', locals: { match: @match } %>
       <%= render partial: 'variants', locals: { match: @match } %>
+
+      <%= render partial: 'comments', locals: { match: @match } %>
     </div>
-  </section>
+  <% end %>
+</section>
 
-  <section class="content container-fluid">
-    <div class="d-flex justify-content-end">
+<section class="content container-fluid">
+  <div class="d-flex justify-content-end">
 
-      <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#problem">
-        Report problems
-      </a>
+    <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#problem">
+      Report problems
+    </a>
 
-      <%= link_to 'Reject', match_path(@match),
-                  data: { turbo_confirm: 'This will delete the match and free all any articles to be re-matched',
-                          turbo_method: :delete },
-                  class: 'btn btn-danger ms-2'
-      %>
-      <button type="submit" name="status" value="" class="btn btn-success ms-2">
-        Save
-      </button>
-      <button type="submit" name="status" value="complete" class="btn btn-success ms-2">
-        Complete
-      </button>
-    </div>
-  </section>
-<% end %>
+    <%= link_to 'Reject', match_path(@match),
+                data: { turbo_confirm: 'This will delete the match and free all any articles to be re-matched',
+                        turbo_method: :delete },
+                class: 'btn btn-danger ms-2'
+    %>
+    <button type="submit" name="status" value="" class="btn btn-success ms-2">
+      Save
+    </button>
+    <button type="submit" name="status" value="complete" class="btn btn-success ms-2">
+      Complete
+    </button>
+  </div>
+</section>
 
 <div class="modal fade" id="addArticle" tabindex="-1" role="dialog" aria-labelledby="addArticleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl " role="document">

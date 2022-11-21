@@ -1,0 +1,11 @@
+<%= turbo_frame_tag 'comments', action: 'replace' do %>
+  <% if @comments.empty? %>
+    <div class="col-12 text-center mt-4 mb-4 p-3">
+      <i>No comments yet</i>
+    </div>
+  <% else %>
+    <% @comments.each do |comment| %>
+      <%= render partial: 'comments/comment', locals: { comment: comment } %>
+    <% end %>
+  <% end %>
+<% end %>

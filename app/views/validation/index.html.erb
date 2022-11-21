@@ -70,7 +70,7 @@
     </div>
 
     <div id="complete" class="tab-pane fade p-3 bg-white" role="tabpanel">
-      <table class="table table-sm table-bordered mt-4">
+      <table class="table table-sm mt-4">
         <thead>
         <tr>
           <th>Name</th>
@@ -90,7 +90,7 @@
             <td><%= match.matched_articles.count %></td>
             <td><%= match.match_fields.count %></td>
             <td><%= t(match.status) %></td>
-            <td><%= link_to 'Consolidate', consolidate_match_path(match) %></td>
+            <td class="text-end"><%= link_to 'Consolidate', consolidate_match_path(match), class: 'btn btn-sm btn-outline-glue' %></td>
           </tr>
         <% end %>
         </tbody>
@@ -127,7 +127,7 @@
                 <%= time_ago_in_words(match.earliest_report) %> ago
               <% end %>
             </td>
-            <td><%= link_to 'View', consolidate_match_path(match) %></td>
+            <td class="text-end"><%= link_to 'View', consolidate_match_path(match), class: 'btn btn-sm btn-outline-success' %></td>
           </tr>
         <tr class="border-bottom-0">
           <td><%= summarize_errors(match) %></td>
