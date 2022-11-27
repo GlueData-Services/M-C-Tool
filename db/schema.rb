@@ -50,6 +50,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_134458) do
     t.string "DESCR", limit: 7
   end
 
+  create_table "b_basic_char", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "MATNR", limit: 40, null: false
+    t.decimal "ATINN", precision: 10
+    t.string "ATNAM", limit: 30
+    t.string "ATWRT", limit: 30
+  end
+
   create_table "b_brands", primary_key: "BRAND_ID", id: { type: :string, limit: 4 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "BRAND_DESCR", limit: 30
   end
@@ -224,6 +231,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_134458) do
     t.string "TAXM9", limit: 1
   end
 
+  create_table "b_other_char", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "MATNR", limit: 40, null: false
+    t.string "MATKL", limit: 9
+    t.string "WGBEZ", limit: 20
+    t.decimal "ATINN", precision: 10
+    t.string "ATNAM", limit: 30
+    t.string "ATWRT", limit: 30
+  end
+
   create_table "b_t001w", primary_key: "WERKS", id: { type: :string, limit: 4 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "NAME1", limit: 30
     t.string "NAME2", limit: 30
@@ -298,6 +314,19 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_134458) do
     t.string "VTEXT", limit: 50
   end
 
+  create_table "b_var_char", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "GENERIC", limit: 18, null: false
+    t.string "MATNR", limit: 40, null: false
+    t.decimal "CHAR1_ATINN", precision: 10, scale: 2
+    t.string "CHAR1_ATNAM", limit: 30
+    t.string "CHAR1_ATWRT", limit: 30
+    t.string "CHAR1_GROUP_ATNAM"
+    t.decimal "CHAR2_ATINN", precision: 10, scale: 2
+    t.string "CHAR2_ATNAM", limit: 30
+    t.string "CHAR2_ATWRT", limit: 30
+    t.string "CHAR2_GROUP_ATNAM"
+  end
+
   create_table "b_variant_detail", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.text "TYPE", size: :tiny
     t.text "GENERIC_MATNR", size: :tiny
@@ -326,6 +355,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_134458) do
     t.index ["GENERIC_MATNR"], name: "b_variant_detail_GENERIC_MATNR_IDX", length: 255
   end
 
+  create_table "classification_char", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "ATINN"
+    t.string "CLASS"
+    t.string "ATNAM"
+  end
+
   create_table "comments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "commentable_type", null: false
     t.bigint "commentable_id", null: false
@@ -340,6 +375,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_134458) do
 
   create_table "g_attyp_lu", primary_key: "ATTYP", id: :integer, default: nil, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "DESCR", limit: 7
+  end
+
+  create_table "g_basic_char", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "MATNR", limit: 40, null: false
+    t.decimal "ATINN", precision: 10
+    t.string "ATNAM", limit: 30
+    t.string "ATWRT", limit: 30
   end
 
   create_table "g_brands", primary_key: "BRAND_ID", id: { type: :string, limit: 4 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -503,6 +545,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_134458) do
     t.string "TAXM9", limit: 1
   end
 
+  create_table "g_other_char", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "MATNR", limit: 40
+    t.string "MATKL", limit: 9
+    t.string "WGBEZ", limit: 20
+    t.decimal "ATINN", precision: 10
+    t.string "ATNAM", limit: 30
+    t.string "ATWRT", limit: 30
+  end
+
   create_table "g_t001w", primary_key: "WERKS", id: { type: :string, limit: 4 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "NAME1", limit: 30
     t.string "NAME2", limit: 30
@@ -579,6 +630,20 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_134458) do
 
   create_table "g_twptt", primary_key: "PLGTP", id: { type: :string, limit: 2 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "VTEXT", limit: 20
+  end
+
+  create_table "g_var_char", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.integer "GENERIC", null: false
+    t.string "MATNR", limit: 40, null: false
+    t.string "CHAR1_ATNAM", limit: 30
+    t.string "CHAR1_ATWRT", limit: 30
+    t.string "CHAR1_GROUP_ATNAM"
+    t.string "CHAR2_ATNAM", limit: 30
+    t.string "CHAR2_ATWRT", limit: 30
+    t.string "CHAR2_GROUP_ATNAM"
+    t.string "CHAR3_ATNAM", limit: 30
+    t.string "CHAR3_ATWRT", limit: 30
+    t.string "CHAR3_GROUP_ATNAM"
   end
 
   create_table "g_variant_detail", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -667,6 +732,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_134458) do
 
   create_table "m_attyp_lu", primary_key: "ATTYP", id: :integer, default: nil, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "DESCR", limit: 7
+  end
+
+  create_table "m_basic_char", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "MATNR", limit: 40
+    t.string "ATNAM", limit: 30
+    t.string "ATWRT", limit: 30
   end
 
   create_table "m_brands", primary_key: "BRAND_ID", id: { type: :string, limit: 4 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -846,6 +917,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_134458) do
     t.string "TAXM9", limit: 1
   end
 
+  create_table "m_other_char", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "MATNR", limit: 40
+    t.string "MATKL", limit: 9
+    t.string "WGBEZ", limit: 20
+    t.decimal "ATINN", precision: 10
+    t.string "ATNAM", limit: 30
+    t.string "ATWRT", limit: 30
+  end
+
   create_table "m_t001w", primary_key: "WERKS", id: { type: :string, limit: 4 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "NAME1", limit: 30
     t.string "NAME2", limit: 30
@@ -924,6 +1004,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_134458) do
 
   create_table "m_twptt", primary_key: "PLGTP", id: { type: :string, limit: 2 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "VTEXT", limit: 20
+  end
+
+  create_table "m_var_char", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "GENERIC", limit: 18, null: false
+    t.string "MATNR", limit: 40, null: false
+    t.string "CHAR1_ATNAM", limit: 30
+    t.string "CHAR1_ATWRT", limit: 30
+    t.string "CHAR1_GROUP_ATNAM"
+    t.string "CHAR2_ATNAM", limit: 30
+    t.string "CHAR2_ATWRT", limit: 30
+    t.string "CHAR2_GROUP_ATNAM"
   end
 
   create_table "m_variant_detail", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1356,6 +1447,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_134458) do
     t.index ["name"], name: "motor_tags_name_unique_index", unique: true
   end
 
+  create_table "other_char", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "BMC_DESC"
+    t.string "ATINN"
+    t.string "ATNAM"
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -1377,6 +1474,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_134458) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
+  end
+
+  create_table "variant_char", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "ATINN"
+    t.string "CLASS"
+    t.string "ATNAM"
   end
 
   add_foreign_key "comments", "users"

@@ -33,8 +33,12 @@ class Lookup < ApplicationRecord
     where(tab: 'Variant', 'Display': true).order(:sort_order).all
   end
 
+  def self.tax_fields
+    where(tab: 'Tax')
+  end
+
   def self.sections
-    tabs = where.not(tab: %w[Unit_of_Measure Variant]).order(:sort_order).distinct.pluck(:tab)
+    tabs = where.not(tab: %w[Unit_of_Measure Variant Info_Characteristics Tax Classification]).order(:sort_order).distinct.pluck(:tab)
     # tabs = order(:sort_order).distinct.pluck('Tab')
     filtered_tabs = []
     tabs.each do |t|

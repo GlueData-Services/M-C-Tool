@@ -27,10 +27,11 @@ class Variant
 
   def get_variants_for_mara(mara)
     return if mara.banner[0].blank?
-    sel_fields = banner_fields[mara.banner[0].downcase].join(', ')
+    # sel_fields = banner_fields[mara.banner[0].downcase].join(', ')
     table = "#{mara.banner[0].downcase}_variant_detail"
 
-    res = ActiveRecord::Base.connection.exec_query("SELECT UNIQUE #{sel_fields} FROM #{table} WHERE GENERIC_MATNR = '#{mara.matnr}'")
+    res = ActiveRecord::Base.connection.exec_query("SELECT UNIQUE * FROM #{table} WHERE GENERIC_MATNR = '#{mara.matnr}'")
+    puts res
     # [res.columns, res.rows]
     res.rows.map do |row|
       Hash[res.columns.zip(row)]

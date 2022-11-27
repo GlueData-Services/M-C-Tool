@@ -1,0 +1,32 @@
+<div id="characteristics" class="bg-white border-start border-end border-bottom border-1 p-3 mb-3 tab-pane fade show" role="tabpanel">
+  <table class="table table-sm table-responsive table-consolidate">
+    <thead>
+    <tr>
+      <th>Article</th>
+      <th>MATNR</th>
+      <th>ATNAM</th>
+      <th>ATWRT</th>
+      <th></th>
+      <th colspan="2" class="text-center">Consolidated</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% CharacteristicsService.new(match.id).characters.each do |char| %>
+      <tr class="<%= banner(char['article'][0]).downcase %>" data-controller="class">
+        <td><%= char['article'] %></td>
+        <td><%= char['MATNR'] %></td>
+        <td><%= char['ATNAM'] %></td>
+        <td><%= char['ATWRT'] %></td>
+        <td><%= check_box_tag 'characteristic_selection', 1, false,
+                              data: { action: "class#selectRecord",
+                                      'class-atnam-param': char['ATNAM'],
+                                      'class-atwrt-param': char['ATWRT'] } %>
+        </td>
+        <td><%= text_field_tag "characteristic[][atnam]", nil, data: { class_target: 'atnam' } %></td>
+        <td><%= text_field_tag "characteristic[][atwrt]", nil, data: { class_target: 'atwrt' }  %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+</div>

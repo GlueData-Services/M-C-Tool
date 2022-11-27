@@ -18,3 +18,9 @@ application.register("units", UnitsController)
 
 import CommentsController from "./comments_controller"
 application.register("comments", CommentsController)
+
+import ClassController from "./class_controller"
+application.register("class", ClassController)
+
+import CharacterController from "./character_controller"
+application.register("character", CharacterController)

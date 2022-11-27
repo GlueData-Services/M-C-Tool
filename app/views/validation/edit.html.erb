@@ -8,270 +8,46 @@
 </section>
 
 
-<section class="container-fluid consolidator">
-  <!--                      -->
-  <!--      Nav Tabs        -->
-  <!--                      -->
-  <ul class="nav nav-tabs" id="tab-consolidation">
-    <% Lookup.sections.each_with_index do |sec, i| %>
-      <li class="nav-item">
-        <button id="<%= sec.downcase %>-tab" class="nav-link" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#<%= sec.downcase %>">
-          <%= sec %>
-        </button>
-      </li>
-    <% end %>
+<%= form_with url: update_match_fields_path, method: :post do |form| %>
+  <%= form.hidden_field :id, value: @match.id %>
+  <section class="container-fluid consolidator">
+    <%= render partial: 'nav_tabs', locals: { match: @match } %>
 
-    <li class="nav-item">
-      <button class="nav-link" id="uom-tab" data-bs-toggle="tab" data-bs-target="#uom" type="button" role="tab">UOM</button>
-    </li>
-
-    <% if @match.maras.map { |m| m.get_specific_field(72).downcase }.include?('generic') %>
-      <li class="nav-item">
-        <button class="nav-link" id="variants-tab" data-bs-toggle="tab" data-bs-target="#variants" type="button" role="tab">Variants</button>
-      </li>
-    <% end %>
-
-    <li class="nav-item">
-      <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments-list" type="button" role="tab">Comments</button>
-    </li>
-  </ul>
-
-
-  <!--                         -->
-  <!--      Tab Content        -->
-  <!--                         -->
-  <%= form_with url: update_match_fields_path, method: :post do |form| %>
-    <%= form.hidden_field :id, value: @match.id %>
     <div class="tab-content">
-      <% Lookup.sections.each_with_index do |sec, i| %>
-        <!--  Pane for a specific tab, contains table for a section (Basic, Logistics etc) -->
-        <div class="bg-white border-start border-end border-bottom border-1 p-3 mb-3 tab-pane fade show <%= 'show active' if i == 0 %>" id="<%= sec.downcase %>" role="tabpanel">
-
-          <!--    fields_for_section is an array of ids to the lookup table for all the fields in this section-->
-          <% fields_for_section = Lookup.fields_for_section(sec) %>
-          <table class="table table-sm table-bordered table-hover table-consolidate">
-            <thead>
-            <tr>
-              <th></th>
-
-              <% @match.maras.each do |mara| %>
-                <% main_mara = @match.matched_articles.find_by(prefixed_matnr: mara.id).main? %>
-
-                <th class="w-280">
-                  <div class="d-flex align-items-center justify-content-between">
-                      <span title="<%= mara.prefixed_matnr %>" class="<%= main_mara ? 'main_article' : '' %>">
-                        <%= mara.description %>
-                      </span>
-                    <div class="dropdown float-end">
-                      <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
-                              type="button" id="dropdownMenu2"
-                              data-bs-toggle="dropdown" aria-expanded="false">
-                      </button>
-
-                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        <li>
-                          <% if main_mara %>
-                            <%= link_to 'Unmark Main',
-                                        main_article_path(mara_id: mara.id, match_id: @match.id, unmark: true),
-                                        class: 'dropdown-item',
-                                        type: 'button' %>
-                          <% else %>
-                            <%= link_to 'Mark as Main',
-                                        main_article_path(mara_id: mara.id, match_id: @match.id),
-                                        class: 'dropdown-item',
-                                        type: 'button' %>
-                          <% end %>
-                        </li>
-                        <li>
-                          <%= link_to 'Remove from match',
-                                      remove_article_path(mara_id: mara.id, match_id: @match.id),
-                                      class: 'dropdown-item',
-                                      type: 'button' %>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </th>
-              <% end %>
-
-              <th class="text-center">
-                <%#== button_tag(content_tag(:i, '', class: 'bi bi-plus-square'), class: 'btn btn-sm btn-success', type: "button", 'data-bs-toggle': "modal", 'data-bs-target': "#addArticle") %>
-                <a href="#" class="btn btn-outline-success btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#addArticle">
-                  <i class="bi bi-plus-circle-fill"></i>
-                </a>
-              </th>
-
-              <th class="text-center tight">Consolidated</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            <% fields_for_section.each do |lookup_id| %>
-              <% mf = @match.match_fields.find_by(lookup_id: lookup_id) %>
-              <% lookup = Lookup.find(lookup_id) %>
-              <% selectable = lookup.updatable? %>
-              <% overridable = lookup.override? %>
-
-              <tr data-controller="consolidator">
-                <th class="tight bg-light text-nowrap" data-lookup-id="<%= lookup_id %>">
-                  <%= t(lookup.attribute_short_name) %>
-                </th>
-                <% vals = []; %>
-                <% val_id = nil %>
-
-                <% @match.maras.each do |mara| %>
-                  <% value = mara.get_specific_field(lookup_id) %>
-                  <% vals << value.to_s&.strip if (value.to_s.present? && !value.to_s.include?("*map")) %>
-                  <% val_id = mara.id %>
-
-                  <td class="<%= mara.banner.downcase %> mara-data w-280 <%= 'text-more-muted' unless selectable %> <%= 'mara-selected' if mara.id == mf&.mara_id %>"
-                      data-action="click->consolidator#select"
-                      data-consolidator-highlight-class="mara-selected"
-                      data-consolidator-selectable-param="<%= selectable %>"
-                      data-consolidator-mara-param="<%= mara.id %>"
-                      data-consolidator-value-param="<%= value %>">
-                    <span style="cursor: pointer;"><%= value %></span>
-                  </td>
-                <% end %>
-                <td class="text-center tight"></td>
-                <td class="w-280">
-                  <% if selectable %>
-                    <%= text_field_tag "match_fields[#{lookup_id}][mara_id]", nil,
-                                       type: 'hidden',
-                                       value: if mf&.present?
-                                                mf.mara_id
-                                              else
-                                                vals.compact.uniq.length == 1 ? val_id : nil
-                                              end,
-                                       data: { 'consolidator-target': 'selectedMara' }
-                    %>
-                    <input type="text"
-                           data-consolidator-target="selectedValue"
-                           class="p-0 <%= mf&.overridden? ? 'd-none' : '' %> <%= 'form-control-plaintext' unless overridable %>"
-                           value="<%= mf.present? ? mf.get_value : vals.uniq.length == 1 ? vals[0] : '' %>"
-                           disabled="<%= !overridable %>">
-
-                    <% if overridable %>
-                      <%= text_field_tag "match_fields[#{lookup_id}][overridden_value]",
-                                         mf&.overridden? ? mf.overridden_value : nil,
-                                         data: { 'consolidator-target': 'overrideInput' },
-                                         class: !mf&.overridden? ? 'd-none' : '',
-                                         disabled: !mf&.overridden? %>
-
-                      <%= check_box_tag :override,
-                                        1,
-                                        mf&.overridden? ? true : false,
-                                        class: 'override form-check-input',
-                                        title: 'Override',
-                                        data: { action: 'change->consolidator#override' } %>
-                    <% end %>
-                  <% end %>
-
-                </td>
-              </tr>
-            <% end %>
-            </tbody>
-          </table>
-        </div>
-      <% end %>
+      <%= render 'auto_tabs' %>
 
       <%= render partial: 'uom', locals: { match: @match } %>
+      <%= render partial: 'tax', locals: { match: @match } %>
+      <%= render partial: 'classification', locals: { match: @match } %>
+      <%= render partial: 'characteristics', locals: { match: @match } %>
       <%= render partial: 'variants', locals: { match: @match } %>
 
       <%= render partial: 'comments', locals: { match: @match } %>
     </div>
-  <% end %>
-</section>
+  </section>
 
-<section class="content container-fluid">
-  <div class="d-flex justify-content-end">
+  <section class="content container-fluid">
+    <div class="d-flex justify-content-end">
 
-    <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#problem">
-      Report problems
-    </a>
+      <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#problem">
+        Report problems
+      </a>
 
-    <%= link_to 'Reject', match_path(@match),
-                data: { turbo_confirm: 'This will delete the match and free all any articles to be re-matched',
-                        turbo_method: :delete },
-                class: 'btn btn-danger ms-2'
-    %>
-    <button type="submit" name="status" value="" class="btn btn-success ms-2">
-      Save
-    </button>
-    <button type="submit" name="status" value="complete" class="btn btn-success ms-2">
-      Complete
-    </button>
-  </div>
-</section>
-
-<div class="modal fade" id="addArticle" tabindex="-1" role="dialog" aria-labelledby="addArticleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl " role="document">
-    <div class="modal-content w-100">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addArticleModalLabel">Article Search</h5>
-        <button type="button" class="close btn btn-close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true"></span>
-        </button>
-      </div>
-
-      <div class="modal-body">
-        <%= form_tag search_path(consolidator: true, match_id: @match.id), method: :post, class: 'row gy-2 gx-3 bd-highlight', remote: true do %>
-          <div class="col-auto">
-            <%= select_tag :f_banner, options_for_select(%w[GAME BUILDERS MAKRO], params[:f_banner]), include_blank: true, placeholder: 'Banner', class: 'form-select' %>
-          </div>
-          <div class="col-auto">
-            <%= select_tag :f_article_type, options_for_select(Mara.article_types), placeholder: 'Article Type', include_blank: true, class: 'form-select' %>
-          </div>
-          <div class="col-auto">
-            <%= search_field_tag :match_q, params[:match_q], class: 'form-control-inline', placeholder: 'Search' %>
-          </div>
-          <div class="col-auto">
-            <%= submit_tag 'Go' %>
-          </div>
-        <% end %>
-
-        <div id="results"></div>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
+      <%= link_to 'Reject', match_path(@match),
+                  data: { turbo_confirm: 'This will delete the match and free all any articles to be re-matched',
+                          turbo_method: :delete },
+                  class: 'btn btn-danger ms-2'
+      %>
+      <button type="submit" name="status" value="" class="btn btn-success ms-2">
+        Save
+      </button>
+      <button type="submit" name="status" value="complete" class="btn btn-success ms-2">
+        Complete
+      </button>
     </div>
-  </div>
-</div>
+  </section>
+<% end %>
 
-<div class="modal fade" id="problem" tabindex="-1" aria-labelledby="problemModalLabel" aria-modal="true" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content w-100">
-      <div class="modal-header">
-        <h5 class="modal-title h4" id="problemModalLabel">Report problems with articles</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <%= bootstrap_form_tag url: problems_path(id: @match) do |f| %>
-          <% @match.maras.each do |mara| %>
-            <div class="mb-4">
-              <h5><b><%= mara.prefixed_matnr %> - </b> <%= mara.description %> </h5>
-              <table class="table table-sm table-borderless">
-                <tr>
-                  <td><b>UoM: </b> <%= mara.get_specific_field(24) %></td>
-                  <td><b>Category: </b> <%= mara.get_specific_field(72) %></td>
-                  <td><b>Material: </b> <%= mara.get_specific_field(19) %></td>
-                </tr>
-              </table>
-              <%= f.check_box "problem[#{mara.prefixed_matnr}][duplicate]", label: '[DUPE] This article is duplicated' %>
-              <%= f.check_box "problem[#{mara.prefixed_matnr}][tax_diff]", label: '[TAXDIFF] Tax difference' %>
-              <%= f.check_box "problem[#{mara.prefixed_matnr}][uom_mismatch]", label: '[UOMERR] The UoM in this article is incorrect' %>
-              <%= f.check_box "problem[#{mara.prefixed_matnr}][uom_review]", label: '[UOMREV] The AUoM needs to be reviewed' %>
-              <%= f.check_box "problem[#{mara.prefixed_matnr}][bad_category]", label: '[BADCAT] Mismatched article category' %>
-              <%= f.check_box "problem[#{mara.prefixed_matnr}][bad_material]", label: '[BADMAT] This article has the wrong material type' %>
-              <%= f.text_field "problem[#{mara.prefixed_matnr}][comment]", label: 'Comment' %>
-            </div>
-          <% end %>
+<%= render 'add_article_modal' %>
 
-          <%= submit_tag 'Report problems' %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-</div>
+<%= render 'report_problems_modal' %>

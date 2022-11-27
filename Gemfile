@@ -64,6 +64,7 @@ gem 'colored'
 gem "sentry-ruby"
 gem "sentry-rails"
 gem 'interactor-rails'
+gem 'table_print'
 
 group :development, :test do
   gem 'rspec-rails'
