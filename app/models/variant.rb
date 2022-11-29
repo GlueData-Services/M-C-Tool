@@ -36,6 +36,9 @@ class Variant
     res.rows.map do |row|
       Hash[res.columns.zip(row)]
     end
+
+  rescue Mysql2::Error => e
+    return e.message
   end
 
   def table_field(mara)

@@ -21,6 +21,3 @@ application.register("comments", CommentsController)
 
 import ClassController from "./class_controller"
 application.register("class", ClassController)
-
-import CharacterController from "./character_controller"
-application.register("character", CharacterController)
