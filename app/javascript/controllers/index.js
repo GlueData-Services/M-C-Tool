@@ -21,3 +21,6 @@ application.register("comments", CommentsController)
 
 import ClassController from "./class_controller"
 application.register("class", ClassController)
+
+import TaxController from "./tax_controller"
+application.register("tax", TaxController)

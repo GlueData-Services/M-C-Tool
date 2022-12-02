@@ -46,6 +46,11 @@ body {
   max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
+.shrink-column {
+  width: 0.1%;
+  white-space: nowrap;
+}
+
 th.tight, td.tight {
   width: 1px;
 }

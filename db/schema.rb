@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_20_134458) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_02_055953) do
+  create_table "_match_taxes", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.integer "match_id"
+    t.integer "tax_classification"
+    t.string "country"
+    t.string "tax_table"
+  end
+
   create_table "articles", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "code_1"
     t.string "code_2"
@@ -543,6 +550,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_134458) do
     t.string "TAXM7", limit: 1
     t.string "TAXM8", limit: 1
     t.string "TAXM9", limit: 1
+    t.index ["TAXM1"], name: "TAXM1"
   end
 
   create_table "g_other_char", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1238,6 +1246,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_134458) do
     t.string "overridden_value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "match_taxes", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "match_id"
+    t.integer "tax_classification"
+    t.string "tax_country"
+    t.string "tax_table"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["match_id"], name: "index_match_taxes_on_match_id"
   end
 
   create_table "match_units", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|

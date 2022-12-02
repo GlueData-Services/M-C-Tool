@@ -22,9 +22,14 @@ class ValidationController < ApplicationController
   end
 
   def update
+    # ai params.permit!
+    # tax_params.each do |p|
+    #   logger.debug p.ai
+    # end
     result = UpdateMatch.call(match_id: params[:id],
                               field_params: field_params,
                               unit_params: unit_params,
+                              tax_params: tax_params,
                               status: params['status'])
     @match = result.match
 
@@ -81,6 +86,10 @@ class ValidationController < ApplicationController
   end
 
   private
+
+  def tax_params
+    params.require(:match_tax).permit!
+  end
 
   def field_params
     params.require(:match_fields).permit!

@@ -5,6 +5,7 @@ class UpdateMatch
     match = Match.find(context.match_id)
     match_params = context.field_params
     unit_params = context.unit_params
+    tax_params = context.tax_params
 
     Match.transaction do
       modified = false
@@ -23,6 +24,16 @@ class UpdateMatch
         next if unit_record['prefixed_matnr'].blank?
         match_unit = match.match_units.find_or_initialize_by(match_id: match.id, quantity: unit_record[:quantity])
         match_unit.update(unit_record)
+      end
+
+      # This just deletes all countries which are not in the params, we must assume that they ahve been deselected
+      # in favour of other countries which WILL appear in these records
+      tax_countries = tax_params.to_h.keys
+      match.match_taxes.where.not(tax_country: tax_countries).delete_all
+
+      tax_params.each do |tax_record|
+        match_tax = match.match_taxes.find_or_initialize_by(match_id: match.id, tax_country: tax_record[0])
+        match_tax.update(tax_record[1])
       end
 
       match.update(status: :in_progress) if modified && context.status != 'complete'
