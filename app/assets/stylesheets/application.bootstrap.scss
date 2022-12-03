@@ -43,7 +43,10 @@ body {
 }
 
 .dotwrap {
-  max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .shrink-column {
@@ -86,6 +89,7 @@ th.tight, td.tight {
 
 .table-consolidate {
   font-size: 13px;
+
   td, th {
     vertical-align: middle;
   }
@@ -129,7 +133,7 @@ th.tight, td.tight {
 }
 
 .nav-link:hover {
- cursor: pointer;
+  cursor: pointer;
 }
 
 .active-code {
@@ -140,6 +144,7 @@ th.tight, td.tight {
 .btn-outline-glue {
   @include button-outline-variant($color: $glue-color, $color-hover: white);
 }
+
 .btn-glue {
   @include button-variant($glue-color, $glue-color, $color: white);
 }
@@ -157,6 +162,11 @@ th.tight, td.tight {
 
 #problem {
   .form-check {
-    margin-bottom: 0.25em!important;
+    margin-bottom: 0.25em !important;
   }
+}
+
+input.position {
+  max-width: 5rem;
+  text-align: center;
 }

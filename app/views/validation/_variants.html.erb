@@ -1,28 +1,30 @@
 <div class="bg-white border-start border-end border-bottom border-1 p-3 mb-3 tab-pane fade show" id="variants" role="tabpanel">
-  <% Variant.new(match.id).rows.each do |pmatnr, records| %>
-    <% next if records.blank? %>
-    <h4><%= pmatnr %></h4>
-
-    <table class="table table-sm">
-      <thead>
-      <tr>
-        <% records.first.each do |k, v| %>
-          <th><%= t(k) %></th>
-        <% end %>
-      </tr>
-      </thead>
-
-      <tbody>
-      <% records.each do |rec| %>
-        <tr>
-          <% rec.each do |k, v| %>
-            <td><%= v %></td>
-          <% end %>
-          <td><%= text_field_tag 'var_num[]'%></td>
-        </tr>
+  <% variants = Variant.new(match.id) %>
+  <table class="table table-sm table-consolidate">
+    <thead>
+    <tr>
+      <% (variants.keys - variants.skip_fields).each do |col| %>
+        <th><%= col %></th>
       <% end %>
-      </tbody>
+    </tr>
+    </thead>
 
-    </table>
-  <% end %>
+    <tbody>
+    <% variants.rows.each do |rec| %>
+      <tr>
+        <% (variants.keys - variants.skip_fields).each do |k| %>
+          <td><%= rec[k] %></td>
+        <% end %>
+
+        <td>
+          <div class="d-flex gap-1">
+            <button class="btn btn-outline-primary btn-sm var_plus">+</button>
+            <button class="btn btn-outline-primary btn-sm var_plus_one">+1</button>
+            <%= text_field_tag "variants[][#{rec['MATNR']}]", nil, class: 'flex-grow position' %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
 </div>
