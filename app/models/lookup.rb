@@ -4,6 +4,17 @@ class Lookup < ApplicationRecord
 
   self.table_name = "lookup_and_operations"
 
+  def self.generate_lookup
+    lookups = {}
+    # all.select(:id, :updatable, :override, :attribute_short_name).each do |r|
+    #   lookups[r[:id]] = r.attributes.except(:id)
+    # end
+    all.each do |r|
+      lookups[r.id] = r
+    end
+    lookups
+  end
+
   def self.name_for(id)
     Lookup.find(id).attribute_name
   end

@@ -31,12 +31,10 @@ class Variant
     table = "#{mara.banner[0].downcase}_variant_detail"
 
     res = ActiveRecord::Base.connection.exec_query("SELECT UNIQUE * FROM #{table} WHERE GENERIC_MATNR = '#{mara.matnr}'")
-    puts res
     # [res.columns, res.rows]
     res.rows.map do |row|
       Hash[res.columns.zip(row)]
     end
-
   rescue Mysql2::Error => e
     return e.message
   end

@@ -12,18 +12,20 @@
     </thead>
     <tbody>
     <% CharacteristicsService.new(match.id).characters.each do |char| %>
+      <% char_saved = match.match_characteristics.exists?(char_name: char['ATNAM'], mara_id: char['article']) %>
+
       <tr class="<%= banner(char['article'][0]).downcase %>" data-controller="class">
         <td><%= char['article'] %></td>
         <td><%= char['MATNR'] %></td>
         <td><%= char['ATNAM'] %></td>
         <td><%= char['ATWRT'] %></td>
-        <td><%= check_box_tag 'characteristic_selection', 1, false,
+        <td><%= check_box_tag 'characteristics[][mara_id]', char[:article], char_saved,
                               data: { action: "class#selectRecord",
                                       'class-atnam-param': char['ATNAM'],
                                       'class-atwrt-param': char['ATWRT'] } %>
         </td>
-        <td><%= text_field_tag "characteristic[][atnam]", nil, data: { class_target: 'atnam' } %></td>
-        <td><%= text_field_tag "characteristic[][atwrt]", nil, data: { class_target: 'atwrt' }  %></td>
+        <td><%= text_field_tag "characteristics[][char_name]", char_saved ? char['ATNAM'] : nil, data: { class_target: 'atnam' }, disabled: !char_saved %></td>
+        <td><%= text_field_tag "characteristics[][char_value]", char_saved ? char['ATWRT'] : nil, data: { class_target: 'atwrt' }, disabled: !char_saved %></td>
       </tr>
     <% end %>
     </tbody>

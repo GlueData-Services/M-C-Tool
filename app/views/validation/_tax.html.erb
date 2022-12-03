@@ -17,7 +17,7 @@
       <% rates.each do |rate| %>
         <tr data-controller="tax" class="<%= rate['banner'].downcase %>">
           <td>
-            <% tax_selected = MatchTax.is_persisted?(rate['aland'], rate['taxm1'], rate['table']) %>
+            <% tax_selected = match.match_taxes.exists?(tax_country: rate['aland'], tax_classification: rate['taxm1'], tax_table: rate['table']) %>
             <input class="<%= rate['aland'] %>-checkbox"
                    type="checkbox"
                    data-action="tax#selectTaxClass"

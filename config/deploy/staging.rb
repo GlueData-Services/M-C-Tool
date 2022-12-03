@@ -12,6 +12,8 @@ server "gluedata", user: "gd_mhowell", roles: %w{app db web}
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
+set :rvm_ruby_version, '3.1.2'
+
 # role-based syntax
 # ==================
 

@@ -18,18 +18,18 @@ class ValidationController < ApplicationController
   end
 
   def edit
-    @match = Match.find(params[:id])
+    @match = Match.includes(maras: :match_fields).find(params[:id])
+    @lookups = Lookup.generate_lookup
   end
 
   def update
-    # ai params.permit!
-    # tax_params.each do |p|
-    #   logger.debug p.ai
-    # end
+    logger.ap char_params
+
     result = UpdateMatch.call(match_id: params[:id],
                               field_params: field_params,
                               unit_params: unit_params,
                               tax_params: tax_params,
+                              char_params: char_params,
                               status: params['status'])
     @match = result.match
 
@@ -86,6 +86,10 @@ class ValidationController < ApplicationController
   end
 
   private
+
+  def char_params
+    params.fetch(:characteristics, []).map(&:permit!)
+  end
 
   def tax_params
     params.require(:match_tax).permit!

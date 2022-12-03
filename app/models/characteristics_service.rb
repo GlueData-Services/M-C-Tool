@@ -1,3 +1,5 @@
+##
+# When a characteristic is selected, we must compare the key to the values in
 class CharacteristicsService
   attr_reader :match, :lookup, :characters
 

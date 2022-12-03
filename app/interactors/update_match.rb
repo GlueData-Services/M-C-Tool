@@ -6,6 +6,7 @@ class UpdateMatch
     match_params = context.field_params
     unit_params = context.unit_params
     tax_params = context.tax_params
+    char_params = context.char_params
 
     Match.transaction do
       modified = false
@@ -34,6 +35,12 @@ class UpdateMatch
       tax_params.each do |tax_record|
         match_tax = match.match_taxes.find_or_initialize_by(match_id: match.id, tax_country: tax_record[0])
         match_tax.update(tax_record[1])
+      end
+
+      match.match_characteristics.delete_all
+      char_params.each do |characteristic|
+        match_char = match.match_characteristics.find_or_initialize_by(characteristic)
+        match_char.save!
       end
 
       match.update(status: :in_progress) if modified && context.status != 'complete'

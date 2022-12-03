@@ -63,13 +63,12 @@
 
       <% fields_for_section.each do |lookup_id| %>
         <% mf = @match.match_fields.find_by(lookup_id: lookup_id) %>
-        <% lookup = Lookup.find(lookup_id) %>
-        <% selectable = lookup.updatable? %>
-        <% overridable = lookup.override? %>
+        <% selectable = @lookups[lookup_id].updatable? %>
+        <% overridable = @lookups[lookup_id].override? %>
 
         <tr data-controller="consolidator">
           <th class="tight bg-light text-nowrap" data-lookup-id="<%= lookup_id %>">
-            <%= t(lookup.attribute_short_name) %>
+            <%= t(@lookups[lookup_id].attribute_short_name) %>
           </th>
           <% vals = []; %>
           <% val_id = nil %>
