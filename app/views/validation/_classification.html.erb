@@ -11,19 +11,21 @@
     </tr>
     </thead>
     <tbody>
-    <% ClassificationService.new(match.id).classifications.each_with_index do |cls, i| %>
+    <% ClassificationService.new(match.id).classifications.each_with_index do |cls| %>
+      <% class_saved = match.match_classes.exists?(class_name: cls['ATNAM'], class_value: cls['ATWRT'], mara_id: cls['article']) %>
+
       <tr class="<%= banner(cls['article'][0]).downcase %>" data-controller="class">
         <td><%= cls['article'] %></td>
         <td><%= cls['MATNR'] %></td>
         <td><%= cls['ATNAM'] %></td>
         <td><%= cls['ATWRT'] %></td>
-        <td><%= check_box_tag 'classification_selection', 1, false,
+        <td><%= check_box_tag 'classification[][mara_id]', cls['article'], class_saved,
                               data: { action: "class#selectRecord",
                                       'class-atnam-param': cls['ATNAM'],
                                       'class-atwrt-param': cls['ATWRT'] } %>
         </td>
-        <td><%= text_field_tag "classification[][atnam]", nil, data: { class_target: 'atnam' } %></td>
-        <td><%= text_field_tag "classification[][atwrt]", nil, data: { class_target: 'atwrt' }  %></td>
+        <td><%= text_field_tag "classification[][class_name]", class_saved ? cls['ATNAM'] : nil, data: { class_target: 'atnam' }, disabled: !class_saved %></td>
+        <td><%= text_field_tag "classification[][class_value]", class_saved ? cls['ATNAM'] : nil, data: { class_target: 'atwrt' }, disabled: !class_saved %></td>
       </tr>
     <% end %>
     </tbody>

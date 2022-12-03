@@ -23,13 +23,12 @@ class ValidationController < ApplicationController
   end
 
   def update
-    logger.ap char_params
-
     result = UpdateMatch.call(match_id: params[:id],
                               field_params: field_params,
                               unit_params: unit_params,
                               tax_params: tax_params,
                               char_params: char_params,
+                              class_params: class_params,
                               status: params['status'])
     @match = result.match
 
@@ -86,6 +85,10 @@ class ValidationController < ApplicationController
   end
 
   private
+
+  def class_params
+    params.fetch(:classification, []).map(&:permit!)
+  end
 
   def char_params
     params.fetch(:characteristics, []).map(&:permit!)

@@ -5,6 +5,8 @@ class Match < ApplicationRecord
   has_many :match_units, dependent: :destroy
   has_many :match_taxes, dependent: :destroy
   has_many :match_characteristics, dependent: :destroy
+  has_many :match_classes, dependent: :destroy
+
   has_many :matched_articles, dependent: :destroy
 
   has_many :maras, through: :matched_articles

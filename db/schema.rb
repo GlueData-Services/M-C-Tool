@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_03_094254) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_03_105734) do
   create_table "_match_taxes", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "match_id"
     t.integer "tax_classification"
@@ -1248,6 +1248,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_03_094254) do
     t.datetime "updated_at", null: false
     t.index ["mara_id"], name: "index_match_characteristics_on_mara_id"
     t.index ["match_id"], name: "index_match_characteristics_on_match_id"
+  end
+
+  create_table "match_classes", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.integer "match_id"
+    t.string "mara_id"
+    t.string "class_name"
+    t.string "class_value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["mara_id"], name: "index_match_classes_on_mara_id"
+    t.index ["match_id"], name: "index_match_classes_on_match_id"
   end
 
   create_table "match_fields", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
