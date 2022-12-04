@@ -550,7 +550,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_03_105734) do
     t.string "TAXM7", limit: 1
     t.string "TAXM8", limit: 1
     t.string "TAXM9", limit: 1
-    t.index ["TAXM1"], name: "TAXM1"
   end
 
   create_table "g_other_char", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|

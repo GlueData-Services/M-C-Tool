@@ -22,7 +22,11 @@ class Variant
       ]
     end
 
-    @skip_fields = find_empty_fields
+    @skip_fields = find_empty_fields if has_variants?
+  end
+
+  def has_variants?
+    rows.count > 0
   end
 
   def find_empty_fields
