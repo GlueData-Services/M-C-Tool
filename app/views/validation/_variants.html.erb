@@ -14,7 +14,7 @@
 
       <tbody>
       <% variants.rows.each do |rec| %>
-        <tr>
+        <tr class="<%= rec['banner'].downcase %>">
           <% (variants.keys - variants.skip_fields).each do |k| %>
             <td><%= rec[k] %></td>
           <% end %>

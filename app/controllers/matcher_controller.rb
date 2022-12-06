@@ -45,6 +45,9 @@ class MatcherController < ApplicationController
         @scores[score["_id"]] = score["_score"]
       end
     end
+  rescue Searchkick::MissingIndexError, Faraday::ConnectionFailed => e
+    @matched = []
+    @error = e.message
   end
 
   def create

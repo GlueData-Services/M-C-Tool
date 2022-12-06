@@ -74,7 +74,7 @@ class Variant
     table = "#{banner_prefix}_var_char"
     variant_fields = Lookup.variant_fields.pluck(banner_prefix + "_field")
 
-    res = ActiveRecord::Base.connection.exec_query("SELECT UNIQUE #{variant_fields.join(', ')} FROM #{table} WHERE GENERIC = '#{mara.matnr}'")
+    res = ActiveRecord::Base.connection.exec_query("SELECT UNIQUE '#{mara.banner}' AS banner, #{variant_fields.join(', ')} FROM #{table} WHERE GENERIC = '#{mara.matnr}'")
     res.rows.map do |row|
       Hash[res.columns.zip(row)]
     end
