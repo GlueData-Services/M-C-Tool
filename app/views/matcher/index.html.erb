@@ -12,7 +12,14 @@
 
       <div class="col-auto">
         <%= select_tag :f_article_type,
-                       options_for_select([["Article Type", nil]] + Mara.article_types.zip(Mara.article_types)),
+                       options_for_select([["Article Type", nil]] + Mara.article_types.zip(Mara.article_types), params[:f_article_type]),
+                       class: 'form-select-sm'
+        %>
+      </div>
+
+      <div class="col-auto">
+        <%= select_tag :f_group,
+                       options_for_select([["Group", nil]] + Mara.group_names.zip(Mara.group_names), params[:f_group]),
                        class: 'form-select-sm'
         %>
       </div>

@@ -23,6 +23,7 @@
                    data-action="tax#selectTaxClass"
                    data-tax-country-param="<%= rate['aland'] %>"
                    data-tax-banner-param="<%= rate['banner'] %>"
+                   <%= 'disabled' if params[:review].present? %>
                    <%= 'checked' if tax_selected %>
             >
             <div class="d-none">

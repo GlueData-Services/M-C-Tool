@@ -1,5 +1,5 @@
 class Mara < ApplicationRecord
-  searchkick highlight: [:description, :barcodes], filterable: [:banner, :article_type, :matched]
+  searchkick highlight: [:description, :barcodes], filterable: [:banner, :article_type, :matched, :group]
 
   has_many :match_fields
 
@@ -25,6 +25,7 @@ class Mara < ApplicationRecord
       barcodes: barcodes,
       banner: banner,
       matched: matched,
+      group: group,
       article_type: article_type
     }
   end
@@ -77,11 +78,11 @@ class Mara < ApplicationRecord
   end
 
   def self.article_types
-    select(:article_type).distinct.pluck(:article_type)
+    distinct.pluck(:article_type)
   end
 
   def self.group_names
-    group(:group).pluck(:group)
+    where.not(group: nil).distinct.pluck(:group)
   end
 end
 

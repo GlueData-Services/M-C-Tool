@@ -5,7 +5,7 @@ class MatcherController < ApplicationController
     cookies[:unmatched_limit] = params[:unmatched_limit] if params[:unmatched_limit]
     cookies[:min_score] = params[:min_score] if params[:min_score]
 
-    if params[:match_q].present? || params[:f_banner].present? || params[:f_article_type].present?
+    if params[:match_q].present? || params[:f_banner].present? || params[:f_article_type].present? || params[:f_group].present?
       _where = {
         # matched: 0,
         # active: 'Y',
@@ -13,6 +13,7 @@ class MatcherController < ApplicationController
 
       _where[:banner] = params[:f_banner] if params[:f_banner].present?
       _where[:article_type] = params[:f_article_type] if params[:f_article_type].present?
+      _where[:group] = params[:f_group] if params[:f_group].present?
 
       q = params[:match_q].blank? ? '*' : params[:match_q]
 
@@ -21,11 +22,12 @@ class MatcherController < ApplicationController
                                 misspellings: { edit_distance: 2, fields: [:description] },
                                 per_page: cookies.fetch(:unmatched_limit, 5),
                                 page: params[:n_page],
-                                fields: [:description, :barcodes, :banner]
+                                fields: [:description, :barcodes]
       )
 
     else
-      @need_match = Mara.active.unmatched.all.page(params[:n_page]).per(cookies.fetch(:unmatched_limit, 5))
+      @need_match = Mara.active.unmatched
+      @need_match = @need_match.page(params[:n_page]).per(cookies.fetch(:unmatched_limit, 5))
     end
 
     if params[:q]

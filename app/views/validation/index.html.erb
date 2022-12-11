@@ -105,7 +105,7 @@
             <td><%= match.article_type %></td>
             <td><%= match.matched_articles.count %></td>
             <td><%= t(match.status) %></td>
-            <td><%= match.review_status %></td>
+            <td><span class="badge bg-success text-uppercase"><%= match.review_status %></span></td>
             <td class="text-end"><%= link_to 'Review', consolidate_match_path(match, review: true), class: 'btn btn-sm btn-outline-glue' %></td>
           </tr>
         <% end %>

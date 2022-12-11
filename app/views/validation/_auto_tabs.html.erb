@@ -63,7 +63,7 @@
 
       <% fields_for_section.each do |lookup_id| %>
         <% mf = @match.match_fields.find_by(lookup_id: lookup_id) %>
-        <% selectable = @lookups[lookup_id].updatable? %>
+        <% selectable = @lookups[lookup_id].updatable? && !params[:review] %>
         <% overridable = @lookups[lookup_id].override? %>
 
         <tr data-controller="consolidator">

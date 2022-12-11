@@ -21,6 +21,7 @@ class ValidationController < ApplicationController
 
   def edit
     @match = Match.includes(maras: :match_fields).find(params[:id])
+    params[:review] = @match.status == 'complete'
     @lookups = Lookup.generate_lookup
   end
 
@@ -86,6 +87,22 @@ class ValidationController < ApplicationController
     end
   end
 
+  def pass
+    @match = Match.find(params[:id])
+    @match.pass!
+
+    redirect_to consolidate_match_url(@match)
+  end
+
+  def fail
+    @match = Match.find(params[:id])
+    if @match.fail!
+      redirect_to consolidate_match_url(@match)
+    else
+      redirect_to :back, notice: 'We could not change the status of this match'
+    end
+  end
+
   private
 
   def class_params
@@ -97,11 +114,11 @@ class ValidationController < ApplicationController
   end
 
   def tax_params
-    params.require(:match_tax).permit!
+    params.fetch(:match_tax, {}).permit!
   end
 
   def field_params
-    params.require(:match_fields).permit!
+    params.fetch(:match_fields, {}).permit!
   end
 
   def unit_params

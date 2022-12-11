@@ -29,7 +29,8 @@
                                      units_value_param: record['matnr'],
                                      units_unit_param: record['Alt_UoM'],
                                      units_ean_param: record['EAN']
-                                   }
+                                   },
+                                   disabled: params[:review].present?
               %>
             </td>
 
@@ -57,7 +58,7 @@
         <div class="use-unit d-flex flex-nowrap">
           <%= text_field_tag "match_units[][unit]", rec['unit'], data: { units_target: 'unit' }, readonly: true, placeholder: 'Unit' %>
           <div class="form-check d-flex flex-nowrap align-items-center mx-2">
-            <%= check_box_tag "override[#{qty}]", "1", false, id: "override_#{qty}", class: "me-1 form-check-input", data: { action: "units#toggleUnitsOverride"} %>
+            <%= check_box_tag "override[#{qty}]", "1", false, id: "override_#{qty}", class: "me-1 form-check-input", data: { action: "units#toggleUnitsOverride" }, disabled: params[:review].present? %>
             <label class="form-check-label" for="override_<%= qty %>">Override?</label>
           </div>
           <%= select_tag "match_units[][unit]", units_of_measure_options(with_description: true), disabled: true, class: 'd-none', data: { units_target: 'overrideUnit' } %>

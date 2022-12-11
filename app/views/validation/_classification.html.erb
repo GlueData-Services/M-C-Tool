@@ -22,7 +22,9 @@
         <td><%= check_box_tag 'classification[][mara_id]', cls['article'], class_saved,
                               data: { action: "class#selectRecord",
                                       'class-atnam-param': cls['ATNAM'],
-                                      'class-atwrt-param': cls['ATWRT'] } %>
+                                      'class-atwrt-param': cls['ATWRT'] },
+                              disabled: params[:review].present?
+        %>
         </td>
         <td><%= text_field_tag "classification[][class_name]", class_saved ? cls['ATNAM'] : nil, data: { class_target: 'atnam' }, disabled: !class_saved %></td>
         <td><%= text_field_tag "classification[][class_value]", class_saved ? cls['ATNAM'] : nil, data: { class_target: 'atwrt' }, disabled: !class_saved %></td>

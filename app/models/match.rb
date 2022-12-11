@@ -20,14 +20,14 @@ class Match < ApplicationRecord
   scope :complete, -> { where(status: :complete) }
   scope :in_error, -> { where(status: :error) }
   scope :mara_groups, ->(group) { joins(:maras).where(maras: { group: group }) }
-  scope :has_error, ->(err) { joins(:matched_articles).where(matched_articles: {err => true}) }
+  scope :has_error, ->(err) { joins(:matched_articles).where(matched_articles: { err => true }) }
 
   scope :single, -> { where(matched_articles_count: 1) }
   scope :double, -> { where(matched_articles_count: 2) }
   scope :triple, -> { where(matched_articles_count: 3) }
 
   def earliest_report
-     matched_articles.minimum(:reported_at)
+    matched_articles.minimum(:reported_at)
   end
 
   def name
@@ -48,5 +48,13 @@ class Match < ApplicationRecord
 
   def matched_articles_count
     matched_articles.count
+  end
+
+  def pass!
+    update(review_status: :pass)
+  end
+
+  def fail!
+    update(review_status: :fail, status: :awaiting)
   end
 end
