@@ -11,7 +11,7 @@
       <a class="nav-link" href="#complete" data-bs-toggle="tab" data-bs-target="#complete">Complete</a>
     </li>
     <li>
-      <a class="nav-link" href="#error" data-bs-toggle="tab" data-bs-target="#error">In error</a>
+      <a class="nav-link" href="#error" data-bs-toggle="tab" data-bs-target="#error">Specialist Review</a>
     </li>
   </ul>
 
@@ -47,8 +47,8 @@
           <th>Name</th>
           <th>Category</th>
           <th>Articles</th>
-          <th>Fields Complete</th>
           <th>Status</th>
+          <th class="text-center">Comments</th>
           <th></th>
         </tr>
         </thead>
@@ -59,8 +59,8 @@
             <td><%= match.name %></td>
             <td><%= match.article_type %></td>
             <td><%= match.matched_articles.count %></td>
-            <td><%= match.match_fields.count %></td>
             <td><%= t(match.status) %></td>
+            <td class="text-center"><%= match.comments.count if match.comments.count > 0 %></td>
             <td class="text-end"><%= link_to 'Consolidate', consolidate_match_path(match), class: 'btn btn-sm btn-outline-glue' %></td>
           </tr>
         <% end %>
@@ -70,14 +70,30 @@
     </div>
 
     <div id="complete" class="tab-pane fade p-3 bg-white" role="tabpanel">
+      <div class="d-flex justify-content-end">
+        <div class="d-flex gap-3">
+
+          <%= select_tag 'complete_group_filter',
+                         options_for_select(Mara.group_names, params[:complete_group_filter]),
+                         prompt: 'Group Filter',
+                         class: 'form-select',
+                         data: {
+                           controller: 'filter',
+                           action: 'filter#changed'
+                         }
+          %>
+        </div>
+      </div>
+
+
       <table class="table table-sm mt-4">
         <thead>
         <tr>
           <th>Name</th>
           <th>Category</th>
           <th>Articles</th>
-          <th>Fields Complete</th>
           <th>Status</th>
+          <th>Reviewed</th>
           <th></th>
         </tr>
         </thead>
@@ -88,9 +104,9 @@
             <td><%= match.name %></td>
             <td><%= match.article_type %></td>
             <td><%= match.matched_articles.count %></td>
-            <td><%= match.match_fields.count %></td>
             <td><%= t(match.status) %></td>
-            <td class="text-end"><%= link_to 'Consolidate', consolidate_match_path(match), class: 'btn btn-sm btn-outline-glue' %></td>
+            <td><%= match.review_status %></td>
+            <td class="text-end"><%= link_to 'Review', consolidate_match_path(match, review: true), class: 'btn btn-sm btn-outline-glue' %></td>
           </tr>
         <% end %>
         </tbody>
@@ -110,7 +126,6 @@
         <tr>
           <th>Name</th>
           <th>Articles</th>
-          <th>Fields Complete</th>
           <th>Reported</th>
           <th></th>
         </tr>
@@ -121,7 +136,6 @@
           <tr>
             <td><%= match.name %></td>
             <td><%= match.matched_articles.count %></td>
-            <td><%= match.match_fields.count %></td>
             <td>
               <% if match.earliest_report %>
                 <%= time_ago_in_words(match.earliest_report) %> ago
@@ -129,10 +143,10 @@
             </td>
             <td class="text-end"><%= link_to 'View', consolidate_match_path(match), class: 'btn btn-sm btn-outline-success' %></td>
           </tr>
-        <tr class="border-bottom-0">
-          <td><%= summarize_errors(match) %></td>
-          <th colspan=4><%= summarize_notes(match) %></th>
-        </tr>
+          <tr class="border-bottom-0">
+            <td><%= summarize_errors(match) %></td>
+            <th colspan=4><%= summarize_notes(match) %></th>
+          </tr>
         <% end %>
         </tbody>
       </table>

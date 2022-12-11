@@ -53,7 +53,7 @@ gem "bootsnap", require: false
 # gem 'sunspot_rails', github: 'sunspot/sunspot'
 gem "searchkick"
 gem "elasticsearch", "< 7.14"
-gem "typhoeus"
+gem "typhoeus" # Including this affects how searchkick connects to elasticsearch. Persistent connection
 gem "bootstrap_form", "~> 5.0"
 gem 'motor-admin'
 gem 'kaminari'

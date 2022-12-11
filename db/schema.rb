@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_03_105734) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_11_113206) do
   create_table "_match_taxes", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "match_id"
     t.integer "tax_classification"
@@ -1348,6 +1348,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_03_105734) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "matched_articles_count"
+    t.string "review_status"
   end
 
   create_table "motor_alert_locks", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|

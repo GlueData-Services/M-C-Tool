@@ -8,7 +8,9 @@ class ValidationController < ApplicationController
     @current_matches = @current_matches.where("matched_articles_count >= 3") if params[:article_count_filter].present? && params[:article_count_filter].to_i == 3
     @current_matches = @current_matches.distinct.page(params[:page]).per(params[:per])
 
-    @complete_matches = Match.complete.page(params[:page]).per(params[:per])
+    @complete_matches = Match.complete
+    @complete_matches = @complete_matches.mara_groups(params[:complete_group_filter]) if params[:complete_group_filter].present?
+    @complete_matches = @complete_matches.page(params[:page]).per(params[:per])
 
     @error_matches = Match.in_error
     @error_matches = @error_matches.has_error(params[:error_filter]) if params[:error_filter]
@@ -76,7 +78,7 @@ class ValidationController < ApplicationController
       if @comment.save
         format.turbo_stream {
           render turbo_stream: turbo_stream.append('comments',
-                                                    render_to_string(partial: 'comments/comment', locals: {comment: @comment}))
+                                                   render_to_string(partial: 'comments/comment', locals: { comment: @comment }))
         }
       else
         format.json message: 'Could not save comment', success: false
