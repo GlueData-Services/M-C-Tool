@@ -18,7 +18,7 @@ class Match < ApplicationRecord
   scope :in_progress, -> { where(status: :in_progress) }
   scope :incomplete, -> { Match.awaiting.or(Match.in_progress) }
   scope :complete, -> { where(status: :complete) }
-  scope :in_error, -> { where(status: :error) }
+  scope :in_error, -> { where(status: [:error, :awaiting_external]) }
   scope :mara_groups, ->(group) { joins(:maras).where(maras: { group: group }) }
   scope :has_error, ->(err) { joins(:matched_articles).where(matched_articles: { err => true }) }
 
@@ -56,5 +56,9 @@ class Match < ApplicationRecord
 
   def fail!
     update(review_status: :fail, status: :awaiting)
+  end
+
+  def awaiting_external!
+    update(status: :awaiting_external)
   end
 end

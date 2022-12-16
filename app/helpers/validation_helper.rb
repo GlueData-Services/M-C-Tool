@@ -64,7 +64,7 @@ module ValidationHelper
     }
 
     if with_description
-      options_for_select(measures.map{ |k, v| ["#{k} - #{v}", k] })
+      options_for_select(measures.map { |k, v| ["#{k} - #{v}", k] })
     else
       options_for_select(measures.keys)
     end
@@ -101,5 +101,29 @@ module ValidationHelper
                  controller: 'filter',
                  action: 'filter#changed'
                })
+  end
+
+  def review_badge(review_status)
+    case review_status&.upcase
+    when 'PASS'
+      content_tag(:span, review_status, class: 'badge bg-success text-uppercase')
+    when 'FAIL'
+      content_tag(:span, review_status, class: 'badge bg-danger text-uppercase')
+    else
+      content_tag(:span, review_status, class: 'badge bg-warning text-uppercase')
+    end
+  end
+
+  def status_badge(status)
+    case status&.upcase
+    when 'AWAITING'
+      content_tag(:span, status, class: 'badge bg-warning text-uppercase')
+    when 'ERROR'
+      content_tag(:span, status, class: 'badge bg-danger text-uppercase')
+    when 'AWAITING_EXTERNAL'
+      content_tag(:span, status.humanize, class: 'badge bg-warning text-uppercase')
+    else
+      content_tag(:span, status, class: 'badge bg-warning text-uppercase')
+    end
   end
 end

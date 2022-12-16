@@ -1,0 +1,50 @@
+<div id="error" class="tab-pane fade p-3 bg-white" role="tabpanel">
+  <div class="d-flex justify-content-between">
+    <div class="ms-auto d-flex gap-3">
+      <%= match_count_select %>
+      <%= error_filter_select %>
+    </div>
+  </div>
+  <table class="table table-sm table-bordered mt-4">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Articles</th>
+      <th>Reported</th>
+      <th class="text-center">Comments</th>
+      <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @error_matches.each do |match| %>
+      <tr>
+        <td><%= match.name %></td>
+        <td><%= status_badge(match.status) %></td>
+        <td><%= match.matched_articles.count %></td>
+        <td>
+          <% if match.earliest_report %>
+            <%= time_ago_in_words(match.earliest_report) %> ago
+          <% end %>
+        </td>
+        <td class="text-center">
+          <% if match.comments.count > 0 %>
+            <button class="btn btn-sm btn-primary p-1 py-0" data-bs-toggle="offcanvas" data-bs-target="#match-<%= match.id %>-comments">
+              <%= match.comments.count %>
+            </button>
+          <% end %>
+        </td>
+        <td class="text-end"><%= link_to 'View', consolidate_match_path(match, specialist: true), class: 'btn btn-sm btn-outline-success' %></td>
+      </tr>
+      <tr class="border-bottom-0">
+        <td><%= summarize_errors(match) %></td>
+        <th colspan=5><%= summarize_notes(match) %></th>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <%= paginate @error_matches %>
+</div>
+
+<%= render partial: 'canvas_comments', locals: { matches: @error_matches } %>

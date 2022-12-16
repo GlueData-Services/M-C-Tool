@@ -16,6 +16,9 @@ Rails.application.routes.draw do
   get 'validation/:id/pass', to: 'validation#pass', as: :review_pass
   get 'validation/:id/fail', to: 'validation#fail', as: :review_fail
 
+  get 'validation/:id/awaiting_external', to: 'validation#awaiting_external', as: :review_awaiting_external
+  get 'validation/:id/resolved', to: 'validation#resolved', as: :review_resolved
+
   get 'matcher', to: 'matcher#index', as: :matcher
   post 'match', to: 'matcher#create', as: :create_match
   match 'search', to: 'search#search', as: :search, via: [:get, :post]

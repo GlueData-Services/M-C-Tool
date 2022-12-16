@@ -103,6 +103,21 @@ class ValidationController < ApplicationController
     end
   end
 
+  # Finds the match using the :id parameter, and updates its status to 'awaiting_external'
+  def awaiting_external
+    @match = Match.find(params[:id])
+    @match.awaiting_external!
+
+    redirect_to consolidation_url, notice: 'Match is now awaiting external data'
+  end
+
+  def resolved
+    @match = Match.find(params[:id])
+    @match.destroy
+
+    redirect_to consolidation_url, notice: 'Match has been resolved'
+  end
+
   private
 
   def class_params
