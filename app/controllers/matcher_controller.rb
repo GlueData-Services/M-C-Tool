@@ -1,5 +1,4 @@
 class MatcherController < ApplicationController
-  before_action :authenticate_user!
 
   def index
     cookies[:unmatched_limit] = params[:unmatched_limit] if params[:unmatched_limit]
