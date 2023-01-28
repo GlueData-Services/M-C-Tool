@@ -10,6 +10,7 @@
         <th></th>
 
         <% @match.maras.each do |mara| %>
+          <% next if skip_article?(@match, mara) %>
           <% main_mara = @match.matched_articles.find_by(prefixed_matnr: mara.id).main? %>
 
           <th class="w-280">
@@ -74,6 +75,7 @@
           <% val_id = nil %>
 
           <% @match.maras.each do |mara| %>
+            <% next if skip_article?(@match, mara) %>
             <% value = mara.get_specific_field(lookup_id) %>
             <% vals << value.to_s&.strip if (value.to_s.present? && !value.to_s.include?("*map")) %>
             <% val_id = mara.id %>

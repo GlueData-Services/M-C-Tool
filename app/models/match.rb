@@ -9,7 +9,7 @@ class Match < ApplicationRecord
   has_many :match_variants, dependent: :destroy
   has_many :matched_articles, dependent: :destroy
 
-  has_many :maras, through: :matched_articles
+  has_many :maras, -> { order('banner') }, through: :matched_articles
   has_many :match_fields
 
   has_many :comments, as: :commentable
@@ -60,5 +60,13 @@ class Match < ApplicationRecord
 
   def awaiting_external!
     update(status: :awaiting_external)
+  end
+
+  def matches_for_banner(banner)
+    maras.where(banner: banner).count
+  end
+
+  def main_for_banner(banner)
+    matched_articles.joins(:mara).where(matchable_articles: { banner: banner }).any?(&:main?)
   end
 end

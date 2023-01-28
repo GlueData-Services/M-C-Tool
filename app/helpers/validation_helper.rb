@@ -126,4 +126,13 @@ module ValidationHelper
       content_tag(:span, status, class: 'badge bg-warning text-uppercase')
     end
   end
+
+  def skip_article?(match, article)
+    return false if match.matches_for_banner(article.banner) < 2
+
+    return false unless match.main_for_banner(article.banner)
+
+    # There IS more than 1 match, and there IS a "main" article
+    !match.matched_articles.where(prefixed_matnr: article.prefixed_matnr).first.main?
+  end
 end

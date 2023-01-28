@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_11_121930) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_28_230332) do
   create_table "_match_taxes", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "match_id"
     t.integer "tax_classification"
@@ -1290,6 +1290,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_11_121930) do
     t.index ["match_id"], name: "index_match_units_on_match_id"
   end
 
+  create_table "match_variants", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.integer "match_id"
+    t.string "matnr"
+    t.integer "variant_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "matchable_articles", primary_key: "prefixed_matnr", id: { type: :string, limit: 20 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "banner", limit: 10
     t.string "type", limit: 10
@@ -1309,25 +1317,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_11_121930) do
     t.index ["group"], name: "matchable_articles_group_IDX"
   end
 
-  create_table "matchable_articles_oldold", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "banner", limit: 10
-    t.string "type", limit: 10
-    t.string "article_type", limit: 25
-    t.string "matnr", limit: 18
-    t.string "prefixed_matnr", limit: 20
-    t.string "description", limit: 40
-    t.string "brand_desc", limit: 30
-    t.integer "number_variants"
-    t.string "barcodes", limit: 999
-    t.string "vendors", limit: 999
-    t.boolean "matched", default: false
-    t.boolean "active", default: false
-    t.integer "group"
-    t.index ["active", "matched", "article_type"], name: "matchtable_articles_active_IDX"
-    t.index ["matnr"], name: "matchable_articles_matnr_IDX"
-    t.index ["prefixed_matnr"], name: "matchable_articles_prefixed_matnr_IDX"
-  end
-
   create_table "matched_articles", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "match_id"
     t.string "prefixed_matnr"
@@ -1342,6 +1331,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_11_121930) do
     t.boolean "uom_review"
     t.string "comment"
     t.datetime "reported_at"
+    t.boolean "match_duplicate"
   end
 
   create_table "matches", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|

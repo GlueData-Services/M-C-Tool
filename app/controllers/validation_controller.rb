@@ -60,9 +60,10 @@ class ValidationController < ApplicationController
   end
 
   def main_article
-    matched_article = MatchedArticle.find_by(match_id: params[:match_id], prefixed_matnr: params[:mara_id])
-    if matched_article.update(main: !params[:unmark].present?)
-      redirect_to consolidate_match_path(params[:match_id]), notice: matched_article.main? ? 'Marked article as main' : 'Unmarked main'
+    result = MarkMain.call(match_id: params[:match_id], mara_id: params[:mara_id], unmark: params[:unmark])
+
+    if result.success?
+      redirect_to consolidate_match_path(params[:match_id]), notice: result.marked_main? ? 'Marked article as main' : 'Unmarked main'
     else
       redirect_to consolidate_match_path(params[:match_id]), error: 'Could not mark article as main'
     end

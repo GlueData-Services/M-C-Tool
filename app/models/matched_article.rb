@@ -5,4 +5,6 @@ class MatchedArticle < ApplicationRecord
 
   has_many :comments, as: :commentable
   has_many :match_fields
+
+  delegate :banner, to: :mara
 end
