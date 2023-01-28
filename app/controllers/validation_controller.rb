@@ -32,6 +32,7 @@ class ValidationController < ApplicationController
                               tax_params: tax_params,
                               char_params: char_params,
                               class_params: class_params,
+                              variant_params: variant_params,
                               status: params['status'])
     @match = result.match
 
@@ -140,5 +141,9 @@ class ValidationController < ApplicationController
     # params.permit(match_units: [:quantity, :unit, :prefixed_matnr, :ean])
     # params[:match_units].map(&:permit!)
     params.fetch(:match_units, []).map(&:permit!)
+  end
+
+  def variant_params
+    params.fetch(:variants, {}).permit!
   end
 end

@@ -23,20 +23,13 @@
             <div class="d-flex gap-1">
               <button class="btn btn-outline-primary btn-sm var_plus">+</button>
               <button class="btn btn-outline-primary btn-sm var_plus_one">+1</button>
-              <%= text_field_tag "variants[][#{rec['MATNR']}]", nil, class: 'flex-grow position' %>
+              <% matching_variant = match.match_variants.find_by_matnr(rec['MATNR']) %>
+              <%= text_field_tag "variants[#{rec['MATNR']}]", matching_variant.present? ? matching_variant.variant_number : nil, class: 'flex-grow position' %>
             </div>
           </td>
         </tr>
       <% end %>
       </tbody>
-
-      <!--      <tfoot>-->
-      <%# (variants.keys - variants.skip_fields).each do |k| %>
-      <!--        <tr>-->
-      <!--          <td><%#= k %></td>-->
-      <!--        </tr>-->
-      <%# end %>
-      <!--      </tfoot>-->
     </table>
   <% end %>
 </div>

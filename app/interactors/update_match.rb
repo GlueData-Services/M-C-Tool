@@ -8,6 +8,7 @@ class UpdateMatch
     tax_params = context.tax_params
     char_params = context.char_params
     class_params = context.class_params
+    variant_params = context.variant_params
 
     Match.transaction do
       modified = false
@@ -18,7 +19,7 @@ class UpdateMatch
         if match_details['mara_id'].present?
           match_details['overridden_value'] = nil
         end
-        modified = true if field.update(match_details) # Cant set it to update's return, because the last one may fail
+        modified = true if field&.update(match_details) # Cant set it to update's return, because the last one may fail
       end
       match.reload
 
@@ -47,9 +48,14 @@ class UpdateMatch
       match.match_classes.delete_all
       class_params.each do |cls|
         match_class = match.match_classes.find_or_initialize_by(cls)
-        match_class.save
+        match_class.save!
       end
 
+      match.match_variants.delete_all
+      variant_params.each do |matnr, variant|
+        match_variant = match.match_variants.find_or_initialize_by(matnr: matnr, variant_number: variant)
+        match_variant.save!
+      end
 
       match.update(status: :in_progress) if modified && context.status != 'complete'
       match.update(status: :complete) if context.status == 'complete'
