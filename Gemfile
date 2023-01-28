@@ -58,6 +58,7 @@ gem "bootstrap_form", "~> 5.0"
 gem 'motor-admin'
 gem 'kaminari'
 gem 'devise'
+gem "devise_ldap_authenticatable"
 gem 'amazing_print'
 gem "audited", "~> 5.0"
 gem 'colored'

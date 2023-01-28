@@ -129,6 +129,9 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    devise_ldap_authenticatable (0.8.7)
+      devise (>= 3.4.1)
+      net-ldap (>= 0.16.0)
     diff-lcs (1.5.0)
     digest (3.1.0)
     dotenv (2.8.1)
@@ -228,6 +231,7 @@ GEM
       digest
       net-protocol
       strscan
+    net-ldap (0.17.1)
     net-pop (0.1.1)
       digest
       net-protocol
@@ -390,6 +394,7 @@ DEPENDENCIES
   cssbundling-rails
   debug
   devise
+  devise_ldap_authenticatable
   dotenv-rails
   elasticsearch (< 7.14)
   interactor-rails
