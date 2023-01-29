@@ -1,0 +1,31 @@
+<div class="modal fade" id="mark-failed" tabindex="-1" role="dialog" aria-labelledby="addArticleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content w-100">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addArticleModalLabel">Failed Review</h5>
+        <button type="button" class="close btn btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <%= form_with url: review_fail_url, method: :put do |f| %>
+          <%= f.hidden_field :id, value: @match.id %>
+
+          <div class="mb-3">
+            <%= f.label :comment, class: 'form-label' %>
+            <%= f.text_area :comment, class: 'form-control', style: "height: 150px", required: true %>
+          </div>
+
+          <div class="text-end">
+            <%= f.submit "Submit", class: 'btn' %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -54,8 +54,11 @@ class Match < ApplicationRecord
     update(review_status: :pass)
   end
 
-  def fail!
-    update(review_status: :fail, status: :awaiting)
+  def fail!(user, comment)
+    Match.transaction do
+      update(review_status: :fail, status: :awaiting)
+      comments.create(user: user, comment: comment)
+    end
   end
 
   def awaiting_external!

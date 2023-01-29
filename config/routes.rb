@@ -14,7 +14,8 @@ Rails.application.routes.draw do
   post 'validation/:id/comments', to: 'validation#new_comment', as: :new_match_comment
 
   get 'validation/:id/pass', to: 'validation#pass', as: :review_pass
-  get 'validation/:id/fail', to: 'validation#fail', as: :review_fail
+  get 'validation/:id/mark_failure', to: 'validation#mark_failure', as: :review_mark_failure
+  put 'validation/:id/fail', to: 'validation#fail', as: :review_fail
 
   get 'validation/:id/awaiting_external', to: 'validation#awaiting_external', as: :review_awaiting_external
   get 'validation/:id/resolved', to: 'validation#resolved', as: :review_resolved
@@ -26,7 +27,7 @@ Rails.application.routes.draw do
 
   get 'reports', to: 'reports#index', as: :reports
 
-  #post 'problem', to: 'problems#problem', as: :problem
+  # post 'problem', to: 'problems#problem', as: :problem
   resources :problems, only: [:create]
   resources :matches, only: [:destroy]
   resources :articles
