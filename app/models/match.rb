@@ -16,7 +16,8 @@ class Match < ApplicationRecord
 
   scope :awaiting, -> { where(status: :awaiting) }
   scope :in_progress, -> { where(status: :in_progress) }
-  scope :incomplete, -> { Match.awaiting.or(Match.in_progress) }
+  scope :remediated, -> { where(status: :remediated) }
+  scope :incomplete, -> { Match.awaiting.or(Match.in_progress).or(Match.remediated) }
   scope :complete, -> { where(status: :complete) }
   scope :in_error, -> { where(status: [:error, :awaiting_external]) }
   scope :mara_groups, ->(group) { joins(:maras).where(maras: { group: group }) }

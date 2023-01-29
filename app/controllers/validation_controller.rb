@@ -96,15 +96,11 @@ class ValidationController < ApplicationController
     redirect_to consolidate_match_url(@match)
   end
 
-  def mark_failure
-    @match = Match.find(params[:id])
-  end
-
   def fail
     @match = Match.find(params[:id])
 
     if @match.fail!(current_user, params[:comment])
-      redirect_to consolidate_match_url(@match)
+      redirect_to consolidation_url
     else
       redirect_to consolidate_match_url(@match), notice: 'We could not change the status of this match'
     end
