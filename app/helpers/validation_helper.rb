@@ -135,4 +135,20 @@ module ValidationHelper
     # There IS more than 1 match, and there IS a "main" article
     !match.matched_articles.where(prefixed_matnr: article.prefixed_matnr).first.main?
   end
+
+  def get_consolidated_value(mf, vals)
+    if mf.present?
+      mf.get_value
+    else
+      vals.uniq.length == 1 ? vals[0] : ''
+    end
+  end
+
+  def get_consolidated_id(mf, vals, mara_id)
+    if mf.present?
+      mf.mara_id
+    else
+      vals.compact.uniq.length == 1 ? mara_id : nil
+    end
+  end
 end

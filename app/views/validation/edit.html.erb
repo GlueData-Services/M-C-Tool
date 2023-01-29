@@ -7,38 +7,38 @@
   </div>
 </section>
 
+<div id="match-form" data-controller="validation">
+  <%= form_with url: update_match_fields_path, method: :post do |form| %>
+    <%= form.hidden_field :id, value: @match.id %>
+    <section class="container-fluid consolidator">
+      <%= render partial: 'nav_tabs', locals: { match: @match } %>
 
-<%= form_with url: update_match_fields_path, method: :post do |form| %>
-  <%= form.hidden_field :id, value: @match.id %>
-  <section class="container-fluid consolidator">
-    <%= render partial: 'nav_tabs', locals: { match: @match } %>
+      <div class="tab-content">
+        <%= render 'auto_tabs' %>
 
-    <div class="tab-content">
-      <%= render 'auto_tabs' %>
+        <%= render partial: 'uom', locals: { match: @match } %>
+        <%= render partial: 'tax', locals: { match: @match } %>
+        <%= render partial: 'classification', locals: { match: @match } %>
+        <%= render partial: 'characteristics', locals: { match: @match } %>
+        <%= render partial: 'variants', locals: { match: @match } %>
 
-      <%= render partial: 'uom', locals: { match: @match } %>
-      <%= render partial: 'tax', locals: { match: @match } %>
-      <%= render partial: 'classification', locals: { match: @match } %>
-      <%= render partial: 'characteristics', locals: { match: @match } %>
-      <%= render partial: 'variants', locals: { match: @match } %>
+        <%= render partial: 'comments', locals: { match: @match } %>
+      </div>
+    </section>
 
-      <%= render partial: 'comments', locals: { match: @match } %>
-    </div>
-  </section>
-
-  <section class="content container-fluid">
-    <div class="d-flex justify-content-end gap-2">
-      <% if params[:review].present? %>
-        <%= render partial: 'review_buttons', locals: { match: @match } %>
-      <% elsif params[:specialist].present? %>
-        <%= render partial: 'specialist_review_buttons', locals: { match: @match } %>
-      <% else %>
-        <%= render 'consolidation_buttons' %>
-      <% end %>
-    </div>
-  </section>
-<% end %>
-
+    <section class="content container-fluid">
+      <div class="d-flex justify-content-end gap-2">
+        <% if params[:review].present? %>
+          <%= render partial: 'review_buttons', locals: { match: @match } %>
+        <% elsif params[:specialist].present? %>
+          <%= render partial: 'specialist_review_buttons', locals: { match: @match } %>
+        <% else %>
+          <%= render 'consolidation_buttons' %>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+</div>
 <%= render 'add_article_modal' %>
 
 <%= render 'report_problems_modal' %>

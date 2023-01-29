@@ -60,16 +60,19 @@
         <th class="text-center tight">Consolidated</th>
       </tr>
       </thead>
-      <tbody>
 
+      <tbody>
       <% fields_for_section.each do |lookup_id| %>
         <% mf = @match.match_fields.find_by(lookup_id: lookup_id) %>
         <% selectable = @lookups[lookup_id].updatable? && !params[:review] %>
         <% overridable = @lookups[lookup_id].override? %>
 
-        <tr data-controller="consolidator">
+        <tr data-controller="consolidator validation"
+            class="<%= 'selectable' if selectable %>">
           <th class="tight bg-light text-nowrap" data-lookup-id="<%= lookup_id %>">
-            <%= t(@lookups[lookup_id].attribute_short_name) %>
+              <span class="<%= selectable ? 'fw-bold' : 'text-muted' %>">
+                <%= t(@lookups[lookup_id].attribute_short_name) %>
+              </span>
           </th>
           <% vals = []; %>
           <% val_id = nil %>
@@ -79,36 +82,37 @@
             <% value = mara.get_specific_field(lookup_id) %>
             <% vals << value.to_s&.strip if (value.to_s.present? && !value.to_s.include?("*map")) %>
             <% val_id = mara.id %>
+            <% highlight = selectable && mf&.mara_id.nil? %>
 
-            <td class="<%= mara.banner.downcase %> mara-data w-280 <%= 'text-more-muted' unless selectable %> <%= 'mara-selected' if mara.id == mf&.mara_id %>"
-                data-action="click->consolidator#select"
+            <td class="<%= mara.banner.downcase %> mara-data w-280
+                         <%= 'text-more-muted' unless selectable %>
+                         <%= 'mara-selected' if mara.id == mf&.mara_id %>
+                         <%= 'mara-highlight' if highlight %>"
+                data-action="click->consolidator#select click->validation#checkComplete"
                 data-consolidator-highlight-class="mara-selected"
                 data-consolidator-selectable-param="<%= selectable %>"
                 data-consolidator-mara-param="<%= mara.id %>"
                 data-consolidator-value-param="<%= value %>">
+
               <span style="cursor: pointer;"><%= value %></span>
             </td>
           <% end %>
           <td class="text-center tight"></td>
+
+
+          <!-- Final column containing the consolidated value-->
           <td class="w-280">
             <% if selectable %>
               <%= text_field_tag "match_fields[#{lookup_id}][mara_id]", nil,
+                                 class: "match-mara-value",
                                  type: 'hidden',
-                                 value: if mf&.present?
-                                          mf.mara_id
-                                        else
-                                          vals.compact.uniq.length == 1 ? val_id : nil
-                                        end,
+                                 value: get_consolidated_id(mf, vals, val_id),
                                  data: { 'consolidator-target': 'selectedMara' }
               %>
               <input type="text"
                      data-consolidator-target="selectedValue"
                      class="p-0 <%= mf&.overridden? ? 'd-none' : '' %> <%= 'form-control-plaintext' unless overridable %>"
-                     value="<%= if mf.present?
-                                  mf.get_value
-                                else
-                                  vals.uniq.length == 1 ? vals[0] : ''
-                                end %>"
+                     value="<%= get_consolidated_value(mf, vals) %>"
                      disabled="<%= !overridable %>">
 
               <% if overridable %>
@@ -125,8 +129,9 @@
                                   title: 'Override',
                                   data: { action: 'change->consolidator#override' } %>
               <% end %>
+            <% else %>
+              <%= get_consolidated_value(mf, vals) %>
             <% end %>
-
           </td>
         </tr>
       <% end %>
