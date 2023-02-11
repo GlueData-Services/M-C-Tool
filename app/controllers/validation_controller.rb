@@ -37,7 +37,7 @@ class ValidationController < ApplicationController
     @match = result.match
 
     if result.success?
-      redirect_to consolidate_match_path(@match), notice: 'Updated consolidated fields'
+      redirect_to consolidation_url(@match), notice: 'Updated consolidated fields'
     else
       redirect_to consolidate_match_path(@match), error: result.message[0..1000]
     end

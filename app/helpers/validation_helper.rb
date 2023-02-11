@@ -26,26 +26,6 @@ module ValidationHelper
     end
   end
 
-  def summarize_errors(match)
-    errors = []
-    css_class = "badge bg-light text-dark border shadow-sm"
-
-    match.matched_articles.each do |art|
-      err = []
-
-      [[:duplicate?, 'DUPE'], [:bad_category?, 'BADCAT'], [:bad_material?, 'BADMAT'], [:uom_mismatch?, 'UOM'], [:uom_review?, 'UOMREV'], [:tax_diff?, 'TAX']].each do |err_type|
-        err << err_type[1] if art.send(err_type[0])
-      end
-
-      errors << content_tag(:span,
-                            "#{art.prefixed_matnr} - #{err.join(' / ')}",
-                            class: css_class
-      ) if err.count > 0
-    end
-
-    errors.join(' ').html_safe
-  end
-
   def summarize_notes(match)
     notes = []
     match.matched_articles.each do |art|

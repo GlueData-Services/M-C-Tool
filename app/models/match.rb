@@ -73,4 +73,16 @@ class Match < ApplicationRecord
   def main_for_banner(banner)
     matched_articles.joins(:mara).where(matchable_articles: { banner: banner }).any?(&:main?)
   end
+
+  def problems
+    problems = []
+    matched_articles.each do |mart|
+      Problems::PROBLEMS.each do |problem|
+        if mart.send("#{problem.name}?")
+          problems << { problem_type: problem.name, comment: mart.comment, matnr: mart.prefixed_matnr }
+        end
+      end
+    end
+    problems
+  end
 end

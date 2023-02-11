@@ -1,5 +1,5 @@
 <ul class="nav nav-tabs" id="tab-consolidation">
-  <% Lookup.sections.each_with_index do |sec, i| %>
+  <% Lookup.sections(current_user).each_with_index do |sec, i| %>
     <li class="nav-item">
       <button id="<%= sec.downcase %>-tab" class="nav-link" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#<%= sec.downcase %>">
         <%= sec %>
@@ -7,23 +7,31 @@
     </li>
   <% end %>
 
-  <li class="nav-item">
-    <button class="nav-link" id="tax-tab" data-bs-toggle="tab" data-bs-target="#tax" type="button" role="tab">Tax</button>
-  </li>
+  <% if current_user.can_view?('tax') %>
+    <li class="nav-item">
+      <button class="nav-link" id="tax-tab" data-bs-toggle="tab" data-bs-target="#tax" type="button" role="tab">Tax</button>
+    </li>
+  <% end %>
 
-  <li class="nav-item">
-    <button class="nav-link" id="uom-tab" data-bs-toggle="tab" data-bs-target="#uom" type="button" role="tab">UOM</button>
-  </li>
+  <% if current_user.can_view?('uom') %>
+    <li class="nav-item">
+      <button class="nav-link" id="uom-tab" data-bs-toggle="tab" data-bs-target="#uom" type="button" role="tab">UOM</button>
+    </li>
+  <% end %>
 
-  <li class="nav-item">
-    <button class="nav-link" id="classification-tab" data-bs-toggle="tab" data-bs-target="#classification" type="button" role="tab">Classification</button>
-  </li>
+  <% if current_user.can_view?('classification') %>
+    <li class="nav-item">
+      <button class="nav-link" id="classification-tab" data-bs-toggle="tab" data-bs-target="#classification" type="button" role="tab">Classification</button>
+    </li>
+  <% end %>
 
-  <li class="nav-item">
-    <button class="nav-link" id="characteristics-tab" data-bs-toggle="tab" data-bs-target="#characteristics" type="button" role="tab">Characteristics</button>
-  </li>
+  <% if current_user.can_view?('characteristics') %>
+    <li class="nav-item">
+      <button class="nav-link" id="characteristics-tab" data-bs-toggle="tab" data-bs-target="#characteristics" type="button" role="tab">Characteristics</button>
+    </li>
+  <% end %>
 
-  <% if match.maras.map { |m| m.get_specific_field(72).downcase }.include?('generic') %>
+  <% if match.maras.map { |m| m.get_specific_field(72).downcase }.include?('generic') && current_user.can_view?('variants') %>
     <li class="nav-item">
       <button class="nav-link" id="variants-tab" data-bs-toggle="tab" data-bs-target="#variants" type="button" role="tab">Variants</button>
     </li>

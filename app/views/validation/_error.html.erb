@@ -5,10 +5,10 @@
       <%= error_filter_select %>
     </div>
   </div>
-  <table class="table table-sm table-bordered mt-4">
+  <table class="table mt-4">
     <thead>
     <tr>
-      <th>Name</th>
+      <th></th>
       <th>Status</th>
       <th>Articles</th>
       <th>Reported</th>
@@ -19,8 +19,8 @@
 
     <tbody>
     <% @error_matches.each do |match| %>
-      <tr>
-        <td><%= match.name %></td>
+      <tr class="table-light">
+        <th class="text-nowrap"><%= match.name %></th>
         <td><%= status_badge(match.status) %></td>
         <td><%= match.matched_articles.count %></td>
         <td>
@@ -37,9 +37,22 @@
         </td>
         <td class="text-end"><%= link_to 'View', consolidate_match_path(match, specialist: true), class: 'btn btn-sm btn-outline-success' %></td>
       </tr>
-      <tr class="border-bottom-0">
-        <td><%= summarize_errors(match) %></td>
-        <th colspan=5><%= summarize_notes(match) %></th>
+      <tr class="border-bottom-1">
+        <td colspan="6" class="p-2">
+
+          <table class="table table-bordered">
+            <tbody>
+            <% match.problems.each do |problem| %>
+              <tr>
+                <td><span class="text-nowrap badge bg-light text-dark border shadow-sm"><%= problem[:matnr] %></span></td>
+                <td><span class="text-nowrap badge bg-info text-dark border shadow-sm"><%= problem[:problem_type]&.humanize %></span></td>
+                <td style="width: 99%"><%= problem[:comment] %></td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+
+        </td>
       </tr>
     <% end %>
     </tbody>

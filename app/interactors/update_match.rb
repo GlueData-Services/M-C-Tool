@@ -59,6 +59,7 @@ class UpdateMatch
 
       match.update(status: :in_progress) if modified && context.status != 'complete'
       match.update(status: :complete) if context.status == 'complete'
+      match.update(status: :in_progress) if context.status == 'resolved'
 
       if match.review_status == 'fail'
         match.update(status: :complete, review_status: :remediated)

@@ -1,4 +1,4 @@
-<% Lookup.sections.each_with_index do |sec, i| %>
+<% Lookup.sections(current_user).each_with_index do |sec, i| %>
   <!--  Pane for a specific tab, contains table for a section (Basic, Logistics etc) -->
   <div class="bg-white border-start border-end border-bottom border-1 p-3 mb-3 tab-pane fade show <%= 'show active' if i == 0 %>" id="<%= sec.downcase %>" role="tabpanel">
 

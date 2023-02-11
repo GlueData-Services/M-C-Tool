@@ -48,13 +48,14 @@ class Lookup < ApplicationRecord
     where(tab: 'Tax')
   end
 
-  def self.sections
+  def self.sections(current_user)
     tabs = where.not(tab: %w[Unit_of_Measure Variant Info_Characteristics Tax Classification]).order(:sort_order).distinct.pluck(:tab)
-    # tabs = order(:sort_order).distinct.pluck('Tab')
     filtered_tabs = []
     tabs.each do |t|
       if self.where('tab = ? AND display = 1', t).exists?
-        filtered_tabs << t
+        if current_user.can_view?(t.downcase)
+          filtered_tabs << t
+        end
       end
     end
 

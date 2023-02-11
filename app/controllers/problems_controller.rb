@@ -5,10 +5,13 @@ class ProblemsController < ApplicationController
   # "M107016"=>{"duplicate"=>"0", "uom"=>"1", "cat_mismatch"=>"0", "wrong_mat_type"=>"1"}}, "commit"=>"Report problems", "id"=>"35"}
   def create
     result = MarkProblems.call(match: @match, problems: problem_params)
-    redirect_to consolidate_match_path(@match), notice: 'Problems reported!'
+    if result.success?
+      redirect_to consolidate_match_path(@match), notice: 'Problems reported!'
+    end
   end
 
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_match
     @match = Match.find(params[:id])
