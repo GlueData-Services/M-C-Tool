@@ -3,8 +3,8 @@ class User < ApplicationRecord
 
   # Include default devise modules. Others available are:
   # :confirmable, :timeoutable and :omniauthable
-  # devise :ldap_authenticatable, :recoverable, :rememberable, :lockable, :trackable
-  devise :database_authenticatable, :recoverable, :rememberable, :lockable, :trackable
+  devise :ldap_authenticatable, :database_authenticatable, :recoverable, :rememberable, :lockable, :trackable
+  # devise :database_authenticatable, :recoverable, :rememberable, :lockable, :trackable
 
   enum user_type: { admin: 'admin',
                     reviewer: 'reviewer',
@@ -15,9 +15,9 @@ class User < ApplicationRecord
                     merchandise: 'merchandise',
                     replenishment: 'replenishment' }
 
-  # def ldap_before_save
-  #   self.email = Devise::LDAP::Adapter.get_ldap_param(self.username, "mail").first
-  # end
+  def ldap_before_save
+    self.email = Devise::LDAP::Adapter.get_ldap_param(self.username, "mail").first
+  end
 
   def allowed_tabs
     res = {}

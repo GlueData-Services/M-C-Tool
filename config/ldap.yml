@@ -28,15 +28,24 @@ authorizations: &AUTHORIZATIONS
 
 ## Environment
 
+#development:
+#  host: ldap.jumpcloud.com
+#  port: 389
+#  attribute: mail
+#  base: ou=Users,o=63bd0c630d7d90b721e2154d,dc=jumpcloud,dc=com
+#  admin_user: uid=admin,ou=Users,o=63bd0c630d7d90b721e2154d,dc=jumpcloud,dc=com
+#  admin_password: 123QWEasd!
+#  ssl: false
+#  # <<: *AUTHORIZATIONS
+
 development:
-  host: ldap.jumpcloud.com
+  host: 192.168.10.10
   port: 389
-  attribute: mail
-  base: ou=Users,o=63bd0c630d7d90b721e2154d,dc=jumpcloud,dc=com
-  admin_user: uid=admin,ou=Users,o=63bd0c630d7d90b721e2154d,dc=jumpcloud,dc=com
-  admin_password: 123QWEasd!
+  attribute: cn
+  base: CN=Gluedata,DC=gluedata,DC=local
+  admin_user: CN=ldaptest,CN=Gluedata,DC=gluedata,DC=local
+  admin_password: SuperL@123!
   ssl: false
-  # <<: *AUTHORIZATIONS
 
 #  host: 192.168.10.10
 #  port: 389
@@ -46,22 +55,33 @@ development:
 #  admin_password: SuperL@123!
 #  ssl: false
 
-test:
-  host: localhost
-  port: 3389
-  attribute: cn
-  base: ou=people,dc=test,dc=com
-  admin_user: cn=admin,dc=test,dc=com
-  admin_password: admin_password
-  ssl: simple_tls
-  # <<: *AUTHORIZATIONS
+#test:
+#  host: localhost
+#  port: 3389
+#  attribute: cn
+#  base: ou=people,dc=test,dc=com
+#  admin_user: cn=admin,dc=test,dc=com
+#  admin_password: admin_password
+#  ssl: simple_tls
+#  # <<: *AUTHORIZATIONS
+
+# This is for GlueData
+#production:
+#  host: 192.168.10.10
+#  port: 389
+#  attribute: cn
+#  base: DC=gluedata,DC=local
+#  admin_user: CN=ldaptest,CN=Gluedata,DC=gluedata,DC=local
+#  admin_password: SuperL@123!
+#  ssl: start_tls
 
 production:
-  host: 192.168.10.10
-  port: 389
-  attribute: cn
-  base: DC=gluedata,DC=local
+  host: massmart.net
+  port: 636
+  attribute: mail
+  base: DC=massmart,DC=net
+  group_base: OU=General,OU=AllServiceGroups,OU=Massmart,DC=massmart,DC=net
   admin_user: CN=ldaptest,CN=Gluedata,DC=gluedata,DC=local
-  admin_password: SuperL@123!
-  ssl: start_tls
-  # <<: *AUTHORIZATIONS
+  admin_password: password
+  ssl: false
+#  ssl: start_tls
