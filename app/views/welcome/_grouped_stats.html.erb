@@ -10,10 +10,10 @@
 </ul>
 
 <div id="nav-tab-content" class="tab-content border-1 border-start border-end border-bottom bg-white">
-  <% groups.each do |group| %>
+  <% groups.each_with_index do |group, i| %>
     <% next if group.blank? %>
 
-    <div id="<%= group.parameterize %>" class="tab-pane fade show active p-3" role="tabpanel">
+    <div id="<%= group.parameterize %>" class="tab-pane fade <%= 'show active' if i == 0 %> p-3" role="tabpanel">
       <h5>Articles to be matched and consolidated</h5>
 
       <div class="row mt-4">
