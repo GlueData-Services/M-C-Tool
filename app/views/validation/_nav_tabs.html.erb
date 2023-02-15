@@ -19,17 +19,17 @@
     </li>
   <% end %>
 
-  <% if current_user.can_view?('classification') %>
-    <li class="nav-item">
-      <button class="nav-link" id="classification-tab" data-bs-toggle="tab" data-bs-target="#classification" type="button" role="tab">Classification</button>
-    </li>
-  <% end %>
+  <%# if current_user.can_view?('classification') %>
+  <!--    <li class="nav-item">-->
+  <!--      <button class="nav-link" id="classification-tab" data-bs-toggle="tab" data-bs-target="#classification" type="button" role="tab">Classification</button>-->
+  <!--    </li>-->
+  <%# end %>
 
-  <% if current_user.can_view?('characteristics') %>
-    <li class="nav-item">
-      <button class="nav-link" id="characteristics-tab" data-bs-toggle="tab" data-bs-target="#characteristics" type="button" role="tab">Characteristics</button>
-    </li>
-  <% end %>
+  <%# if current_user.can_view?('characteristics') %>
+  <!--    <li class="nav-item">-->
+  <!--      <button class="nav-link" id="characteristics-tab" data-bs-toggle="tab" data-bs-target="#characteristics" type="button" role="tab">Characteristics</button>-->
+  <!--    </li>-->
+  <%# end %>
 
   <% if match.maras.map { |m| m.get_specific_field(72).downcase }.include?('generic') && current_user.can_view?('variants') %>
     <li class="nav-item">
