@@ -403,6 +403,7 @@ DEPENDENCIES
   kaminari
   motor-admin
   mysql2 (~> 0.5)
+  nokogiri
   pry-rails
   puma (~> 5.0)
   rails (~> 7.0.2, >= 7.0.2.3)
