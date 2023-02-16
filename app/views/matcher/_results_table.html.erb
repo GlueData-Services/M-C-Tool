@@ -7,6 +7,7 @@
       <th class="text-nowrap">Description</th>
       <th class="text-nowrap">Article Type</th>
       <th class="text-nowrap" style="max-width: 5%;">Variants</th>
+      <th class="text-nowrap" style="max-width: 5%;">Vendors</th>
       <th>Barcodes</th>
     </tr>
     </thead>
@@ -14,7 +15,7 @@
     <tbody>
     <% if @need_match.count == 0 %>
       <tr>
-        <td colspan=7 class="text-center">No records found, try modifying the search and filtering parameters above.
+        <td colspan=6 class="text-center">No records found, try modifying the search and filtering parameters above.
         </td>
       </tr>
     <% else %>
@@ -33,6 +34,9 @@
           <td class="text-nowrap"><%= mara.description %></td>
           <td class="text-nowrap"><%= mara.article_type %></td>
           <td class="text-center"><%= mara.number_variants %></td>
+          <td class="">
+            <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="<%= mara.vendors %>"><%= truncate(mara.vendors, length: 30) %></span>
+          </td>
           <td>
             <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="<%= mara.barcodes %>">
             <%= mara.barcodes %>

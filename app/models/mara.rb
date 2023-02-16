@@ -14,6 +14,7 @@ class Mara < ApplicationRecord
   scope :game, -> { where(banner: 'GAME') }
   scope :makro, -> { where(banner: 'MAKRO') }
   scope :in_group, ->(group) { where(group: group) }
+  scope :in_batch, ->(batch) { where('Batch_Number': batch) }
 
   def self.has_field(col)
     self.column_names.include?(col)

@@ -95,21 +95,21 @@
               </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th>Total to match</th>
-                  <td class="text-end"><%= number_with_delimiter Mara.active.count %></td>
-                  <td class="text-end"><%= number_with_delimiter Mara.active.sum(:number_variants) %></td>
-                </tr>
-                <tr>
-                  <th>Total matched</th>
-                  <td class="text-end"><%= number_with_delimiter Mara.active.matched.count %></td>
-                  <td class="text-end"><%= number_with_delimiter Mara.active.matched.sum(:number_variants) %></td>
-                </tr>
-                <tr>
-                  <th>Total unmatched</th>
-                  <td class="text-end"><%= number_with_delimiter Mara.active.unmatched.count %></td>
-                  <td class="text-end"><%= number_with_delimiter Mara.active.unmatched.sum(:number_variants) %></td>
-                </tr>
+              <tr>
+                <th>Total to match</th>
+                <td class="text-end"><%= number_with_delimiter Mara.active.count %></td>
+                <td class="text-end"><%= number_with_delimiter Mara.active.sum(:number_variants) %></td>
+              </tr>
+              <tr>
+                <th>Total matched</th>
+                <td class="text-end"><%= number_with_delimiter Mara.active.matched.count %></td>
+                <td class="text-end"><%= number_with_delimiter Mara.active.matched.sum(:number_variants) %></td>
+              </tr>
+              <tr>
+                <th>Total unmatched</th>
+                <td class="text-end"><%= number_with_delimiter Mara.active.unmatched.count %></td>
+                <td class="text-end"><%= number_with_delimiter Mara.active.unmatched.sum(:number_variants) %></td>
+              </tr>
               </tbody>
             </table>
             <h5>Match Sets</h5>
@@ -189,7 +189,37 @@
 
     <%#= render 'old_stats' %>
     <div class="row mt-5">
-      <%= render 'grouped_stats' %>
+      <% batches = Mara.where.not('Batch_Number': nil).distinct('Batch_Number').pluck('Batch_Number') %>
+
+      <ul class="nav nav-tabs" id="grouped-stats-nav-tabs" role="tablist">
+        <% batches.each_with_index do |batch, i| %>
+          <% next if batch.blank? %>
+          <li>
+
+            <%= link_to "Batch #{batch}", "#batch-#{batch}", class: "nav-link #{ 'active' if i == 0}", data: { bs_toggle: :tab,
+                                                                                                               bs_target: "#batch-#{batch}" }, role: 'button' %>
+          </li>
+        <% end %>
+      </ul>
+
+      <div id="batch-nav-tab-content" class="tab-content border-1 border-start border-end border-bottom bg-white">
+        <% batches.each_with_index do |batch, i| %>
+          <% next if batch.blank? %>
+
+          <div id="batch-<%= batch %>" class="tab-pane fade <%= 'show active' if i == 0 %> p-3" role="tabpanel">
+            <h5>Finish
+              date: <%= Mara.where('Batch_Number': batch).order('Batch_Compl_Date DESC').first['Batch_Compl_Date'].strftime('%F') %></h5>
+
+            <%= render partial: 'grouped_stats', locals: { groups: Mara.group(:group)
+                                                                       .where.not(group: nil)
+                                                                       .where('Batch_Number': batch)
+                                                                       .pluck(:group),
+                                                           batch: batch } %>
+
+          </div>
+        <% end %>
+      </div>
+
     </div>
   </div>
 
