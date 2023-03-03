@@ -21,6 +21,7 @@ class Match < ApplicationRecord
   scope :complete, -> { where(status: :complete) }
   scope :in_error, -> { where(status: [:error, :awaiting_external]) }
   scope :mara_groups, ->(group) { joins(:maras).where(maras: { group: group }) }
+  scope :mara_batches, ->(batch) { joins(:maras).where(maras: { batch: batch }) }
   scope :has_error, ->(err) { joins(:matched_articles).where(matched_articles: { err => true }) }
 
   scope :single, -> { where(matched_articles_count: 1) }

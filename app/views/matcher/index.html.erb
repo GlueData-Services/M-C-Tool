@@ -25,6 +25,13 @@
       </div>
 
       <div class="col-auto">
+        <%= select_tag :f_batch,
+                       batch_filter_options(params[:f_batch]),
+                       class: 'form-select-sm'
+        %>
+      </div>
+
+      <div class="col-auto">
         <%= search_field_tag :match_q, params[:match_q], class: 'form-control-inline', placeholder: 'Search' %>
       </div>
 

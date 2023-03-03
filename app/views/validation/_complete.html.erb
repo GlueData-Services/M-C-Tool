@@ -11,6 +11,16 @@
                        action: 'filter#changed'
                      }
       %>
+      <%= select_tag 'complete_batch_filter',
+                     batch_filter_options(params[:complete_batch_filter], false),
+                     prompt: 'Batch Filter',
+                     class: 'form-select',
+                     data: {
+                       controller: 'filter',
+                       action: 'filter#changed'
+                     }
+      %>
+
     </div>
   </div>
 

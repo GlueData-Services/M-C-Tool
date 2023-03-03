@@ -1,5 +1,7 @@
 class Mara < ApplicationRecord
-  searchkick highlight: [:description, :barcodes], filterable: [:banner, :article_type, :matched, :group]
+  # alias_attribute :batch, :Batch_Number
+
+  searchkick highlight: [:description, :barcodes], filterable: [:banner, :article_type, :matched, :group, :batch]
 
   has_many :match_fields
 
@@ -27,6 +29,7 @@ class Mara < ApplicationRecord
       banner: banner,
       matched: matched,
       group: group,
+      batch: batch,
       article_type: article_type
     }
   end

@@ -10,6 +10,15 @@
                        action: 'filter#changed'
                      }
       %>
+      <%= select_tag 'incomplete_batch_filter',
+                     batch_filter_options(params[:incomplete_batch_filter], false),
+                     prompt: 'Batch Filter',
+                     class: 'form-select',
+                     data: {
+                       controller: 'filter',
+                       action: 'filter#changed'
+                     }
+      %>
       <%= select_tag 'article_count_filter',
                      options_for_select([1, 2, 3], params[:article_count_filter]),
                      prompt: 'Article Count Filter',

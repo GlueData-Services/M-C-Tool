@@ -22,13 +22,14 @@
       <% end %>
     </div>
   <% else %>
-    <table class="table table-sm table-bordered table-hover matched_table">
+    <table class="table table-sm table-bordered table-hover matched_table align-middle">
       <thead>
       <tr>
         <th>Banner</th>
         <th class="text-nowrap">Description</th>
         <th class="text-nowrap">Article Type</th>
         <th class="text-nowrap">Barcodes</th>
+        <th class="text-nowrap">Vendors</th>
         <th>Score</th>
         <th></th>
       </tr>
@@ -41,14 +42,15 @@
           <td><span><%= mara.banner %></span></td>
           <td class="text-nowrap"><%== highlight[:description].blank? ? mara.description : highlight[:description] %></td>
           <td class="text-nowrap"><%= mara.article_type %></td>
-          <td style="overflow: auto">
+          <td style="overflow: auto; max-width: 30em;"> <!-- Barcode List-->
             <% if highlight[:barcodes] %>
-              <!--              <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="<%#= mara.barcodes %>"><%#= truncate highlight[:barcodes]&.html_safe, length: 50 %></span>-->
               <%= match_codes(mara.barcodes, highlight[:barcodes]) %>
             <% else %>
-              <!--              <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="<%#= mara.barcodes %>"><%#= truncate mara.barcodes, length: 50 %></span>-->
               <%= match_codes(mara.barcodes, '') %>
             <% end %>
+          </td>
+          <td style="overflow: auto; max-width: 30em;"> <!-- Vendor List-->
+            <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="<%= mara['Vendor_Prod_Code'] %> /// <%= mara.vendors %>"><%= truncate(mara.vendors, length: 40) %></span>
           </td>
           <td><%= rank_score(@scores[mara.prefixed_matnr]) %></td>
           <td class="text-center"><%= check_box_tag 'p_matnr[]', mara.prefixed_matnr, @scores[mara.prefixed_matnr] >= 1000, class: 'match_select' %></td>

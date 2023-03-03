@@ -4,7 +4,12 @@ class MatcherController < ApplicationController
     cookies[:unmatched_limit] = params[:unmatched_limit] if params[:unmatched_limit]
     cookies[:min_score] = params[:min_score] if params[:min_score]
 
-    if params[:match_q].present? || params[:f_banner].present? || params[:f_article_type].present? || params[:f_group].present?
+    if params[:match_q].present? ||
+      params[:f_banner].present? ||
+      params[:f_article_type].present? ||
+      params[:f_group].present? ||
+      params[:f_batch].present?
+
       _where = {
         # matched: 0,
         # active: 'Y',
@@ -13,6 +18,7 @@ class MatcherController < ApplicationController
       _where[:banner] = params[:f_banner] if params[:f_banner].present?
       _where[:article_type] = params[:f_article_type] if params[:f_article_type].present?
       _where[:group] = params[:f_group] if params[:f_group].present?
+      _where[:batch] = params[:f_batch] if params[:f_batch].present?
 
       q = params[:match_q].blank? ? '*' : params[:match_q]
 

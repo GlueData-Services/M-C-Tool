@@ -1,6 +1,6 @@
 <div id="results-table">
   <!--  <table class="table table-sm table-bordered table-hover mt-4" data-toggle="table">-->
-  <table id="matchables" class="table table-sm">
+  <table id="matchables" class="table table-sm align-middle">
     <thead>
     <tr>
       <th>Banner</th>
@@ -26,6 +26,8 @@
             data-matcher-npage-param="<%= params[:n_page] %>"
             data-matcher-matchq-param="<%= params[:match_q] %>"
             data-matcher-f_banner-param="<%= params[:f_banner] %>"
+            data-matcher-f_batch-param="<%= params[:f_batch] %>"
+            data-matcher-f_group-param="<%= params[:f_group] %>"
             data-matcher-f_article_type-param="<%= params[:f_article_type] %>"
             class="<%= 'bg-selected' if mara.barcodes && params[:q]&.include?(mara.barcodes) %>"
             style="cursor: pointer;"
