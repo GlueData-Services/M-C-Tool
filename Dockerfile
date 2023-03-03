@@ -1,21 +1,15 @@
-FROM ruby:3.1.2-slim-bullseye AS assets
+FROM ruby:3.1.2-alpine AS assets
 
 WORKDIR /app
 
 ARG UID=1000
 ARG GID=1000
 
-RUN bash -c "set -o pipefail && apt-get update \
-  && apt-get install -y --no-install-recommends build-essential curl git mariadb-client libmariadb-dev \
-  && curl -sSL https://deb.nodesource.com/setup_18.x | bash - \
-  && curl -sSL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-  && echo 'deb https://dl.yarnpkg.com/debian/ stable main' | tee /etc/apt/sources.list.d/yarn.list \
-  && apt-get update && apt-get install -y --no-install-recommends nodejs yarn \
-  && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
-  && apt-get clean \
-  && groupadd -g \"${GID}\" ruby \
-  && useradd --create-home --no-log-init -u \"${UID}\" -g \"${GID}\" ruby \
-  && mkdir /node_modules && chown ruby:ruby -R /node_modules /app"
+RUN apk add --no-cache build-base curl git mariadb-dev tzdata nodejs yarn
+RUN addgroup ruby
+RUN adduser ruby -G ruby -D
+RUN mkdir /node_modules
+RUN chown ruby:ruby -R /node_modules /app
 
 USER ruby
 
@@ -28,34 +22,31 @@ RUN yarn install
 ARG RAILS_ENV="production"
 ARG NODE_ENV="production"
 ENV RAILS_ENV="${RAILS_ENV}" \
-    NODE_ENV="${NODE_ENV}" \
-    PATH="${PATH}:/home/ruby/.local/bin:/node_modules/.bin" \
-    USER="ruby"
+  NODE_ENV="${NODE_ENV}" \
+  PATH="${PATH}:/home/ruby/.local/bin:/node_modules/.bin" \
+  USER="ruby"
 
 COPY --chown=ruby:ruby . .
 
 RUN if [ "${RAILS_ENV}" != "development" ]; then \
   SECRET_KEY_BASE=dummyvalue rails assets:precompile; fi
 
-CMD ["bash"]
+CMD ["ash"]
 
 ###############################################################################
 
-FROM ruby:3.1.2-slim-bullseye AS app
-LABEL maintainer="Nick Janetakis <nick.janetakis@gmail.com>"
+FROM ruby:3.1.2-alpine AS app
 
 WORKDIR /app
 
 ARG UID=1000
 ARG GID=1000
 
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends build-essential curl mariadb-client libmariadb-dev \
-  && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
-  && apt-get clean \
-  && groupadd -g "${GID}" ruby \
-  && useradd --create-home --no-log-init -u "${UID}" -g "${GID}" ruby \
-  && chown ruby:ruby -R /app
+RUN apk add --no-cache curl mariadb-client mariadb-dev doas bash tzdata neovim netcat-openbsd
+RUN addgroup ruby
+RUN adduser ruby -G ruby -D
+RUN mkdir /node_modules
+RUN chown ruby:ruby -R /node_modules /app
 
 USER ruby
 
@@ -64,8 +55,8 @@ RUN chmod 0755 bin/*
 
 ARG RAILS_ENV="production"
 ENV RAILS_ENV="${RAILS_ENV}" \
-    PATH="${PATH}:/home/ruby/.local/bin" \
-    USER="ruby"
+  PATH="${PATH}:/home/ruby/.local/bin" \
+  USER="ruby"
 
 COPY --chown=ruby:ruby --from=assets /usr/local/bundle /usr/local/bundle
 COPY --chown=ruby:ruby --from=assets /app/public /public
@@ -76,4 +67,3 @@ ENTRYPOINT ["/app/bin/docker-entrypoint-web"]
 EXPOSE 8000
 
 CMD ["rails", "s"]
-#CMD ["bash"]
