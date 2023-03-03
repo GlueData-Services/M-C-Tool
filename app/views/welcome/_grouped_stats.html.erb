@@ -1,3 +1,7 @@
+<% if groups.blank? %>
+  <p class="alert alert-warning">There are no groups to display. Perhaps there are none set for this batch?</p>
+<% end %>
+
 <ul class="nav nav-tabs" id="grouped-stats-nav-tabs" role="tablist">
   <% groups.each do |grp| %>
     <% next if grp.blank? %>

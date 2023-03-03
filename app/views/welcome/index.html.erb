@@ -187,9 +187,8 @@
 
     </div>
 
-    <%#= render 'old_stats' %>
     <div class="row mt-5">
-      <% batches = Mara.where.not('Batch_Number': nil).distinct('Batch_Number').pluck('Batch_Number') %>
+      <% batches = Mara.where.not(batch: nil).distinct(:batch).pluck(:batch).sort %>
 
       <ul class="nav nav-tabs" id="grouped-stats-nav-tabs" role="tablist">
         <% batches.each_with_index do |batch, i| %>
@@ -207,12 +206,11 @@
           <% next if batch.blank? %>
 
           <div id="batch-<%= batch %>" class="tab-pane fade <%= 'show active' if i == 0 %> p-3" role="tabpanel">
-            <h5>Finish
-              date: <%= Mara.where('Batch_Number': batch).order('Batch_Compl_Date DESC').first['Batch_Compl_Date'].strftime('%F') %></h5>
+            <h5>Finish date: <%= batch_completion_date(batch) %></h5>
 
             <%= render partial: 'grouped_stats', locals: { groups: Mara.group(:group)
                                                                        .where.not(group: nil)
-                                                                       .where('Batch_Number': batch)
+                                                                       .where(batch: batch)
                                                                        .pluck(:group),
                                                            batch: batch } %>
 

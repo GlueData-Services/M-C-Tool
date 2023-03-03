@@ -47,4 +47,8 @@ module MatcherHelper
                        current_batch.present? ? current_batch : nil
     )
   end
+
+  def batch_completion_date(batch)
+    Mara.where(batch: batch).maximum(:batch_completion_date).strftime("%F") rescue '2042-12-25'
+  end
 end

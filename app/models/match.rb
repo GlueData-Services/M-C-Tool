@@ -75,6 +75,23 @@ class Match < ApplicationRecord
     matched_articles.joins(:mara).where(matchable_articles: { banner: banner }).any?(&:main?)
   end
 
+  def main_maras
+    mains = []
+    %w[GAME BUILDERS MAKRO].each do |banner|
+      arts = maras.where(matchable_articles: { banner: banner })
+      if arts.count == 1
+        mains << arts.first
+      elsif arts.count > 1
+        if arts.where(matched_articles: { main: true }).exists?
+          mains << arts.where(matched_articles: { main: true }).first
+        else
+          mains << arts
+        end
+      end
+    end
+    mains.flatten.compact
+  end
+
   def problems
     problems = []
     matched_articles.each do |mart|
