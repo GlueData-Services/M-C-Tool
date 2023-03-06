@@ -7,7 +7,7 @@
       <th class="text-nowrap">Description</th>
       <th class="text-nowrap">Article Type</th>
       <th class="text-nowrap" style="max-width: 5%;">Variants</th>
-      <th class="text-nowrap" style="max-width: 5%;">Vendors</th>
+      <th class="" style="max-width: 20%;">Vendors</th>
       <th>Barcodes</th>
     </tr>
     </thead>
@@ -37,7 +37,7 @@
           <td class="text-nowrap"><%= mara.article_type %></td>
           <td class="text-center"><%= mara.number_variants %></td>
           <td class="">
-            <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="<%= mara.vendors %>"><%= truncate(mara.vendors, length: 30) %></span>
+            <%= mara.vendors %>
           </td>
           <td>
             <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="<%= mara.barcodes %>">

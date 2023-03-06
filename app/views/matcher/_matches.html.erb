@@ -29,7 +29,8 @@
         <th class="text-nowrap">Description</th>
         <th class="text-nowrap">Article Type</th>
         <th class="text-nowrap">Barcodes</th>
-        <th class="text-nowrap">Vendors</th>
+        <th class="">Vendors</th>
+        <th class="text-nowrap">Vendor Code</th>
         <th>Score</th>
         <th></th>
       </tr>
@@ -50,7 +51,10 @@
             <% end %>
           </td>
           <td style="overflow: auto; max-width: 30em;"> <!-- Vendor List-->
-            <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="<%= mara['Vendor_Prod_Code'] %> /// <%= mara.vendors %>"><%= truncate(mara.vendors, length: 40) %></span>
+            <%= mara.vendors %>
+          </td>
+          <td style="overflow: auto; max-width: 30em;"> <!-- Vendor List-->
+            <%= mara.vendor_product_code %>
           </td>
           <td><%= rank_score(@scores[mara.prefixed_matnr]) %></td>
           <td class="text-center"><%= check_box_tag 'p_matnr[]', mara.prefixed_matnr, @scores[mara.prefixed_matnr] >= 1000, class: 'match_select' %></td>
