@@ -1,6 +1,11 @@
 class User < ApplicationRecord
   audited only: [:name, :email, :user_type]
 
+  attribute :user_type, :string, default: 'user'
+
+  validates :name, :email, :user_type, presence: true
+  validates :email, uniqueness: { case_sensitive: false }
+
   # Include default devise modules. Others available are:
   # :confirmable, :timeoutable and :omniauthable
   # devise :ldap_authenticatable, :database_authenticatable, :recoverable, :rememberable, :lockable, :trackable

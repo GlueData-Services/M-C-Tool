@@ -1360,6 +1360,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_11_105053) do
     t.string "Status", limit: 100
     t.string "Last_sale_in_months", limit: 100
     t.string "Stock_level", limit: 100
+    t.string "Vendor_Prod_Code", limit: 40
+    t.integer "batch"
+    t.date "Batch_Compl_Date"
     t.index ["active", "matched", "article_type"], name: "matchtable_articles_active_IDX"
     t.index ["article_type"], name: "index_matchable_articles_on_article_type"
     t.index ["banner"], name: "matchable_articles_banner_IDX"

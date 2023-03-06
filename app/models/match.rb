@@ -10,9 +10,8 @@ class Match < ApplicationRecord
   has_many :matched_articles, dependent: :destroy
 
   has_many :maras, -> { order('banner') }, through: :matched_articles
-  has_many :match_fields
 
-  has_many :comments, as: :commentable
+  has_many :comments, as: :commentable, dependent: :destroy
 
   scope :awaiting, -> { where(status: :awaiting) }
   scope :in_progress, -> { where(status: :in_progress) }

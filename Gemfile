@@ -72,24 +72,29 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'dotenv-rails'
 
+  # Testing
+  gem "factory_bot_rails", "~> 6.2"
+  gem "faker", "~> 3.1"
+  gem "shoulda", "~> 4.0"
+
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
+  # Debugging
   gem "web-console"
   gem 'annotate'
+  gem 'pry-rails'
+  gem "rack-mini-profiler" # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
 
+  # Deployment
   gem 'capistrano'
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'
   gem 'capistrano3-puma'
-
-  gem 'pry-rails'
-  # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
-  # gem "rack-mini-profiler"
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
