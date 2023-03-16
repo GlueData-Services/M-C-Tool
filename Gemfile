@@ -51,19 +51,19 @@ gem "bootsnap", require: false
 # gem "image_processing", "~> 1.2"
 
 # gem 'sunspot_rails', github: 'sunspot/sunspot'
-gem "searchkick"
-gem "elasticsearch", "< 7.14"
-gem "typhoeus" # Including this affects how searchkick connects to elasticsearch. Persistent connection
-gem "bootstrap_form", "~> 5.0"
+gem 'searchkick'
+gem 'elasticsearch', "< 7.14"
+gem 'typhoeus' # Including this affects how searchkick connects to elasticsearch. Persistent connection
+gem 'bootstrap_form', "~> 5.0"
 gem 'motor-admin'
 gem 'kaminari'
 gem 'devise'
-gem "devise_ldap_authenticatable"
+gem 'devise_ldap_authenticatable'
 gem 'amazing_print'
-gem "audited", "~> 5.0"
+gem 'audited', '~> 5.0'
 gem 'colored'
-gem "sentry-ruby"
-gem "sentry-rails"
+gem 'sentry-ruby'
+gem 'sentry-rails'
 gem 'interactor-rails'
 gem 'table_print'
 gem 'nokogiri'

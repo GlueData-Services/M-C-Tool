@@ -62,6 +62,7 @@
             <label class="form-check-label" for="override_<%= qty %>">Override?</label>
           </div>
           <%= select_tag "match_units[][unit]", units_of_measure_options(with_description: true), disabled: true, class: 'd-none', data: { units_target: 'overrideUnit' } %>
+          <%= hidden_field_tag "match_units[][original_unit]", nil, data: { units_target: 'originalUnit' } %>
         </div>
       </div>
     </div>

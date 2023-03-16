@@ -8,6 +8,7 @@ export default class extends Controller {
     "eanField",
     "uomField",
     "overrideUnit",
+    "originalUnit",
   ];
 
   connect() {
@@ -42,8 +43,11 @@ export default class extends Controller {
   }
 
   selectRecord(event) {
+    console.log("Selected record", event.params);
     this.matnrTarget.value = event.params.value;
     this.unitTarget.value = event.params.unit;
+    this.originalUnitTarget.value = event.params.unit;
+    console.log(this.originalUnitTarget.value);
     if (event.params.ean) {
       this.eanTarget.value = event.params.ean;
     }

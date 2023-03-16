@@ -8,8 +8,12 @@ class User < ApplicationRecord
 
   # Include default devise modules. Others available are:
   # :confirmable, :timeoutable and :omniauthable
-  # devise :ldap_authenticatable, :database_authenticatable, :recoverable, :rememberable, :lockable, :trackable
-  devise :database_authenticatable, :recoverable, :rememberable, :lockable, :trackable
+
+  if ENV.fetch('LDAP_ENABLED', 'false') == 'true'
+    devise :ldap_authenticatable, :database_authenticatable, :recoverable, :rememberable, :lockable, :trackable
+  else
+    devise :database_authenticatable, :recoverable, :rememberable, :lockable, :trackable
+  end
 
   enum user_type: { admin: 'admin',
                     reviewer: 'reviewer',

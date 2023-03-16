@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_11_105053) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_16_095431) do
   create_table "_match_taxes", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "match_id"
     t.integer "tax_classification"
@@ -1333,6 +1333,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_11_105053) do
     t.string "unit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "original_unit"
     t.index ["match_id"], name: "index_match_units_on_match_id"
   end
 
@@ -1360,9 +1361,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_11_105053) do
     t.string "Status", limit: 100
     t.string "Last_sale_in_months", limit: 100
     t.string "Stock_level", limit: 100
-    t.string "Vendor_Prod_Code", limit: 40
+    t.string "vendor_codes", limit: 40
     t.integer "batch"
-    t.date "Batch_Compl_Date"
+    t.date "batch_completion_date"
     t.index ["active", "matched", "article_type"], name: "matchtable_articles_active_IDX"
     t.index ["article_type"], name: "index_matchable_articles_on_article_type"
     t.index ["banner"], name: "matchable_articles_banner_IDX"
