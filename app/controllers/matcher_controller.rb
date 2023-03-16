@@ -11,7 +11,7 @@ class MatcherController < ApplicationController
       params[:f_batch].present?
 
       _where = {
-        # matched: 0,
+        matched: false,
         # active: 'Y',
       }
 
