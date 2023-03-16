@@ -1,5 +1,13 @@
 module ValidationHelper
 
+  MEASURES = {
+    'EA': 'Each', 'KG': 'Kilogram', 'L': 'Liter', 'M': 'Meter', 'M2': 'Square Meter', 'M3': 'Cubic Meter', 'TON': 'Tonne',
+    'PAK': 'Pack', 'PK1': 'Pack 1', 'PK2': 'Pack 2', 'CAR': 'Carton', 'CR1': 'Carton 1', 'CR2': 'Carton 2',
+    'CS': 'Case', 'CS1': 'Case 1', 'CS2': 'Case 2', 'ROL': 'Roll',
+    'LAY': 'Layer',
+    'PAL': 'Pallet'
+  }
+
   def build_uom_field(key, record, highlight)
     return if ['matnr'].include? key
 
@@ -35,18 +43,11 @@ module ValidationHelper
   end
 
   def units_of_measure_options(with_description: false)
-    measures = {
-      'EA': 'Each', 'KG': 'Kilogram', 'L': 'Liter', 'M': 'Meter', 'M2': 'Square Meter', 'M3': 'Cubic Meter', 'TON': 'Tonne',
-      'PAK': 'Pack', 'PK1': 'Pack 1', 'PK2': 'Pack 2', 'CAR': 'Carton', 'CR1': 'Carton 1', 'CR2': 'Carton 2',
-      'CS': 'Case', 'CS1': 'Case 1', 'CS2': 'Case 2', 'ROL': 'Roll',
-      'LAY': 'Layer',
-      'PAL': 'Pallet'
-    }
 
     if with_description
-      options_for_select(measures.map { |k, v| ["#{k} - #{v}", k] })
+      options_for_select(MEASURES.map { |k, v| ["#{k} - #{v}", k] })
     else
-      options_for_select(measures.keys)
+      options_for_select(MEASURES.keys)
     end
   end
 

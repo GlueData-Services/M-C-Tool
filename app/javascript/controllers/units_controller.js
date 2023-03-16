@@ -16,7 +16,27 @@ export default class extends Controller {
   }
 
   checkUnits() {
-    const valid = ["EA", "PAK", "CAR", "CS", "LAY", "PAL"];
+    const valid = [
+      "EA",
+      "KG",
+      "L",
+      "M",
+      "M2",
+      "M3",
+      "TON",
+      "PAK",
+      "PK1",
+      "PK2",
+      "CAR",
+      "CR1",
+      "CR2",
+      "CS",
+      "CS1",
+      "CS2",
+      "ROL",
+      "LAY",
+      "PAL",
+    ];
     if (!valid.includes(this.unitTarget.value)) {
       this.unitTarget.classList.add("text-danger");
     } else {
@@ -47,7 +67,6 @@ export default class extends Controller {
     this.matnrTarget.value = event.params.value;
     this.unitTarget.value = event.params.unit;
     this.originalUnitTarget.value = event.params.unit;
-    console.log(this.originalUnitTarget.value);
     if (event.params.ean) {
       this.eanTarget.value = event.params.ean;
     }
