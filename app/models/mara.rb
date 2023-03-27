@@ -1,5 +1,6 @@
 class Mara < ApplicationRecord
   # alias_attribute :batch, :Batch_Number
+  alias_attribute :group, :cmd_group
 
   searchkick highlight: [:description, :barcodes], filterable: [:banner, :article_type, :matched, :group, :batch]
 

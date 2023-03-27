@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_16_095431) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_24_103941) do
   create_table "_match_taxes", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "match_id"
     t.integer "tax_classification"
@@ -1357,7 +1357,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_16_095431) do
     t.text "vendors", size: :tiny
     t.boolean "matched", default: false
     t.boolean "active", default: false
-    t.string "group", limit: 128
+    t.string "cmd_group", limit: 128
     t.string "Status", limit: 100
     t.string "Last_sale_in_months", limit: 100
     t.string "Stock_level", limit: 100
@@ -1367,7 +1367,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_16_095431) do
     t.index ["active", "matched", "article_type"], name: "matchtable_articles_active_IDX"
     t.index ["article_type"], name: "index_matchable_articles_on_article_type"
     t.index ["banner"], name: "matchable_articles_banner_IDX"
-    t.index ["group"], name: "matchable_articles_group_IDX"
+    t.index ["cmd_group"], name: "matchable_articles_group_IDX"
   end
 
   create_table "matchable_articles_oldold", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
