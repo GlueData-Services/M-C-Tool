@@ -16,9 +16,13 @@ class Match < ApplicationRecord
   scope :awaiting, -> { where(status: :awaiting) }
   scope :in_progress, -> { where(status: :in_progress) }
   scope :remediated, -> { where(status: :remediated) }
-  scope :incomplete, -> { Match.awaiting.or(Match.in_progress).or(Match.remediated) }
-  scope :complete, -> { where(status: :complete) }
-  scope :in_error, -> { where(status: [:error, :awaiting_external]) }
+
+  scope :unharmonized, -> { where(harmonized: false) }
+  scope :harmonized, -> { where(harmonized: true) }
+  scope :incomplete, -> { Match.awaiting.unharmonized.or(Match.in_progress).or(Match.remediated) }
+  scope :complete, -> { where(status: :complete).unharmonized }
+  scope :in_error, -> { where(status: [:error, :awaiting_external]).unharmonized }
+
   scope :mara_groups, ->(group) { joins(:maras).where(maras: { group: group }) }
   scope :mara_batches, ->(batch) { joins(:maras).where(maras: { batch: batch }) }
   scope :has_error, ->(err) { joins(:matched_articles).where(matched_articles: { err => true }) }
