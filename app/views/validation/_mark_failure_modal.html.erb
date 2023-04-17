@@ -14,17 +14,13 @@
 
           <div class="mb-3">
             <%= f.label :comment, class: 'form-label' %>
-            <%= f.text_area :comment, class: 'form-control', style: "height: 150px", required: true %>
+            <%= f.text_area :comment, class: 'form-control', style: "height: 150px", required: true, minlength: 5 %>
           </div>
 
           <div class="text-end">
-            <%= f.submit "Submit", class: 'btn' %>
+            <%= f.submit "Finish Review", class: 'btn' %>
           </div>
         <% end %>
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
