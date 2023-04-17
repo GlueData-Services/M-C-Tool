@@ -17,9 +17,9 @@ class Match < ApplicationRecord
   scope :in_progress, -> { where(status: :in_progress) }
   scope :remediated, -> { where(status: :remediated) }
 
-  scope :unharmonized, -> { where(harmonized: false) }
-  scope :harmonized, -> { where(harmonized: true) }
-  scope :incomplete, -> { Match.awaiting.unharmonized.or(Match.in_progress).or(Match.remediated) }
+  scope :unharmonized, -> { where(harmonized: nil) }
+  scope :harmonized, -> { where('harmonized IS NOT NULL') }
+  scope :incomplete, -> { Match.unharmonized.awaiting.or(Match.in_progress).or(Match.remediated) }
   scope :complete, -> { where(status: :complete).unharmonized }
   scope :in_error, -> { where(status: [:error, :awaiting_external]).unharmonized }
 

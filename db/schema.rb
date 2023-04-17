@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_17_061727) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_17_115838) do
   create_table "_match_taxes", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "match_id"
     t.integer "tax_classification"
@@ -1413,7 +1413,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_061727) do
     t.datetime "updated_at", null: false
     t.integer "matched_articles_count"
     t.string "review_status"
-    t.boolean "harmonized", default: false
+    t.string "harmonized"
     t.index ["harmonized"], name: "index_matches_on_harmonized"
   end
 
