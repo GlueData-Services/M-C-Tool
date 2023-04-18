@@ -27,6 +27,10 @@ Rails.application.routes.draw do
 
   get 'reports', to: 'reports#index', as: :reports
 
+  resource :reports, only: [:index] do
+    get 'matches'
+  end
+
   # post 'problem', to: 'problems#problem', as: :problem
   resources :problems, only: [:create]
   resources :matches, only: [:destroy]
