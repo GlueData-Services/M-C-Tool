@@ -1,6 +1,7 @@
 set :deploy_to, "/var/www/harmonics-staging"
 set :rvm_custom_path, '/usr/share/rvm/'
 set :rails_env, "production"
+set :branch, "ldap"
 
 # server-based syntax
 # ======================
@@ -11,6 +12,8 @@ server "gluedata", user: "gd_mhowell", roles: %w{app db web}
 # server "192.168.10.24", user: "gd_mhowell", roles: %w{app db web}
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
+
+set :rvm_ruby_version, '3.1.2'
 
 # role-based syntax
 # ==================

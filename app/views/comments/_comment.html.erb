@@ -1,0 +1,9 @@
+<div class="d-flex align-items-stretch pt-0">
+  <div class="poster text-center border p-2" style="width: 175px;">
+    <b><%= comment.user.name %></b><br/>
+    <small><%= comment.created_at.strftime('%F %R') %></small>
+  </div>
+  <div class="comment border border-start-0 p-2 flex-fill">
+    <%= comment.comment %>
+  </div>
+</div>

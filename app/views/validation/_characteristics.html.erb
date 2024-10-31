@@ -1,0 +1,35 @@
+<div id="characteristics" class="bg-white border-start border-end border-bottom border-1 p-3 mb-3 tab-pane fade show" role="tabpanel">
+  <table class="table table-sm table-responsive table-consolidate">
+    <thead>
+    <tr>
+      <th>Article</th>
+      <th>MATNR</th>
+      <th>ATNAM</th>
+      <th>ATWRT</th>
+      <th></th>
+      <th colspan="2" class="text-center">Consolidated</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% CharacteristicsService.new(match.id).characters.each do |char| %>
+      <% char_saved = match.match_characteristics.exists?(char_name: char['ATNAM'], mara_id: char['article']) %>
+
+      <tr class="<%= banner(char['article'][0]).downcase %>" data-controller="class">
+        <td><%= char['article'] %></td>
+        <td><%= char['MATNR'] %></td>
+        <td><%= char['ATNAM'] %></td>
+        <td><%= char['ATWRT'] %></td>
+        <td><%= check_box_tag 'characteristics[][mara_id]', char[:article], char_saved,
+                              data: { action: "class#selectRecord",
+                                      'class-atnam-param': char['ATNAM'],
+                                      'class-atwrt-param': char['ATWRT'] },
+                              disabled: params[:review].present? %>
+        </td>
+        <td><%= text_field_tag "characteristics[][char_name]", char_saved ? char['ATNAM'] : nil, data: { class_target: 'atnam' }, disabled: !char_saved %></td>
+        <td><%= text_field_tag "characteristics[][char_value]", char_saved ? char['ATWRT'] : nil, data: { class_target: 'atwrt' }, disabled: !char_saved %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+</div>

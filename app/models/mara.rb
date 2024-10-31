@@ -1,5 +1,8 @@
 class Mara < ApplicationRecord
-  searchkick highlight: [:description, :barcodes], filterable: [:banner, :article_type, :matched]
+  # alias_attribute :batch, :Batch_Number
+  alias_attribute :group, :cmd_group
+
+  searchkick highlight: [:description, :barcodes], filterable: [:banner, :article_type, :matched, :group, :batch]
 
   has_many :match_fields
 
@@ -14,6 +17,7 @@ class Mara < ApplicationRecord
   scope :game, -> { where(banner: 'GAME') }
   scope :makro, -> { where(banner: 'MAKRO') }
   scope :in_group, ->(group) { where(group: group) }
+  scope :in_batch, ->(batch) { where(batch: batch) }
 
   def self.has_field(col)
     self.column_names.include?(col)
@@ -25,6 +29,8 @@ class Mara < ApplicationRecord
       barcodes: barcodes,
       banner: banner,
       matched: matched,
+      group: group,
+      batch: batch,
       article_type: article_type
     }
   end
@@ -41,42 +47,47 @@ class Mara < ApplicationRecord
   end
 
   def get_lookup_value(lookup, val)
-    return nil if val.blank?
-    mapping = lookup.split(':')
-    res = ActiveRecord::Base.connection.exec_query("SELECT #{mapping[2]} FROM #{mapping[0]} WHERE #{mapping[1]} = '#{val}'")
-    case res.rows.count
-    when 0
-      'Missing value'
-    when 1
-      res.rows[0][0]
-    else
-      'Too many values'
+    ActiveRecord::Base.logger.silence do
+      return nil if val.blank?
+      mapping = lookup.split(':')
+      res = ActiveRecord::Base.connection.exec_query("SELECT #{mapping[2]} FROM #{mapping[0]} WHERE #{mapping[1]} = '#{val}'")
+      case res.rows.count
+      when 0
+        'Missing value'
+      when 1
+        res.rows[0][0]
+      else
+        'Too many values'
+      end
     end
   rescue ActiveRecord::StatementInvalid => e
     return e.message
   end
 
   def get_specific_field(lookup_id)
-    lookup = Lookup.find(lookup_id)
-    case banner
-    when 'GAME'
-      val = get_value(lookup.g_table, lookup.g_field)
-      lookup.g_lookup.present? ? get_lookup_value(lookup.g_lookup, val) : val
-    when 'MAKRO'
-      val = get_value(lookup.m_table, lookup.m_field)
-      lookup.m_lookup.present? ? get_lookup_value(lookup.m_lookup, val) : val
-    when 'BUILDERS'
-      val = get_value(lookup.b_table, lookup.b_field)
-      lookup.b_lookup.present? ? get_lookup_value(lookup.b_lookup, val) : val
+    ActiveRecord::Base.logger.silence do
+
+      lookup = Lookup.find(lookup_id)
+      case banner
+      when 'GAME'
+        val = get_value(lookup.g_table, lookup.g_field)
+        lookup.g_lookup.present? ? get_lookup_value(lookup.g_lookup, val) : val
+      when 'MAKRO'
+        val = get_value(lookup.m_table, lookup.m_field)
+        lookup.m_lookup.present? ? get_lookup_value(lookup.m_lookup, val) : val
+      when 'BUILDERS'
+        val = get_value(lookup.b_table, lookup.b_field)
+        lookup.b_lookup.present? ? get_lookup_value(lookup.b_lookup, val) : val
+      end
     end
   end
 
   def self.article_types
-    select(:article_type).distinct.pluck(:article_type)
+    distinct.pluck(:article_type)
   end
 
   def self.group_names
-    group(:group).pluck(:group)
+    where.not(group: nil).distinct.pluck(:group)
   end
 end
 

@@ -42,8 +42,20 @@ body {
   color: $glue-color;
 }
 
+.mara-highlight {
+  color: darkred;
+}
+
 .dotwrap {
-  max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shrink-column {
+  width: 0.1%;
+  white-space: nowrap;
 }
 
 th.tight, td.tight {
@@ -81,6 +93,7 @@ th.tight, td.tight {
 
 .table-consolidate {
   font-size: 13px;
+
   td, th {
     vertical-align: middle;
   }
@@ -93,20 +106,23 @@ th.tight, td.tight {
 
 .builders {
   //border-bottom: 2px solid #503500;
-  background: rgb(255, 144, 0);
-  background: linear-gradient(0deg, rgb(253, 239, 218) 0%, rgba(255, 255, 255, 1) 100%);
+  //background: rgb(255, 144, 0);
+  //background: linear-gradient(0deg, rgb(253, 239, 218) 0%, rgba(255, 255, 255, 1) 100%);
+  background-color: rgb(253, 239, 218, 0.5) !important;
 }
 
 .game {
   //background-color: #ffeef1;
-  background: rgb(255, 238, 241);
-  background: linear-gradient(0deg, rgb(251, 222, 227) 0%, rgba(255, 255, 255, 1) 100%);
+  //background: rgb(255, 238, 241);
+  //background: linear-gradient(0deg, rgb(251, 222, 227) 0%, rgba(255, 255, 255, 1) 100%);
+  background-color: rgb(251, 222, 227, 0.5) !important;
 }
 
 .makro {
   //background-color: #ffeef1;
-  background: rgb(238, 248, 255);
-  background: linear-gradient(0deg, rgb(220, 241, 255) 0%, rgba(255, 255, 255, 1) 100%);
+  //background: rgb(238, 248, 255);
+  //background: linear-gradient(0deg, rgb(220, 241, 255) 0%, rgba(255, 255, 255, 1) 100%);
+  background-color: rgb(220, 241, 255, 0.5) !important;
 }
 
 .matched_table {
@@ -124,7 +140,7 @@ th.tight, td.tight {
 }
 
 .nav-link:hover {
- cursor: pointer;
+  cursor: pointer;
 }
 
 .active-code {
@@ -135,6 +151,7 @@ th.tight, td.tight {
 .btn-outline-glue {
   @include button-outline-variant($color: $glue-color, $color-hover: white);
 }
+
 .btn-glue {
   @include button-variant($glue-color, $glue-color, $color: white);
 }
@@ -152,6 +169,11 @@ th.tight, td.tight {
 
 #problem {
   .form-check {
-    margin-bottom: 0.25em!important;
+    margin-bottom: 0.25em !important;
   }
+}
+
+input.position {
+  max-width: 5rem;
+  text-align: center;
 }

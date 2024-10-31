@@ -2,16 +2,36 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
-import { application } from "./application"
+import {application} from "./application"
 
 import MatcherController from "./matcher_controller"
+
 application.register("matcher", MatcherController)
 
 import ConsolidatorController from "./consolidator_controller"
+
 application.register("consolidator", ConsolidatorController)
 
 import FilterController from "./filter_controller"
+
 application.register("filter", FilterController)
 
 import UnitsController from "./units_controller"
+
 application.register("units", UnitsController)
+
+import CommentsController from "./comments_controller"
+
+application.register("comments", CommentsController)
+
+import ClassController from "./class_controller"
+
+application.register("class", ClassController)
+
+import TaxController from "./tax_controller"
+
+application.register("tax", TaxController)
+
+import ValidationController from "./validation_controller"
+
+application.register("validation", ValidationController)

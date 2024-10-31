@@ -3,10 +3,10 @@
   <div class="search">
     <%= form_tag matcher_path, method: :get do %>
       <div class="d-flex justify-content-between align-items-center">
-      <span class="me-2 text-nowrap">Refine results</span>
+        <span class="me-2 text-nowrap">Refine results</span>
         <%= select_tag :min_score, options_for_select([['Low+', 0], ['Med+', 300], ['High', 1000]], selected: cookies.fetch(:min_score, 0)), class: 'form-select-sm me-2' %>
-      <%= search_field_tag :q, params[:q], class: 'form-control-inline me-2' %>
-      <%= submit_tag 'Go', class: "btn btn-sm btn-primary" %>
+        <%= search_field_tag :q, params[:q], class: 'form-control-inline me-2' %>
+        <%= submit_tag 'Go', class: "btn btn-sm btn-primary" %>
     <% end %>
     </div>
   </div>
@@ -15,16 +15,22 @@
 <%= form_tag create_match_path do %>
   <% if @matched.blank? %>
     <div class="text-center m-3">
-      <span class="alert alert-secondary text-center">No results to display, select an item from the top panel to start a search.</span>
+      <% if @error %>
+        <span class="alert alert-danger text-danger"><%= @error %></span>
+      <% else %>
+        <span class="alert alert-secondary text-center">No results to display, select an item from the top panel to start a search.</span>
+      <% end %>
     </div>
   <% else %>
-    <table class="table table-sm table-bordered table-hover matched_table">
+    <table class="table table-sm table-bordered table-hover matched_table align-middle">
       <thead>
       <tr>
         <th>Banner</th>
         <th class="text-nowrap">Description</th>
         <th class="text-nowrap">Article Type</th>
         <th class="text-nowrap">Barcodes</th>
+        <th class="">Vendors</th>
+        <th class="text-nowrap">Vendor Code</th>
         <th>Score</th>
         <th></th>
       </tr>
@@ -37,14 +43,18 @@
           <td><span><%= mara.banner %></span></td>
           <td class="text-nowrap"><%== highlight[:description].blank? ? mara.description : highlight[:description] %></td>
           <td class="text-nowrap"><%= mara.article_type %></td>
-          <td style="overflow: auto">
+          <td style="overflow: auto; max-width: 30em;"> <!-- Barcode List-->
             <% if highlight[:barcodes] %>
-<!--              <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="<%#= mara.barcodes %>"><%#= truncate highlight[:barcodes]&.html_safe, length: 50 %></span>-->
               <%= match_codes(mara.barcodes, highlight[:barcodes]) %>
             <% else %>
-<!--              <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="<%#= mara.barcodes %>"><%#= truncate mara.barcodes, length: 50 %></span>-->
               <%= match_codes(mara.barcodes, '') %>
             <% end %>
+          </td>
+          <td style="overflow: auto; max-width: 30em;"> <!-- Vendor List-->
+            <%= mara.vendors %>
+          </td>
+          <td style="overflow: auto; max-width: 30em;"> <!-- Vendor List-->
+            <%= mara.vendor_codes %>
           </td>
           <td><%= rank_score(@scores[mara.prefixed_matnr]) %></td>
           <td class="text-center"><%= check_box_tag 'p_matnr[]', mara.prefixed_matnr, @scores[mara.prefixed_matnr] >= 1000, class: 'match_select' %></td>

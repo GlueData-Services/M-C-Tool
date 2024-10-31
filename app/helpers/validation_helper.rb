@@ -1,5 +1,13 @@
 module ValidationHelper
 
+  MEASURES = {
+    'EA': 'Each', 'KG': 'Kilogram', 'L': 'Liter', 'M': 'Meter', 'M2': 'Square Meter', 'M3': 'Cubic Meter', 'TON': 'Tonne',
+    'PAK': 'Pack', 'PK1': 'Pack 1', 'PK2': 'Pack 2', 'CAR': 'Carton', 'CR1': 'Carton 1', 'CR2': 'Carton 2',
+    'CS': 'Case', 'CS1': 'Case 1', 'CS2': 'Case 2', 'ROL': 'Roll',
+    'LAY': 'Layer',
+    'PAL': 'Pallet'
+  }
+
   def build_uom_field(key, record, highlight)
     return if ['matnr'].include? key
 
@@ -26,32 +34,21 @@ module ValidationHelper
     end
   end
 
-  def summarize_errors(match)
-    errors = []
-    css_class = "badge bg-light text-dark border shadow-sm"
-
-    match.matched_articles.each do |art|
-      err = []
-
-      [[:duplicate?, 'DUPE'], [:bad_category?, 'BADCAT'], [:bad_material?, 'BADMAT'], [:uom_mismatch?, 'UOM'], [:uom_review?, 'UOMREV'], [:tax_diff?, 'TAX']].each do |err_type|
-        err << err_type[1] if art.send(err_type[0])
-      end
-
-      errors << content_tag(:span,
-                            "#{art.prefixed_matnr} - #{err.join(' / ')}",
-                            class: css_class
-      ) if err.count > 0
-    end
-
-    errors.join(' ').html_safe
-  end
-
   def summarize_notes(match)
     notes = []
     match.matched_articles.each do |art|
       notes << content_tag(:span, art.comment)
     end
     notes.join(' ').html_safe
+  end
+
+  def units_of_measure_options(with_description: false)
+
+    if with_description
+      options_for_select(MEASURES.map { |k, v| ["#{k} - #{v}", k] })
+    else
+      options_for_select(MEASURES.keys)
+    end
   end
 
   def error_filter_select
@@ -72,5 +69,67 @@ module ValidationHelper
                  controller: 'filter',
                  action: 'filter#changed'
                })
+  end
+
+  def match_count_select
+    opts = [%w[1 1], %w[2 2], %w[3+ 3]]
+    select_tag(:match_count_filter,
+               options_for_select(opts, params[:match_count_filter]),
+               include_blank: true,
+               prompt: 'Match count filter',
+               class: 'form-select',
+               data: {
+                 controller: 'filter',
+                 action: 'filter#changed'
+               })
+  end
+
+  def review_badge(review_status)
+    case review_status&.upcase
+    when 'PASS'
+      content_tag(:span, review_status, class: 'badge bg-success text-uppercase')
+    when 'FAIL'
+      content_tag(:span, review_status, class: 'badge bg-danger text-uppercase')
+    else
+      content_tag(:span, review_status, class: 'badge bg-warning text-uppercase')
+    end
+  end
+
+  def status_badge(status)
+    case status&.upcase
+    when 'AWAITING'
+      content_tag(:span, status, class: 'badge bg-warning text-uppercase')
+    when 'ERROR'
+      content_tag(:span, status, class: 'badge bg-danger text-uppercase')
+    when 'AWAITING_EXTERNAL'
+      content_tag(:span, status.humanize, class: 'badge bg-warning text-uppercase')
+    else
+      content_tag(:span, status, class: 'badge bg-warning text-uppercase')
+    end
+  end
+
+  def skip_article?(match, article)
+    return false if match.matches_for_banner(article.banner) < 2
+
+    return false unless match.main_for_banner(article.banner)
+
+    # There IS more than 1 match, and there IS a "main" article
+    !match.matched_articles.where(prefixed_matnr: article.prefixed_matnr).first.main?
+  end
+
+  def get_consolidated_value(mf, vals)
+    if mf.present?
+      mf.get_value
+    else
+      vals.uniq.length == 1 ? vals[0] : ''
+    end
+  end
+
+  def get_consolidated_id(mf, vals, mara_id)
+    if mf.present?
+      mf.mara_id
+    else
+      vals.compact.uniq.length == 1 ? mara_id : nil
+    end
   end
 end

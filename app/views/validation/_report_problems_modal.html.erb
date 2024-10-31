@@ -1,0 +1,38 @@
+<div class="modal fade" id="problem" tabindex="-1" aria-labelledby="problemModalLabel" aria-modal="true" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content w-100">
+      <div class="modal-header">
+        <h5 class="modal-title h4" id="problemModalLabel">Report problems with articles</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= bootstrap_form_tag url: problems_path(id: @match) do |f| %>
+          <% @match.maras.each do |mara| %>
+            <div class="mb-4">
+              <h5><b><%= mara.prefixed_matnr %> - </b> <%= mara.description %> </h5>
+              <table class="table table-sm table-borderless text-muted">
+                <tr>
+                  <td><b>UoM: </b> <span class="text-gray-900"><%= mara.get_specific_field(24) %></span></td>
+                  <td><b>Category: </b> <span class="text-gray-900"><%= mara.get_specific_field(72) %></span></td>
+                  <td><b>Material: </b> <span class="text-normal"><%= mara.get_specific_field(19) %></span></td>
+                </tr>
+              </table>
+
+              <div class="card p-3" style="background-color: #F9FBFE;">
+                <p class="fw-bold">Refer problem to</p>
+                <% Problems::PROBLEMS.each do |problem| %>
+                  <%= f.check_box "problem[#{mara.prefixed_matnr}][#{problem.name}]", label: problem.description %>
+                <% end %>
+
+                <%= f.text_field "problem[#{mara.prefixed_matnr}][comment]", label: 'Comment' %>
+              </div>
+
+            </div>
+          <% end %>
+
+          <%= submit_tag 'Report problems' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

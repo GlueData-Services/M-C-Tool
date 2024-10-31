@@ -1,0 +1,1 @@
+sudo docker run --name harmonics -p 3300:8000 --add-host host.docker.internal:host-gateway --env-file .env.production --mount type=bind,source=${PWD}/ldap-prod.yml,target=/app/config/ldap.yml --rm harmonics:1.0.2-ldap

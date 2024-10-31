@@ -1,0 +1,64 @@
+<div id="complete" class="tab-pane fade p-3 bg-white" role="tabpanel">
+  <div class="d-flex justify-content-end">
+    <div class="d-flex gap-3">
+
+      <%= select_tag 'complete_group_filter',
+                     options_for_select(Mara.group_names, params[:complete_group_filter]),
+                     prompt: 'Group Filter',
+                     class: 'form-select',
+                     data: {
+                       controller: 'filter',
+                       action: 'filter#changed'
+                     }
+      %>
+      <%= select_tag 'complete_batch_filter',
+                     batch_filter_options(params[:complete_batch_filter], false),
+                     prompt: 'Batch Filter',
+                     class: 'form-select',
+                     data: {
+                       controller: 'filter',
+                       action: 'filter#changed'
+                     }
+      %>
+
+    </div>
+  </div>
+
+
+  <table class="table table-sm mt-4">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Articles</th>
+      <th>Status</th>
+      <th>Reviewed</th>
+      <th class="text-center">Comments</th>
+      <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @complete_matches.each do |match| %>
+      <tr>
+        <td><%= match.name %></td>
+        <td><%= match.article_type %></td>
+        <td><%= match.matched_articles.count %></td>
+        <td><%= t(match.status) %></td>
+        <td><%= review_badge(match.review_status) %></td>
+        <td class="text-center">
+          <% if match.comments.count > 0 %>
+            <button class="btn btn-sm btn-primary p-1 py-0" data-bs-toggle="offcanvas" data-bs-target="#match-<%= match.id %>-comments">
+              <%= match.comments.count %>
+            </button>
+          <% end %>
+        </td>
+        <td class="text-end"><%= link_to 'Review', consolidate_match_path(match, review: true), class: 'btn btn-sm btn-outline-glue' %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <%= paginate @complete_matches %>
+</div>
+
+<%= render partial: 'canvas_comments', locals: { matches: @complete_matches } %>

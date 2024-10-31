@@ -10,6 +10,16 @@ Rails.application.routes.draw do
   match 'remove_article', to: 'validation#remove_article', as: :remove_article, via: [:post, :get]
   match 'main_article', to: 'validation#main_article', as: :main_article, via: [:post, :get]
 
+  get 'validation/:id/comments', to: 'validation#comments', as: :match_comments
+  post 'validation/:id/comments', to: 'validation#new_comment', as: :new_match_comment
+
+  get 'validation/:id/pass', to: 'validation#pass', as: :review_pass
+  get 'validation/:id/mark_failure', to: 'validation#mark_failure', as: :review_mark_failure
+  put 'validation/:id/fail', to: 'validation#fail', as: :review_fail
+
+  get 'validation/:id/awaiting_external', to: 'validation#awaiting_external', as: :review_awaiting_external
+  get 'validation/:id/resolved', to: 'validation#resolved', as: :review_resolved
+
   get 'matcher', to: 'matcher#index', as: :matcher
   post 'match', to: 'matcher#create', as: :create_match
   match 'search', to: 'search#search', as: :search, via: [:get, :post]
@@ -17,10 +27,15 @@ Rails.application.routes.draw do
 
   get 'reports', to: 'reports#index', as: :reports
 
-  #post 'problem', to: 'problems#problem', as: :problem
+  resource :reports, only: [:index] do
+    get 'matches'
+  end
+
+  # post 'problem', to: 'problems#problem', as: :problem
   resources :problems, only: [:create]
   resources :matches, only: [:destroy]
   resources :articles
+  resources :comments
 
   root "welcome#index"
 end

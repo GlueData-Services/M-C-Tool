@@ -1,3 +1,5 @@
+<% content_for :title, ' - Matches' %>
+
 <section class="header container-fluid mt-4">
   <h2>Consolidation</h2>
 </section>
@@ -11,132 +13,16 @@
       <a class="nav-link" href="#complete" data-bs-toggle="tab" data-bs-target="#complete">Complete</a>
     </li>
     <li>
-      <a class="nav-link" href="#error" data-bs-toggle="tab" data-bs-target="#error">In error</a>
+      <a class="nav-link" href="#error" data-bs-toggle="tab" data-bs-target="#error">Specialist Review</a>
     </li>
   </ul>
 
   <div id="nav-tab-content" class="tab-content border-1 border-start border-end border-bottom bg-white">
-    <div id="incomplete" class="tab-pane fade show active p-3" role="tabpanel">
-      <div class="d-flex justify-content-end">
-        <div class="d-flex gap-3">
-          <%= select_tag 'incomplete_group_filter',
-                         options_for_select(Mara.group_names, params[:incomplete_group_filter]),
-                         prompt: 'Group Filter',
-                         class: 'form-select',
-                         data: {
-                           controller: 'filter',
-                           action: 'filter#changed'
-                         }
-          %>
-          <%= select_tag 'article_count_filter',
-                         options_for_select([1, 2, 3], params[:article_count_filter]),
-                         prompt: 'Article Count Filter',
-                         class: 'form-select',
-                         data: {
-                           controller: 'filter',
-                           action: 'filter#changed'
-                         }
-          %>
-        </div>
-      </div>
+    <%= render 'incomplete' %>
 
+    <%= render 'complete' %>
 
-      <table class="table table-sm mt-4">
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th>Category</th>
-          <th>Articles</th>
-          <th>Fields Complete</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <% @current_matches.each do |match| %>
-          <tr>
-            <td><%= match.name %></td>
-            <td><%= match.article_type %></td>
-            <td><%= match.matched_articles.count %></td>
-            <td><%= match.match_fields.count %></td>
-            <td><%= t(match.status) %></td>
-            <td class="text-end"><%= link_to 'Consolidate', consolidate_match_path(match), class: 'btn btn-sm btn-outline-glue' %></td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
-      <%= paginate @current_matches %>
-    </div>
-
-    <div id="complete" class="tab-pane fade p-3 bg-white" role="tabpanel">
-      <table class="table table-sm table-bordered mt-4">
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th>Category</th>
-          <th>Articles</th>
-          <th>Fields Complete</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <% @complete_matches.each do |match| %>
-          <tr>
-            <td><%= match.name %></td>
-            <td><%= match.article_type %></td>
-            <td><%= match.matched_articles.count %></td>
-            <td><%= match.match_fields.count %></td>
-            <td><%= t(match.status) %></td>
-            <td><%= link_to 'Consolidate', consolidate_match_path(match) %></td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
-      <%= paginate @complete_matches %>
-    </div>
-
-    <div id="error" class="tab-pane fade p-3 bg-white" role="tabpanel">
-      <div class="d-flex justify-content-between">
-        <div class="ms-auto">
-          <%= error_filter_select %>
-        </div>
-      </div>
-      <table class="table table-sm table-bordered mt-4">
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th>Articles</th>
-          <th>Fields Complete</th>
-          <th>Reported</th>
-          <th></th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <% @error_matches.each do |match| %>
-          <tr>
-            <td><%= match.name %></td>
-            <td><%= match.matched_articles.count %></td>
-            <td><%= match.match_fields.count %></td>
-            <td>
-              <% if match.earliest_report %>
-                <%= time_ago_in_words(match.earliest_report) %> ago
-              <% end %>
-            </td>
-            <td><%= link_to 'View', consolidate_match_path(match) %></td>
-          </tr>
-        <tr class="border-bottom-0">
-          <td><%= summarize_errors(match) %></td>
-          <th colspan=4><%= summarize_notes(match) %></th>
-        </tr>
-        <% end %>
-        </tbody>
-      </table>
-      <%= paginate @error_matches %>
-    </div>
+    <%= render 'error' %>
   </div>
 
 </section>

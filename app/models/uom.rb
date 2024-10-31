@@ -13,7 +13,7 @@ class Uom
     loaded_uoms = {}
 
     @lookup.each do |uom_field|
-      @match.maras.each do |mara|
+      @match.main_maras.each do |mara|
         loaded_uoms[mara.id] ||= {}
 
         ##
@@ -44,7 +44,7 @@ class Uom
     # Sorts the UoM entries by Size, calculated by Numerator * Denominator, then groups the records from the various
     # maras into those categories
     # split_records.sort_by!{|e| e[NUM].to_i * e[DEN].to_i}
-    split_records.sort_by!{|e| e['QTY_per_LUN']}
+    split_records.sort_by! { |e| e['QTY_per_LUN'] }
 
     org_out = {}
     split_records.each do |v|
@@ -52,7 +52,6 @@ class Uom
       org_out[key] ||= []
       org_out[key] << v.except(NUM, DEN)
     end
-
 
     org_out
   end

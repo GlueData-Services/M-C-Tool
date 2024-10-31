@@ -1,31 +1,69 @@
-FROM ruby:3.1.1-slim
+FROM ruby:3.1.2-alpine AS assets
 
-RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
-    build-essential \
-    gnupg2 \
-    curl \
-    less \
-    git \
-    mariadb-client \
-    libmariadb-dev \
-    nodejs \
-    npm \
-  && npm install --global yarn \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+WORKDIR /app
 
-#    libpq-dev \
-#    postgresql-client \
+ARG UID=1000
+ARG GID=1000
 
-ENV LANG=C.UTF-8 \
-  BUNDLE_JOBS=4 \
-  BUNDLE_RETRY=3
+RUN apk add --no-cache build-base curl git mariadb-dev tzdata nodejs yarn
+RUN addgroup ruby
+RUN adduser ruby -G ruby -D
+RUN mkdir /node_modules
+RUN chown ruby:ruby -R /node_modules /app
 
-RUN gem update --system && gem install bundler
+USER ruby
 
-WORKDIR /usr/src/app
+COPY --chown=ruby:ruby Gemfile* ./
+RUN bundle install
 
-ENTRYPOINT ["./entrypoint.sh"]
+COPY --chown=ruby:ruby package.json *yarn* ./
+RUN yarn install
 
-EXPOSE 3000
+ARG RAILS_ENV="production"
+ARG NODE_ENV="production"
+ENV RAILS_ENV="${RAILS_ENV}" \
+  NODE_ENV="${NODE_ENV}" \
+  PATH="${PATH}:/home/ruby/.local/bin:/node_modules/.bin" \
+  USER="ruby"
 
-CMD ["bundle", "exec", "rails", "s", "-b", "0.0.0.0"]
+COPY --chown=ruby:ruby . .
+
+RUN if [ "${RAILS_ENV}" != "development" ]; then \
+  SECRET_KEY_BASE=dummyvalue rails assets:precompile; fi
+
+CMD ["ash"]
+
+###############################################################################
+
+FROM ruby:3.1.2-alpine AS app
+
+WORKDIR /app
+
+ARG UID=1000
+ARG GID=1000
+
+RUN apk add --no-cache curl mariadb-client mariadb-dev doas bash tzdata neovim netcat-openbsd
+RUN addgroup ruby
+RUN adduser ruby -G ruby -D
+RUN mkdir /node_modules
+RUN chown ruby:ruby -R /node_modules /app
+
+USER ruby
+
+COPY --chown=ruby:ruby bin/ ./bin
+RUN chmod 0755 bin/*
+
+ARG RAILS_ENV="production"
+ENV RAILS_ENV="${RAILS_ENV}" \
+  PATH="${PATH}:/home/ruby/.local/bin" \
+  USER="ruby"
+
+COPY --chown=ruby:ruby --from=assets /usr/local/bundle /usr/local/bundle
+COPY --chown=ruby:ruby --from=assets /app/public /public
+COPY --chown=ruby:ruby . .
+
+ENTRYPOINT ["/app/bin/docker-entrypoint-web"]
+
+EXPOSE 8000
+
+CMD ["rails", "s"]

@@ -1,0 +1,24 @@
+<% matches.each do |match| %>
+  <% if match.comments.count > 0 %>
+    <div class="offcanvas offcanvas-end" id="match-<%= match.id %>-comments" tabindex="-1">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Comments</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+
+      <div class="offcanvas-body">
+        <% match.comments.each do |comment| %>
+          <div class="card mb-3">
+            <div class="card-header d-flex justify-content-between">
+              <small><%= comment.user.name %></small>
+              <small class="text-muted"><%= comment.created_at.strftime("%F %R") %></small>
+            </div>
+            <div class="card-body">
+              <p class="card-text"><%= comment.comment %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

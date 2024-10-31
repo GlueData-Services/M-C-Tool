@@ -1,0 +1,41 @@
+<div id="tax" class="bg-white border-start border-end border-bottom border-1 p-3 mb-3 tab-pane fade show" role="tabpanel">
+  <% tax = Tax.new(match.id) %>
+
+  <% tax.taxes.each do |banner, rates| %>
+    <b><%= banner %></b>
+
+    <table class="table table-sm table-consolidate">
+      <thead>
+      <tr>
+        <th class="shrink-column">Sel</th>
+        <th class="shrink-column">Country</th>
+        <th>Rate</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% rates.each do |rate| %>
+        <tr data-controller="tax" class="<%= rate['banner'].downcase %>">
+          <td>
+            <% tax_selected = match.match_taxes.exists?(tax_country: rate['aland'], tax_classification: rate['taxm1'], tax_table: rate['table']) %>
+            <input class="<%= rate['aland'] %>-checkbox"
+                   type="checkbox"
+                   data-action="tax#selectTaxClass"
+                   data-tax-country-param="<%= rate['aland'] %>"
+                   data-tax-banner-param="<%= rate['banner'] %>"
+                   <%= 'disabled' if params[:review].present? %>
+                   <%= 'checked' if tax_selected %>
+            >
+            <div class="d-none">
+              <%= hidden_field_tag "match_tax[#{rate['aland']}][tax_classification]", rate['taxm1'], class: "tax #{rate['aland']}", disabled: !tax_selected, data: { tax_target: "taxClass" } %>
+              <%= hidden_field_tag "match_tax[#{rate['aland']}][tax_table]", rate['table'], class: "tax #{rate['aland']}", disabled: !tax_selected, data: { tax_target: "taxTable" } %>
+            </div>
+          </td>
+          <td><%= rate['aland'] %></td>
+          <td><%= rate['VTEXT'] %> (#<%= rate['taxm1'] %>)</td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>

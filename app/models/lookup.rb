@@ -4,6 +4,17 @@ class Lookup < ApplicationRecord
 
   self.table_name = "lookup_and_operations"
 
+  def self.generate_lookup
+    lookups = {}
+    # all.select(:id, :updatable, :override, :attribute_short_name).each do |r|
+    #   lookups[r[:id]] = r.attributes.except(:id)
+    # end
+    all.each do |r|
+      lookups[r.id] = r
+    end
+    lookups
+  end
+
   def self.name_for(id)
     Lookup.find(id).attribute_name
   end
@@ -33,13 +44,18 @@ class Lookup < ApplicationRecord
     where(tab: 'Variant', 'Display': true).order(:sort_order).all
   end
 
-  def self.sections
-    tabs = where.not(tab: %w[Unit_of_Measure Variant]).order(:sort_order).distinct.pluck(:tab)
-    # tabs = order(:sort_order).distinct.pluck('Tab')
+  def self.tax_fields
+    where(tab: 'Tax')
+  end
+
+  def self.sections(current_user)
+    tabs = where.not(tab: %w[Unit_of_Measure Variant Info_Characteristics Tax Classification]).order(:sort_order).distinct.pluck(:tab)
     filtered_tabs = []
     tabs.each do |t|
       if self.where('tab = ? AND display = 1', t).exists?
-        filtered_tabs << t
+        if current_user.can_view?(t.downcase)
+          filtered_tabs << t
+        end
       end
     end
 

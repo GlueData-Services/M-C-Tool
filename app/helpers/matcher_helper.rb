@@ -37,4 +37,18 @@ module MatcherHelper
       end
     end.join(", ").html_safe
   end
+
+  def batch_filter_options(current_batch, include_default = true)
+
+    batches = Mara.pluck(:batch).uniq.compact.sort
+
+    opts = include_default ? [["Batch", nil]] : []
+    options_for_select(opts + batches.zip(batches),
+                       current_batch.present? ? current_batch : nil
+    )
+  end
+
+  def batch_completion_date(batch)
+    Mara.where(batch: batch).maximum(:batch_completion_date).strftime("%F") rescue '2042-12-25'
+  end
 end

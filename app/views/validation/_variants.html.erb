@@ -1,28 +1,35 @@
 <div class="bg-white border-start border-end border-bottom border-1 p-3 mb-3 tab-pane fade show" id="variants" role="tabpanel">
-  <% Variant.new(match.id).rows.each do |pmatnr, records| %>
-    <% next if records.blank? %>
-    <h4><%= pmatnr %></h4>
+  <% variants = Variant.new(match.id) %>
 
-    <table class="table table-sm">
+  <% if variants.has_variants? %>
+    <% col_count = (variants.keys - variants.skip_fields) %>
+    <table class="table table-sm table-consolidate">
       <thead>
       <tr>
-        <% records.first.each do |k, v| %>
-          <th><%= t(k) %></th>
+        <% (variants.keys - variants.skip_fields).each do |col| %>
+          <th><%= col %></th>
         <% end %>
       </tr>
       </thead>
 
       <tbody>
-      <% records.each do |rec| %>
-        <tr>
-          <% rec.each do |k, v| %>
-            <td><%= v %></td>
+      <% variants.rows.each do |rec| %>
+        <tr class="<%= rec['banner'].downcase %>">
+          <% (variants.keys - variants.skip_fields).each do |k| %>
+            <td><%= rec[k] %></td>
           <% end %>
-          <td><%= text_field_tag 'var_num[]'%></td>
+
+          <td>
+            <div class="d-flex gap-1">
+              <button class="btn btn-outline-primary btn-sm var_plus">+</button>
+              <button class="btn btn-outline-primary btn-sm var_plus_one">+1</button>
+              <% matching_variant = match.match_variants.find_by_matnr(rec['MATNR']) %>
+              <%= text_field_tag "variants[#{rec['MATNR']}]", matching_variant.present? ? matching_variant.variant_number : nil, class: 'flex-grow position' %>
+            </div>
+          </td>
         </tr>
       <% end %>
       </tbody>
-
     </table>
   <% end %>
 </div>

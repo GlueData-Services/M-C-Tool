@@ -1,0 +1,35 @@
+<div id="classification" class="bg-white border-start border-end border-bottom border-1 p-3 mb-3 tab-pane fade show" role="tabpanel">
+  <table class="table table-sm table-responsive table-consolidate">
+    <thead>
+    <tr>
+      <th>Article</th>
+      <th>MATNR</th>
+      <th>ATNAM</th>
+      <th>ATWRT</th>
+      <th></th>
+      <th colspan="2" class="text-center">Consolidated</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% ClassificationService.new(match.id).classifications.each_with_index do |cls| %>
+      <% class_saved = match.match_classes.exists?(class_name: cls['ATNAM'], class_value: cls['ATWRT'], mara_id: cls['article']) %>
+
+      <tr class="<%= banner(cls['article'][0]).downcase %>" data-controller="class">
+        <td><%= cls['article'] %></td>
+        <td><%= cls['MATNR'] %></td>
+        <td><%= cls['ATNAM'] %></td>
+        <td><%= cls['ATWRT'] %></td>
+        <td><%= check_box_tag 'classification[][mara_id]', cls['article'], class_saved,
+                              data: { action: "class#selectRecord",
+                                      'class-atnam-param': cls['ATNAM'],
+                                      'class-atwrt-param': cls['ATWRT'] },
+                              disabled: params[:review].present?
+        %>
+        </td>
+        <td><%= text_field_tag "classification[][class_name]", class_saved ? cls['ATNAM'] : nil, data: { class_target: 'atnam' }, disabled: !class_saved %></td>
+        <td><%= text_field_tag "classification[][class_value]", class_saved ? cls['ATNAM'] : nil, data: { class_target: 'atwrt' }, disabled: !class_saved %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
