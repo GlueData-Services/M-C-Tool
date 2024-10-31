@@ -1,6 +1,7 @@
 set :deploy_to, "/var/www/harmonics-staging"
 set :rvm_custom_path, '/usr/share/rvm/'
 set :rails_env, "production"
+set :branch, "ldap"
 
 # server-based syntax
 # ======================

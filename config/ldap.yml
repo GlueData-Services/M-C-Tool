@@ -38,14 +38,24 @@ authorizations: &AUTHORIZATIONS
 #  ssl: false
 #  # <<: *AUTHORIZATIONS
 
+#development:
+#  host: 192.168.10.10
+#  port: 389
+#  attribute: cn
+#  base: CN=Gluedata,DC=gluedata,DC=local
+#  admin_user: CN=ldaptest,CN=Gluedata,DC=gluedata,DC=local
+#  admin_password: SuperL@123!
+#  ssl: false
+
 development:
-  host: 192.168.10.10
+  host: 31.31.198.234
   port: 389
-  attribute: cn
-  base: CN=Gluedata,DC=gluedata,DC=local
-  admin_user: CN=ldaptest,CN=Gluedata,DC=gluedata,DC=local
-  admin_password: SuperL@123!
+  attribute: mail
+  base: OU=General,OU=AllSecurityGroups,OU=Massmart
+  admin_user: DN=PMMLN3000ZAVJ.Gludata.svc,OU=MMServiceAccounts,OU=AllServiceAccounts,OU=Massmart,DC=Massmart,DC=net
+  admin_password: bI%^UmLqu5FqJe3AFUs7
   ssl: false
+
 
 #  host: 192.168.10.10
 #  port: 389
@@ -78,10 +88,10 @@ development:
 production:
   host: massmart.net
   port: 636
-  attribute: mail
+  attribute: DN
   base: DC=massmart,DC=net
   group_base: OU=General,OU=AllServiceGroups,OU=Massmart,DC=massmart,DC=net
-  admin_user: CN=ldaptest,CN=Gluedata,DC=gluedata,DC=local
-  admin_password: password
+  admin_user: DN=marc.howell,DC=massmart,DC=net
+  admin_password: W1f1@1001
   ssl: false
 #  ssl: start_tls

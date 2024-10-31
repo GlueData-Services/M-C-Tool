@@ -1,6 +1,6 @@
 ---
-engine_version: 0.2.72
-file_version: 2022-09-07 08:32:04.313084000 Z
+engine_version: 0.3.11
+file_version: 2023-02-11 10:28:36.340728000 Z
 resources:
 - name: match
   preferences:
@@ -22,6 +22,24 @@ resources:
       validators: []
       description: Number of articles in match
   updated_at: 2022-08-23 17:46:13.156421000 +00:00
+- name: user
+  preferences:
+    scopes:
+    - visible: false
+      name: not_merchandise
+    - visible: false
+      name: not_master_data
+    - visible: false
+      name: not_finance
+    - visible: false
+      name: not_buyer
+    - visible: false
+      name: not_admin
+    - visible: false
+      name: not_reviewer
+    - visible: false
+      name: not_replenishment
+  updated_at: 2023-02-11 10:28:36.340728000 +00:00
 configs:
 - key: header.links
   value: []

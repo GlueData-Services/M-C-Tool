@@ -1,0 +1,9 @@
+production:
+  host: massmart.net
+  port: 636
+  attribute: DN
+  base: DC=massmart,DC=net
+  group_base: OU=General,OU=AllServiceGroups,OU=Massmart,DC=massmart,DC=net
+  admin_user: DN=Massmart_\PMMLN3000ZAVJ.Gludat,DC=massmart,DC=net
+  admin_password: bI%^UmLqu5FqJe3AFUs7
+  ssl: start_tls
