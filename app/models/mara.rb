@@ -19,6 +19,8 @@ class Mara < ApplicationRecord
   scope :in_group, ->(group) { where(group: group) }
   scope :in_batch, ->(batch) { where(batch: batch) }
 
+  scope :source_count, ->(source_name) { where(banner: source_name) }
+
   def self.has_field(col)
     self.column_names.include?(col)
   end
