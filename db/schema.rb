@@ -10,7 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_17_115838) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_14_120448) do
+  create_table "UPL_MATCHABLE_ART", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "PREFIXED_MATNR", limit: 20
+    t.string "REGULAR_VENDOR"
+    t.string "VENDOR_PROD_NUM"
+  end
+
   create_table "_match_taxes", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "match_id"
     t.integer "tax_classification"
@@ -176,6 +182,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_115838) do
     t.string "HERKL", limit: 3
   end
 
+  create_table "b_marc", primary_key: "MATNR", id: { type: :string, limit: 18 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "ZZPROHIBITED", limit: 1
+    t.string "ZZPROHIB_COMMENT", limit: 2
+    t.string "STAWN", limit: 17
+    t.string "EXPME", limit: 3
+  end
+
   create_table "b_marm", primary_key: ["MATNR", "MEINH"], charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 18, null: false
     t.string "MEINH", limit: 3, null: false
@@ -241,6 +254,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_115838) do
     t.string "TAXM9", limit: 1
   end
 
+  create_table "b_mvke", primary_key: "MATNR", id: { type: :string, limit: 18 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "PMATN", limit: 18
+    t.string "MTPOS", limit: 4
+    t.string "SKTOF", limit: 1
+  end
+
   create_table "b_other_char", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "MATNR", limit: 40
     t.string "ARTICLE_DESC", limit: 40
@@ -250,6 +269,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_115838) do
     t.string "ATNAM", limit: 30
     t.string "ATWRT", limit: 30
     t.index ["MATNR"], name: "b_other_char_MATNR_IDX"
+  end
+
+  create_table "b_stko", primary_key: "MATNR", id: { type: :string, limit: 18 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "BMEIN", limit: 3
+    t.decimal "BMENG", precision: 13, scale: 3
   end
 
   create_table "b_t001w", primary_key: "WERKS", id: { type: :string, limit: 4 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -297,6 +321,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_115838) do
     t.string "BEZEI", limit: 50
   end
 
+  create_table "b_tqgrpt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "QGRP", limit: 4
+    t.string "TEXT", limit: 40
+    t.index ["QGRP"], name: "b_tqgrpt_QGRP_IDX"
+  end
+
   create_table "b_tskmt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.text "TAXKM", size: :tiny
     t.text "VTEXT", size: :tiny
@@ -339,34 +369,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_115838) do
     t.string "CHAR2_ATWRT", limit: 30
     t.string "CHAR2_GROUP_ATNAM"
     t.index ["GENERIC"], name: "b_var_char_GENERIC_IDX"
-  end
-
-  create_table "b_variant_detail", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.text "TYPE", size: :tiny
-    t.text "GENERIC_MATNR", size: :tiny
-    t.text "VARIANT_NUM", size: :tiny
-    t.text "VARIANT_MATNR", size: :tiny
-    t.text "DECRIPTION", size: :tiny
-    t.text "KEY_OBJECT_NUM", size: :tiny
-    t.text "COLOUR_INT_CHAR_NUM", size: :tiny
-    t.text "COLOUR_CHARACTERISTIC_NAME", size: :tiny
-    t.text "COLOUR", size: :tiny
-    t.text "SIZE1_INT_CHAR_NUM", size: :tiny
-    t.text "SIZE1_CHARACTERISTIC_NAME", size: :tiny
-    t.text "SIZE1", size: :tiny
-    t.text "SIZE2_INT_CHAR_NUM", size: :tiny
-    t.text "SIZE2_CHARACTERISTIC_NAME", size: :tiny
-    t.text "SIZE2", size: :tiny
-    t.text "CHAR1_INT_CHAR_NUM", size: :tiny
-    t.text "CHAR1_CHARACTERISTIC_NAME", size: :tiny
-    t.text "CHAR1_CHARACTERISTIC_VALUE", size: :tiny
-    t.text "CHAR2_INT_CHAR_NUM", size: :tiny
-    t.text "CHAR2_CHARACTERISTIC_NAME", size: :tiny
-    t.text "CHAR2_CHARACTERISTIC_VALUE", size: :tiny
-    t.text "CHAR3_INT_CHAR_NUM", size: :tiny
-    t.text "CHAR3_CHARACTERISTIC_NAME", size: :tiny
-    t.text "CHAR3_CHARACTERISTIC_VALUE", size: :tiny
-    t.index ["GENERIC_MATNR"], name: "b_variant_detail_GENERIC_MATNR_IDX", length: 255
   end
 
   create_table "classification_char", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -622,6 +624,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_115838) do
     t.string "BEZEI", limit: 20
   end
 
+  create_table "g_tqgrpt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "QGRP", limit: 4
+    t.string "TEXT", limit: 40
+    t.index ["QGRP"], name: "g_tqgrpt_QGRP_IDX"
+  end
+
   create_table "g_tskmt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.text "TAXKM", size: :tiny
     t.text "VTEXT", size: :tiny
@@ -664,34 +672,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_115838) do
     t.string "CHAR2_ATWRT", limit: 70
     t.string "CHAR2_GROUP_ATNAM"
     t.index ["GENERIC"], name: "g_var_char_GENERIC_IDX"
-  end
-
-  create_table "g_variant_detail", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.text "TYPE", size: :tiny
-    t.text "GENERIC_MATNR", size: :tiny
-    t.text "VARIANT_NUM", size: :tiny
-    t.text "VARIANT_MATNR", size: :tiny
-    t.text "DECRIPTION", size: :tiny
-    t.text "KEY_OBJECT_NUM", size: :tiny
-    t.text "COLOUR_INT_CHAR_NUM", size: :tiny
-    t.text "COLOUR_CHARACTERISTIC_NAME", size: :tiny
-    t.text "COLOUR", size: :tiny
-    t.text "SIZE1_INT_CHAR_NUM", size: :tiny
-    t.text "SIZE1_CHARACTERISTIC_NAME", size: :tiny
-    t.text "SIZE1", size: :tiny
-    t.text "SIZE2_INT_CHAR_NUM", size: :tiny
-    t.text "SIZE2_CHARACTERISTIC_NAME", size: :tiny
-    t.text "SIZE2", size: :tiny
-    t.text "CHAR1_INT_CHAR_NUM", size: :tiny
-    t.text "CHAR1_CHARACTERISTIC_NAME", size: :tiny
-    t.text "CHAR1_CHARACTERISTIC_VALUE", size: :tiny
-    t.text "CHAR2_INT_CHAR_NUM", size: :tiny
-    t.text "CHAR2_CHARACTERISTIC_NAME", size: :tiny
-    t.text "CHAR2_CHARACTERISTIC_VALUE", size: :tiny
-    t.text "CHAR3_INT_CHAR_NUM", size: :tiny
-    t.text "CHAR3_CHARACTERISTIC_NAME", size: :tiny
-    t.text "CHAR3_CHARACTERISTIC_VALUE", size: :tiny
-    t.index ["GENERIC_MATNR"], name: "g_variant_detail_GENERIC_MATNR_IDX", length: 255
   end
 
   create_table "g_wrf_brands", primary_key: "BRAND_ID", id: { type: :string, limit: 4 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1027,6 +1007,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_115838) do
     t.string "BEZEI", limit: 20
   end
 
+  create_table "m_tqgrpt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "QGRP", limit: 4
+    t.string "TEXT", limit: 40
+    t.index ["QGRP"], name: "m_tqgrpt_QGRP_IDX"
+  end
+
   create_table "m_tskmt", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.text "TAXKM", size: :tiny
     t.text "VTEXT", size: :tiny
@@ -1069,34 +1055,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_115838) do
     t.string "CHAR2_ATWRT", limit: 30
     t.string "CHAR2_GROUP_ATNAM"
     t.index ["GENERIC"], name: "m_var_char_GENERIC_IDX"
-  end
-
-  create_table "m_variant_detail", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.text "TYPE", size: :tiny
-    t.text "GENERIC_MATNR", size: :tiny
-    t.text "VARIANT_NUM", size: :tiny
-    t.text "VARIANT_MATNR", size: :tiny
-    t.text "DECRIPTION", size: :tiny
-    t.text "KEY_OBJECT_NUM", size: :tiny
-    t.text "COLOUR_INT_CHAR_NUM", size: :tiny
-    t.text "COLOUR_CHARACTERISTIC_NAME", size: :tiny
-    t.text "COLOUR", size: :tiny
-    t.text "SIZE1_INT_CHAR_NUM", size: :tiny
-    t.text "SIZE1_CHARACTERISTIC_NAME", size: :tiny
-    t.text "SIZE1", size: :tiny
-    t.text "SIZE2_INT_CHAR_NUM", size: :tiny
-    t.text "SIZE2_CHARACTERISTIC_NAME", size: :tiny
-    t.text "SIZE2", size: :tiny
-    t.text "CHAR1_INT_CHAR_NUM", size: :tiny
-    t.text "CHAR1_CHARACTERISTIC_NAME", size: :tiny
-    t.text "CHAR1_CHARACTERISTIC_VALUE", size: :tiny
-    t.text "CHAR2_INT_CHAR_NUM", size: :tiny
-    t.text "CHAR2_CHARACTERISTIC_NAME", size: :tiny
-    t.text "CHAR2_CHARACTERISTIC_VALUE", size: :tiny
-    t.text "CHAR3_INT_CHAR_NUM", size: :tiny
-    t.text "CHAR3_CHARACTERISTIC_NAME", size: :tiny
-    t.text "CHAR3_CHARACTERISTIC_VALUE", size: :tiny
-    t.index ["GENERIC_MATNR"], name: "m_variant_detail_GENERIC_MATNR_IDX", length: 255
   end
 
   create_table "m_wrf_brands", primary_key: "BRAND_ID", id: { type: :string, limit: 4 }, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1358,9 +1316,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_115838) do
     t.boolean "matched", default: false
     t.boolean "active", default: false
     t.string "cmd_group", limit: 128
-    t.string "Status", limit: 100
-    t.string "Last_sale_in_months", limit: 100
-    t.string "Stock_level", limit: 100
+    t.string "status", limit: 100
+    t.string "last_sale_in_months", limit: 100
+    t.string "stock_level", limit: 100
     t.string "vendor_codes", limit: 40
     t.integer "batch"
     t.date "batch_completion_date"
@@ -1557,6 +1515,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_115838) do
     t.string "BMC_DESC"
     t.string "ATINN"
     t.string "ATNAM"
+  end
+
+  create_table "source_names", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.string "c_name"
+    t.boolean "available"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|

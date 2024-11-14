@@ -2,13 +2,16 @@ module WelcomeHelper
 
   def total_for_banner(banner)
     Rails.cache.fetch("#{banner}_total", expires_in: 12.hours) do
-      number_with_delimiter Mara.send(banner.to_sym).count
+      # number_with_delimiter Mara.send(banner.to_sym).count
+      number_with_delimiter Mara.source_count(banner).count
     end
+    # SELECT `matchable_articles`.* FROM `matchable_articles` WHERE `matchable_articles`.`banner` = 'GAME'
   end
 
   def variations_for_banner(banner)
     Rails.cache.fetch("#{banner}_var_total", expires_in: 12.hours) do
-      number_with_delimiter Mara.send(banner.to_sym).sum(:number_variants)
+      # number_with_delimiter Mara.send(banner.to_sym).sum(:number_variants)
+      number_with_delimiter Mara.source_count(banner).sum(:number_variants)
     end
   end
 

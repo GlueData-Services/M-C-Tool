@@ -54,21 +54,17 @@
               </tr>
               </thead>
               <tbody>
-              <tr>
-                <th>Source One</th>
-                <td class="text-end"><%= total_for_banner('game') %></td>
-                <td class="text-end"><%= variations_for_banner('game') %></td>
-              </tr>
-              <tr>
-                <th>Source Two</th>
-                <td class="text-end"><%= total_for_banner('makro') %></td>
-                <td class="text-end"><%= variations_for_banner('makro') %></td>
-              </tr>
-              <tr>
-                <th>Source Three</th>
-                <td class="text-end"><%= total_for_banner('builders') %></td>
-                <td class="text-end"><%= variations_for_banner('builders') %></td>
-              </tr>
+
+              <% sn = SourceName.all.map{|s| [s&.name, s&.c_name]} %>
+              <% sn.each do |name| %>
+                <tr>
+                  <th><%= name[0] %></th>
+                  <td class="text-end"><%= total_for_banner(name[1]) %></td>
+                  <td class="text-end"><%= variations_for_banner(name[1]) %></td>
+                </tr>
+              <% end %>
+
+
               <tr>
                 <th>Total</th>
                 <td class="text-end"><%= total_for_all %></td>
