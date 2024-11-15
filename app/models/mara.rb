@@ -13,12 +13,8 @@ class Mara < ApplicationRecord
   scope :unmatched, -> { where.not('matched') }
   scope :matched, -> { where('matched') }
   scope :active, -> { where(active: true) }
-  scope :builders, -> { where(banner: 'BUILDERS') }
-  scope :game, -> { where(banner: 'GAME') }
-  scope :makro, -> { where(banner: 'MAKRO') }
   scope :in_group, ->(group) { where(group: group) }
   scope :in_batch, ->(batch) { where(batch: batch) }
-
   scope :source_count, ->(source_name) { where(banner: source_name) }
 
   def self.has_field(col)

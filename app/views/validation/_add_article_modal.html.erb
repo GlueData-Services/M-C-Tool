@@ -11,7 +11,8 @@
       <div class="modal-body">
         <%= form_tag search_path(consolidator: true, match_id: @match.id), method: :post, class: 'row gy-2 gx-3 bd-highlight', remote: true do %>
           <div class="col-auto">
-            <%= select_tag :f_banner, options_for_select(%w[GAME BUILDERS MAKRO], params[:f_banner]), include_blank: true, placeholder: 'Banner', class: 'form-select' %>
+            <% sn = SourceName.all.map{|s| [s&.name, s&.c_name]} %>
+            <%= select_tag :f_banner, options_for_select(%w[sn], params[:f_banner]), include_blank: true, placeholder: 'Banner', class: 'form-select' %>
           </div>
           <div class="col-auto">
             <%= select_tag :f_article_type, options_for_select(Mara.article_types), placeholder: 'Article Type', include_blank: true, class: 'form-select' %>
