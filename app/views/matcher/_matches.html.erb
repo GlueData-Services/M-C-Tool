@@ -25,7 +25,7 @@
     <table class="table table-sm table-bordered table-hover matched_table align-middle">
       <thead>
       <tr>
-        <th>Banner</th>
+        <th>Source System</th>
         <th class="text-nowrap">Description</th>
         <th class="text-nowrap">Article Type</th>
         <th class="text-nowrap">Barcodes</th>
@@ -40,7 +40,19 @@
       <% @matched && @matched.with_highlights.each do |mara, highlight| %>
 
         <tr class="<%= mara.banner.downcase %> <%= mara.barcodes&.split(',')&.join(" ") %> <%= @scores[mara.prefixed_matnr] >= 1000 ? "selected_row" : "" %>">
-          <td><span><%= mara.banner %></span></td>
+          <td>
+            <span>
+              <% if mara.banner.eql?('BUILDERS') %>
+                Source One
+              <% elsif mara.banner.eql?('GAME') %>
+                Source Two
+              <% elsif mara.banner.eql?('MAKRO') %>
+                Source Three
+              <% else %>
+                <%= mara.banner %>
+              <% end %>
+            </span>
+          </td>
           <td class="text-nowrap"><%== highlight[:description].blank? ? mara.description : highlight[:description] %></td>
           <td class="text-nowrap"><%= mara.article_type %></td>
           <td style="overflow: auto; max-width: 30em;"> <!-- Barcode List-->

@@ -5,7 +5,7 @@
     <%= form_tag matcher_path, method: :get, class: 'row gy-2 gx-3 align-items-center bd-highlight' do %>
       <div class="col-auto">
         <%= select_tag :f_banner,
-                       options_for_select([["Banner", nil], ["GAME", "GAME"], ["BUILDERS", "BUILDERS"], ["MAKRO", "MAKRO"]], params[:f_banner]),
+                       options_for_select([["Source System", nil], ["Source One", "BUILDERS"], ["Source Two", "GAME"], ["Source Three", "MAKRO"]], params[:f_banner]),
                        class: 'form-select-sm'
         %>
       </div>

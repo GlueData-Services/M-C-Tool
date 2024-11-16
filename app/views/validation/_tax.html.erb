@@ -2,7 +2,17 @@
   <% tax = Tax.new(match.id) %>
 
   <% tax.taxes.each do |banner, rates| %>
-    <b><%= banner %></b>
+    <b>
+      <% if banner.eql?('BUILDERS') %>
+        SOURCE ONE
+      <% elsif banner.eql?('GAME') %>
+        SOURCE TWO
+      <% elsif banner.eql?('MAKRO') %>
+        SOURCE THREE
+      <% else %>
+        <%= banner %>
+      <% end %>
+    </b>
 
     <table class="table table-sm table-consolidate">
       <thead>

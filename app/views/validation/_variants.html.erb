@@ -7,7 +7,13 @@
       <thead>
       <tr>
         <% (variants.keys - variants.skip_fields).each do |col| %>
-          <th><%= col %></th>
+          <th>
+            <% if col.eql?('banner') %>
+              Source System
+            <% else %>
+              <%= col %>
+            <% end %>
+          </th>
         <% end %>
       </tr>
       </thead>
@@ -16,7 +22,17 @@
       <% variants.rows.each do |rec| %>
         <tr class="<%= rec['banner'].downcase %>">
           <% (variants.keys - variants.skip_fields).each do |k| %>
-            <td><%= rec[k] %></td>
+            <td>
+              <% if rec[k].eql?('BUILDERS') %>
+                SOURCE ONE
+              <% elsif rec[k].eql?('GAME') %>
+                SOURCE TWO
+              <% elsif rec[k].eql?('MAKRO') %>
+                SOURCE THREE
+              <% else %>
+                <%= rec[k] %>
+              <% end %>
+            </td>
           <% end %>
 
           <td>

@@ -3,7 +3,7 @@
   <table id="matchables" class="table table-sm align-middle">
     <thead>
     <tr>
-      <th>Banner</th>
+      <th>Source System</th>
       <th class="text-nowrap">Description</th>
       <th class="text-nowrap">Article Type</th>
       <th class="text-nowrap" style="max-width: 5%;">Variants</th>
@@ -32,7 +32,17 @@
             class="<%= 'bg-selected' if mara.barcodes && params[:q]&.include?(mara.barcodes) %>"
             style="cursor: pointer;"
         >
-          <td><%= mara.banner %></td>
+          <td>
+            <% if mara.banner.eql?('BUILDERS') %>
+              Source One
+            <% elsif mara.banner.eql?('GAME') %>
+              Source Two
+            <% elsif mara.banner.eql?('MAKRO') %>
+              Source Three
+            <% else %>
+              <%= mara.banner %>
+            <% end %>
+          </td>
           <td class="text-nowrap"><%= mara.description %></td>
           <td class="text-nowrap"><%= mara.article_type %></td>
           <td class="text-center"><%= mara.number_variants %></td>
