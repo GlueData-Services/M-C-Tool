@@ -1,0 +1,45 @@
+<section class="content" id="welcome">
+  <div class="container">
+    <div id="banner-stats" class="row mt-4">
+      <div class="col-12 col-lg-12">
+        <h3>License Keys</h3>
+        <div class="card border-secondary shadow">
+          <% if @licenses.blank? %>
+          <div class="card-body m-4">
+            <h3><p class="text-danger">There is no license key present.</p></h3>
+          </div>
+          <% else %>
+          <div class="card-body">
+            <div class="row mt-4">
+              <table class="table table-borderless table-striped table-fixed">
+                <thead>
+                <tr>
+                  <th>Client Name</th>
+                  <th>License Key</th>
+                  <th>Expire Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% @licenses.each do |l| %>
+                  <tr>
+                    <th><%= l.client_name %></th>
+                    <td class="text-wrap">
+                      <span class="d-inline-block text-truncate" style="max-width: 800px;">
+                        <%= l.license_key %>
+                      </span>
+                    </td>
+                    <td><%= l.expire_date %></td>
+                  </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <% end %>
+
+          <%= link_to "Add New License Key", licenses_new_path, class: 'm-4 col-3 btn btn-success' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
