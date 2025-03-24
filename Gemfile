@@ -67,6 +67,7 @@ gem 'sentry-rails'
 gem 'interactor-rails'
 gem 'table_print'
 gem 'nokogiri'
+gem 'jwt'
 
 group :development, :test do
   gem 'rspec-rails'

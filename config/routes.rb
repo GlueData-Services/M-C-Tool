@@ -2,6 +2,12 @@ Rails.application.routes.draw do
   devise_for :users
   mount Motor::Admin => '/motor_admin'
 
+  namespace :api, :defaults => {:format => 'json'} do
+    namespace :v1 do
+      resources :licenses, only: [:create, :update, :delete]
+    end
+  end
+
   get 'consolidate', to: 'validation#index', as: :consolidation
   # get 'edit_validation', to: 'validation#edit', as: :edit_validation
   get 'consolidate/:id', to: 'validation#edit', as: :consolidate_match
