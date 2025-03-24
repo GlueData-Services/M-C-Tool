@@ -49,7 +49,7 @@ class Lookup < ApplicationRecord
   end
 
   def self.sections(current_user)
-    tabs = where.not(tab: %w[Unit_of_Measure Variant Info_Characteristics Tax Classification]).order(:sort_order).distinct.pluck(:tab)
+    tabs = where.not(tab: %w[Unit_of_Measure Variant Info_Characteristics Tax Classification]).distinct.pluck(:tab)
     filtered_tabs = []
     tabs.each do |t|
       if self.where('tab = ? AND display = 1', t).exists?
@@ -63,6 +63,6 @@ class Lookup < ApplicationRecord
   end
 
   def self.fields_for_section(sec)
-    where("tab = ? AND display = true", sec).order(:sort_order).distinct.pluck(:id)
+    where("tab = ? AND display = true", sec).distinct.pluck(:id)
   end
 end
