@@ -1,0 +1,22 @@
+<section class="content" id="welcome">
+  <div class="container mt-4">
+    <%= bootstrap_form_for(@license, url: licenses_create_path) do |f| %>
+      <% if @license.errors.any? %>
+        <div class="text-danger">
+          <h2><%= pluralize(@license.errors.count, "error") %> prohibited this license from being saved:</h2>
+
+          <ul>
+            <% @license.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+        <%= f.text_field :client_name %>
+        <%= f.text_area :license_key %>
+        <%= f.submit 'Add License Key', class: 'col-3 btn btn-primary' %>
+        <%= link_to 'Show All', licenses_index_path, class: 'col-3 btn btn-secondary' %>
+    <% end %>
+  </div>
+</section>
