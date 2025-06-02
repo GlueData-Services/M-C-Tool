@@ -4,8 +4,10 @@
 
     <%= form_tag matcher_path, method: :get, class: 'row gy-2 gx-3 align-items-center bd-highlight' do %>
       <div class="col-auto">
+        <% @unique_articles = ActiveRecord::Base.connection.execute("select distinct banner from `matchable_articles`;") %>
+        <% @unique_articles = @unique_articles.map {|sub_array| [sub_array[0], sub_array[0]]} %>
         <%= select_tag :f_banner,
-                       options_for_select([["Source System", nil], ["Source One", "GAME"], ["Source Two", "BUILDERS"], ["Source Three", "MAKRO"]], params[:f_banner]),
+                       options_for_select([["Source System", nil]] + @unique_articles, params[:f_banner]),
                        class: 'form-select-sm'
         %>
       </div>

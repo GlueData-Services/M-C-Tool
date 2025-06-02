@@ -54,21 +54,15 @@
               </tr>
               </thead>
               <tbody>
-              <tr>
-                <th>Source One</th>
-                <td class="text-end"><%= total_for_banner('game') %></td>
-                <td class="text-end"><%= variations_for_banner('game') %></td>
-              </tr>
-              <tr>
-                <th>Source Two</th>
-                <td class="text-end"><%= total_for_banner('makro') %></td>
-                <td class="text-end"><%= variations_for_banner('makro') %></td>
-              </tr>
-              <tr>
-                <th>Source Three</th>
-                <td class="text-end"><%= total_for_banner('builders') %></td>
-                <td class="text-end"><%= variations_for_banner('builders') %></td>
-              </tr>
+              <% @unique_articles = ActiveRecord::Base.connection.execute("select distinct banner from `matchable_articles`;") %>
+              <% @unique_articles.each do |article| %>
+              <% b_name = article[0].downcase %>
+                <tr>
+                  <th><%= b_name.titlecase %></th>
+                  <td class="text-end"><%= total_for_banner(b_name) %></td>
+                  <td class="text-end"><%= variations_for_banner(b_name) %></td>
+                </tr>
+              <% end %>
               <tr>
                 <th>Total</th>
                 <td class="text-end"><%= total_for_all %></td>
