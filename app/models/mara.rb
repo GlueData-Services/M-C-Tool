@@ -13,9 +13,10 @@ class Mara < ApplicationRecord
   scope :unmatched, -> { where.not('matched') }
   scope :matched, -> { where('matched') }
   scope :active, -> { where(active: true) }
-  scope :builders, -> { where(banner: 'BUILDERS') }
-  scope :game, -> { where(banner: 'GAME') }
-  scope :makro, -> { where(banner: 'MAKRO') }
+  # scope :builders, -> { where(banner: 'BUILDERS') }
+  # scope :game, -> { where(banner: 'GAME') }
+  # scope :makro, -> { where(banner: 'MAKRO') }
+  scope :article_data, -> (item) { where('banner = ?', item) }
   scope :in_group, ->(group) { where(group: group) }
   scope :in_batch, ->(batch) { where(batch: batch) }
 

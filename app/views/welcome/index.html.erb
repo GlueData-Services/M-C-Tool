@@ -54,13 +54,12 @@
               </tr>
               </thead>
               <tbody>
-              <% @unique_articles = ActiveRecord::Base.connection.execute("select distinct banner from `matchable_articles`;") %>
+              <% @unique_articles = ActiveRecord::Base.connection.execute("select distinct banner from `matchable_articles`;")&.to_a.flatten %>
               <% @unique_articles.each do |article| %>
-              <% b_name = article[0].downcase %>
                 <tr>
-                  <th><%= b_name.titlecase %></th>
-                  <td class="text-end"><%= total_for_banner(b_name) %></td>
-                  <td class="text-end"><%= variations_for_banner(b_name) %></td>
+                  <th><%= article.titlecase %></th>
+                  <td class="text-end"><%= total_for_banner(article) %></td>
+                  <td class="text-end"><%= variations_for_banner(article) %></td>
                 </tr>
               <% end %>
               <tr>
