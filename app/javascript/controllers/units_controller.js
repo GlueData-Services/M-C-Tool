@@ -63,12 +63,23 @@ export default class extends Controller {
   }
 
   selectRecord(event) {
-    console.log("Selected record", event.params);
-    this.matnrTarget.value = event.params.value;
-    this.unitTarget.value = event.params.unit;
-    this.originalUnitTarget.value = event.params.unit;
-    if (event.params.ean) {
-      this.eanTarget.value = event.params.ean;
+    const isSameSelection =
+      this.matnrTarget.value === event.params.value &&
+      this.unitTarget.value === event.params.unit;
+
+    if (isSameSelection) {
+      event.target.checked = false;
+      this.matnrTarget.value = "";
+      this.unitTarget.value = "";
+      this.originalUnitTarget.value = "";
+      this.eanTarget.value = "";
+    } else {
+      this.matnrTarget.value = event.params.value;
+      this.unitTarget.value = event.params.unit;
+      this.originalUnitTarget.value = event.params.unit;
+      if (event.params.ean) {
+        this.eanTarget.value = event.params.ean;
+      }
     }
     this.checkUnits();
   }

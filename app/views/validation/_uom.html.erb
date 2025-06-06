@@ -1,9 +1,11 @@
 <div id="uom" class="bg-white border-start border-end border-bottom border-1 p-3 mb-3 tab-pane fade show" role="tabpanel">
   <% uom = Uom.new(match.id) %>
+  <% n_list = [] %>
   <% uom.sections.each do |match_type, records| %>
     <h5><%= match_type %></h5>
     <% keys = records.first.keys %>
     <% qty = records.first['QTY_per_LUN'] %>
+    <% n_list << qty %>
     <% rec = uom.records(qty) %>
 
     <div class="unit_of_measure mb-4" data-controller="units">
@@ -71,3 +73,48 @@
     </div>
   <% end %>
 </div>
+
+<%= javascript_tag do %>
+  function initialize() {
+    const n_list = <%= raw n_list.to_json %>;
+
+    n_list.forEach(function (qty) {
+      const groupName = `mu[${qty}]`;
+      const radios = document.querySelectorAll(`input[type="radio"][name="${groupName}"]`);
+      let selectedRadio = null;
+
+      radios.forEach(function (radio) {
+        radio.addEventListener('click', function () {
+          if (selectedRadio === this) {
+            this.checked = false;
+            selectedRadio = null;
+
+            // Clear all ean input fields when radio is deselected
+            const eanInputs = document.querySelectorAll('input.match_units__ean');
+            eanInputs.forEach(function (input) {
+              input.value = '';
+              this.value = '';
+            });
+          } else {
+            selectedRadio = this;
+          }
+        });
+      });
+    });
+
+    // Attach focus event listener to each ean input field to clear its value on focus
+    const eanInputs = document.querySelectorAll('input.match_units__ean');
+    eanInputs.forEach(function (input) {
+      input.addEventListener('focus', function () {
+        this.value = '';
+      });
+    });
+  }
+
+  // Check if the document is already loaded
+  if (document.readyState !== 'loading') {
+    initialize();
+  } else {
+    document.addEventListener('DOMContentLoaded', initialize);
+  }
+<% end %>
