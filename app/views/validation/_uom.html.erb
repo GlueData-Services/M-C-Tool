@@ -71,7 +71,6 @@
         </div>
       </div>
     </div>
-
   <% end %>
 </div>
 
@@ -94,6 +93,7 @@
             const eanInputs = document.querySelectorAll('input.match_units__ean');
             eanInputs.forEach(function (input) {
               input.value = '';
+              this.value = '';
             });
           } else {
             selectedRadio = this;
@@ -118,4 +118,3 @@
     document.addEventListener('DOMContentLoaded', initialize);
   }
 <% end %>
-
