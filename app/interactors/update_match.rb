@@ -24,7 +24,7 @@ class UpdateMatch
       match.reload
 
       unit_params.each do |unit_record|
-        next if unit_record['prefixed_matnr'].blank?
+        MatchUnit.find_by(match_id: match.id, quantity: unit_record["quantity"])&.destroy if unit_record['prefixed_matnr'].blank?
         match_unit = match.match_units.find_or_initialize_by(match_id: match.id, quantity: unit_record[:quantity])
         match_unit.update(unit_record)
       end
