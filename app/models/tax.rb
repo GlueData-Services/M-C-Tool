@@ -25,7 +25,16 @@ class Tax
 
   def get_tax(mara)
     banner_prefix = mara.banner[0].downcase
-    table = "#{banner_prefix}_mlan"
+    if mara.banner == 'BIT'
+      banner_prefix = 'g'
+    elsif mara.banner == 'EC'
+      banner_prefix = 'm'
+    elsif mara.banner == 'WC'
+      banner_prefix = 'b'
+    else
+      banner_prefix = mara.banner[0].downcase
+    end
+    # table = "#{banner_prefix}_mlan"
 
     query = <<~SQL
       SELECT aland, taxm1, #{banner_prefix}_tskmt.`VTEXT`, "#{banner_prefix}_mlan" as "table", "#{mara.banner}" as "banner"

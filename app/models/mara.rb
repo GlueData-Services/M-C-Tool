@@ -70,13 +70,13 @@ class Mara < ApplicationRecord
 
       lookup = Lookup.find(lookup_id)
       case banner
-      when 'GAME'
+      when 'GAME' || 'BIT'
         val = get_value(lookup.g_table, lookup.g_field)
         lookup.g_lookup.present? ? get_lookup_value(lookup.g_lookup, val) : val
-      when 'MAKRO'
+      when 'MAKRO' || 'EC'
         val = get_value(lookup.m_table, lookup.m_field)
         lookup.m_lookup.present? ? get_lookup_value(lookup.m_lookup, val) : val
-      when 'BUILDERS'
+      when 'BUILDERS' || 'WC'
         val = get_value(lookup.b_table, lookup.b_field)
         lookup.b_lookup.present? ? get_lookup_value(lookup.b_lookup, val) : val
       end
