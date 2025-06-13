@@ -83,6 +83,7 @@ class Variant
   end
 
   def table_field(mara)
+    debugger
     case mara.banner
     when 'GAME'
       %w[g_table g_field]

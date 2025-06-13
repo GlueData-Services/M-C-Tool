@@ -1,15 +1,15 @@
 set :deploy_to, "/var/www/harmonics-staging"
 set :rvm_custom_path, '/usr/share/rvm/'
 set :rails_env, "production"
-set :branch, "ldap"
+set :branch, "develop"
 
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
 # You can define all roles on a single server, or split them:
 
-server "gluedata", user: "gd_mhowell", roles: %w{app db web}
-# server "192.168.10.24", user: "gd_mhowell", roles: %w{app db web}
+# server "gluedata", user: "gd_massmart_adm", roles: %w{app db web}
+server "192.168.10.24", user: "gd_massmart_adm", roles: %w{app db web}
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
@@ -65,3 +65,8 @@ set :rvm_ruby_version, '3.1.2'
 #     auth_methods: %w(publickey password)
 #     # password: "please use keys"
 #   }
+
+set :ssh_options, {
+ keys: %w(/home/user_name/.ssh/mc_tool.pub),
+ forward_agent: true
+}

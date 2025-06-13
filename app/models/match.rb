@@ -80,7 +80,9 @@ class Match < ApplicationRecord
 
   def main_maras
     mains = []
-    %w[GAME BUILDERS MAKRO].each do |banner|
+    @unique_articles = ActiveRecord::Base.connection.execute("select distinct banner from `matchable_articles`;")&.to_a.flatten
+    @unique_articles.each do |banner|
+      debugger
       arts = maras.where(matchable_articles: { banner: banner })
       if arts.count == 1
         mains << arts.first

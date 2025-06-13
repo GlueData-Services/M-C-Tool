@@ -24,9 +24,17 @@ class Tax
   end
 
   def get_tax(mara)
-    banner_prefix = mara.banner[0].downcase
+    if mara.banner == 'BIT'
+      banner_prefix = 'g'
+    elsif mara.banner == 'EC'
+      banner_prefix = 'm'
+    elsif mara.banner == 'WC'
+      banner_prefix = 'b'
+    else
+      banner_prefix = mara.banner[0].downcase
+    end
+    # banner_prefix = mara.banner[0].downcase
     table = "#{banner_prefix}_mlan"
-
     query = <<~SQL
       SELECT aland, taxm1, #{banner_prefix}_tskmt.`VTEXT`, "#{banner_prefix}_mlan" as "table", "#{mara.banner}" as "banner"
       FROM #{banner_prefix}_mlan
@@ -34,6 +42,7 @@ class Tax
       WHERE #{banner_prefix}_mlan.MATNR = '#{mara.matnr}'
     SQL
 
+    debugger
     res = ActiveRecord::Base.connection.exec_query(query)
     res.to_a
   end
