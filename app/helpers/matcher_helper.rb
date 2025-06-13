@@ -2,11 +2,11 @@ module MatcherHelper
   def banner(code)
     case code.upcase
     when 'G'
-      return 'Game'
+      return 'Bit'
     when 'M'
-      return 'Makro'
+      return 'Ec'
     when 'B'
-      return 'Builders'
+      return 'Wc'
     else
       return code
     end
