@@ -3,4 +3,8 @@ class SourceLookup < ApplicationRecord
   validates :BANNER_NAME, presence: true, length: {minimum: 2, maximum: 50}
   validates :SOURCE_TABLES, presence: true, uniqueness: true, length: {minimum: 3, maximum: 50}
 
+
+  def self.banner_names
+    all.pluck(:banner_name)
+  end
 end

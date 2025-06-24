@@ -80,7 +80,7 @@ class Match < ApplicationRecord
 
   def main_maras
     mains = []
-    @unique_articles = ActiveRecord::Base.connection.execute("select distinct banner from `matchable_articles`;")&.to_a.flatten
+    @unique_articles = SourceLookup.banner_names
     @unique_articles.each do |banner|
       arts = maras.where(matchable_articles: { banner: banner })
       if arts.count == 1

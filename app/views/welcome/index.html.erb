@@ -54,7 +54,7 @@
               </tr>
               </thead>
               <tbody>
-              <% @unique_articles = ActiveRecord::Base.connection.execute("select distinct banner from `matchable_articles`;")&.to_a.flatten %>
+              <% @unique_articles = SourceLookup.banner_names %>
               <% @unique_articles.each do |article| %>
                 <tr>
                   <th><%= article.titlecase %></th>
