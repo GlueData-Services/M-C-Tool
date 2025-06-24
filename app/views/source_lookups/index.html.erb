@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Source lookups</h1>
+
+<div id="source_lookups">
+  <% @source_lookups.each do |source_lookup| %>
+    <%= render source_lookup %>
+    <p>
+      <%= link_to "Show this source lookup", source_lookup %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New source lookup", new_source_lookup_path %>
