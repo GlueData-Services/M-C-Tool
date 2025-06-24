@@ -1,0 +1,32 @@
+<%= form_with(model: source_lookup) do |form| %>
+  <% if source_lookup.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(source_lookup.errors.count, "error") %> prohibited this source_lookup from being saved:</h2>
+
+      <ul>
+        <% source_lookup.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :SOURCE_SYSTEM, style: "display: block" %>
+    <%= form.text_field :SOURCE_SYSTEM %>
+  </div>
+
+  <div>
+    <%= form.label :BANNER_NAME, style: "display: block" %>
+    <%= form.text_field :BANNER_NAME %>
+  </div>
+
+  <div>
+    <%= form.label :SOURCE_TABLES, style: "display: block" %>
+    <%= form.text_field :SOURCE_TABLES %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

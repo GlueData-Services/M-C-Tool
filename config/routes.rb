@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :source_lookups
   devise_for :users
   mount Motor::Admin => '/motor_admin'
 

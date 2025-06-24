@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @source_lookup %>
+
+<div>
+  <%= link_to "Edit this source lookup", edit_source_lookup_path(@source_lookup) %> |
+  <%= link_to "Back to source lookups", source_lookups_path %>
+
+  <%= button_to "Destroy this source lookup", @source_lookup, method: :delete %>
+</div>
