@@ -24,8 +24,8 @@ class Tax
   end
 
   def get_tax(mara)
-    banner_prefix = mara.banner[0].downcase
-    table = "#{banner_prefix}_mlan"
+    bp = SourceLookup.find_by(SOURCE_SYSTEM: mara.banner)
+    bp.present? ? banner_prefix = bp.SOURCE_SYSTEM[0].downcase : banner_prefix = mara.banner[0].downcase
 
     query = <<~SQL
       SELECT aland, taxm1, #{banner_prefix}_tskmt.`VTEXT`, "#{banner_prefix}_mlan" as "table", "#{mara.banner}" as "banner"

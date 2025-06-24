@@ -1,15 +1,7 @@
 module MatcherHelper
   def banner(code)
-    case code.upcase
-    when 'G'
-      return 'Game'
-    when 'M'
-      return 'Makro'
-    when 'B'
-      return 'Builders'
-    else
-      return code
-    end
+    st = SourceLookup.where('SOURCE_TABLES LIKE ?', "#{code}%")&.first
+    st.present? ? st.BANNER_NAME : code
   end
 
   def rank_score(score)

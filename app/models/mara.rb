@@ -68,14 +68,15 @@ class Mara < ApplicationRecord
     ActiveRecord::Base.logger.silence do
 
       lookup = Lookup.find(lookup_id)
-      case banner
-      when 'GAME'
+      t_name = SourceLookup.find_by(SOURCE_SYSTEM: banner)&.SOURCE_TABLES
+      case t_name
+      when 'g_mara'
         val = get_value(lookup.g_table, lookup.g_field)
         lookup.g_lookup.present? ? get_lookup_value(lookup.g_lookup, val) : val
-      when 'MAKRO'
+      when 'm_mara'
         val = get_value(lookup.m_table, lookup.m_field)
         lookup.m_lookup.present? ? get_lookup_value(lookup.m_lookup, val) : val
-      when 'BUILDERS'
+      when 'b_mara'
         val = get_value(lookup.b_table, lookup.b_field)
         lookup.b_lookup.present? ? get_lookup_value(lookup.b_lookup, val) : val
       end
@@ -90,4 +91,3 @@ class Mara < ApplicationRecord
     where.not(group: nil).distinct.pluck(:group)
   end
 end
-
