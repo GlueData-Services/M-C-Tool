@@ -80,7 +80,8 @@ class Match < ApplicationRecord
 
   def main_maras
     mains = []
-    %w[GAME BUILDERS MAKRO].each do |banner|
+    @unique_articles = SourceLookup.banner_names
+    @unique_articles.each do |banner|
       arts = maras.where(matchable_articles: { banner: banner })
       if arts.count == 1
         mains << arts.first
