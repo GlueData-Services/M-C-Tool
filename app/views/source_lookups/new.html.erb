@@ -1,9 +1,20 @@
-<h1>New source lookup</h1>
-
-<%= render "form", source_lookup: @source_lookup %>
-
-<br>
-
-<div>
-  <%= link_to "Back to source lookups", source_lookups_path %>
-</div>
+<section class="content" id="welcome">
+  <div class="container">
+    <div id="banner-stats" class="row mt-4">
+      <div class="col-12 col-lg-12">
+        <h3>Add new source lookup</h3>
+        <div class="card border-secondary shadow">
+          <section class="content" id="welcome">
+            <div class="container mt-4">
+              <%= render "form", source_lookup: @source_lookup %>
+            </div>
+          </section>
+          <span class="p-5"></span>
+          <div>
+            <%= link_to "Back to source lookups", source_lookups_path, class: 'm-4 col-3 btn btn-primary' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

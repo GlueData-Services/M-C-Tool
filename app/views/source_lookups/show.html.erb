@@ -1,10 +1,34 @@
-<p style="color: green"><%= notice %></p>
+<section class="content" id="welcome">
+  <div class="container">
+    <div id="banner-stats" class="row mt-4">
+      <div class="col-12 col-lg-12">
+        <h3>Add new source lookup</h3>
+        <div class="card border-secondary shadow">
 
-<%= render @source_lookup %>
+          <section class="content" id="welcome">
+            <div class="container mt-4">
+              <p style="color: green"><%= notice %></p>
+              <table class="table table-borderless table-striped table-fixed">
+                <thead>
+                  <tr>
+                    <th>Source system</th>
+                    <th>Banner name</th>
+                    <th>Source tables</th>
+                  </tr>
+                </thead>
+                <%= render @source_lookup %>
+              </table>
 
-<div>
-  <%= link_to "Edit this source lookup", edit_source_lookup_path(@source_lookup) %> |
-  <%= link_to "Back to source lookups", source_lookups_path %>
-
-  <%= button_to "Destroy this source lookup", @source_lookup, method: :delete %>
-</div>
+              <span class="p-5"></span>
+              <div>
+                <%= link_to "Edit this source lookup", edit_source_lookup_path(@source_lookup), class: 'm-4 col-3 btn btn-primary' %> |
+                <%= link_to "Back to source lookups", source_lookups_path, class: 'm-4 col-3 btn btn-success' %>
+                <%= button_to "Destroy this source lookup", @source_lookup, method: :delete, class: 'm-4 col-3 btn btn-danger' %>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

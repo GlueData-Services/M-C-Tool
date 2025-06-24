@@ -1,14 +1,38 @@
-<p style="color: green"><%= notice %></p>
-
-<h1>Source lookups</h1>
-
-<div id="source_lookups">
-  <% @source_lookups.each do |source_lookup| %>
-    <%= render source_lookup %>
-    <p>
-      <%= link_to "Show this source lookup", source_lookup %>
-    </p>
-  <% end %>
-</div>
-
-<%= link_to "New source lookup", new_source_lookup_path %>
+<section class="content" id="welcome">
+  <div class="container">
+    <div id="banner-stats" class="row mt-5">
+      <div class="col-12 col-lg-12">
+        <h3>Source lookups</h3>
+        <div class="card border-secondary shadow">
+          <% if @source_lookups.blank? %>
+          <div class="card-body m-4">
+            <h3><p class="text-danger">There is no source lookup present.</p></h3>
+          </div>
+          <% else %>
+          <div class="card-body">
+            <div class="row mt-1">
+              <table class="table table-borderless table-striped table-fixed">
+                <p style="color: green"><%= notice %></p>
+                  <thead>
+                    <tr>
+                      <th>Source system</th>
+                      <th>Banner name</th>
+                      <th>Source tables</th>
+                    </tr>
+                  </thead>
+                <% @source_lookups.each do |source_lookup| %>
+                <div id="source_lookups">
+                  <%= render source_lookup %>
+                </div>
+                <% end %>
+              </table>
+            </div>
+          </div>
+          <% end %>
+          <span class="p-3"></span>
+          <%= link_to "Add new source lookup", new_source_lookup_path, class: 'm-4 col-3 btn btn-success' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

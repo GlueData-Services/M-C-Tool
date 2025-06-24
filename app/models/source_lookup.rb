@@ -1,2 +1,6 @@
 class SourceLookup < ApplicationRecord
+  validates :SOURCE_SYSTEM, presence: true, uniqueness: true, length: {minimum: 2, maximum: 50}
+  validates :BANNER_NAME, presence: true, length: {minimum: 2, maximum: 50}
+  validates :SOURCE_TABLES, presence: true, uniqueness: true, length: {minimum: 3, maximum: 50}
+
 end
