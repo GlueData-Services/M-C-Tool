@@ -54,10 +54,11 @@
               </tr>
               </thead>
               <tbody>
-              <% @unique_articles = SourceLookup.banner_names %>
-              <% @unique_articles.each do |article| %>
+              <% @unique_articles = SourceLookup.source_systems %>
+              <% @banner_names = SourceLookup.banner_names %>
+              <% @unique_articles.each_with_index do |article, i| %>
                 <tr>
-                  <th><%= article.titlecase %></th>
+                  <th><%= @banner_names[i] %></th>
                   <td class="text-end"><%= total_for_banner(article) %></td>
                   <td class="text-end"><%= variations_for_banner(article) %></td>
                 </tr>

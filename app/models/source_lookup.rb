@@ -7,4 +7,8 @@ class SourceLookup < ApplicationRecord
   def self.banner_names
     all.pluck(:banner_name)
   end
+
+  def self.source_systems
+    all.pluck(:source_system)
+  end
 end

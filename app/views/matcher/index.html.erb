@@ -5,7 +5,7 @@
     <%= form_tag matcher_path, method: :get, class: 'row gy-2 gx-3 align-items-center bd-highlight' do %>
       <div class="col-auto">
         <%= select_tag :f_banner,
-                       options_for_select([["Source System", nil]] + SourceLookup.banner_names, params[:f_banner]),
+                       options_for_select([["Source System", nil]] + SourceLookup.all.map {|sc| [sc.BANNER_NAME, sc.SOURCE_SYSTEM]}, params[:f_banner]),
                        class: 'form-select-sm'
         %>
       </div>
