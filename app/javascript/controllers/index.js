@@ -35,3 +35,7 @@ application.register("tax", TaxController)
 import ValidationController from "./validation_controller"
 
 application.register("validation", ValidationController)
+
+import CategoryFilterController from "./category_filter_controller"
+
+application.register("category-filter", CategoryFilterController)

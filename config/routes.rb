@@ -44,5 +44,11 @@ Rails.application.routes.draw do
   resources :articles
   resources :comments
 
+  get '/categories/filter', to: 'categories#filter'
+  post '/categories/:id', to: 'categories#update'
+  get '/categories/lvl2', to: 'categories#lvl2'
+  get '/categories/lvl3', to: 'categories#lvl3'
+  get '/categories/lvl4', to: 'categories#lvl4'
+
   root "welcome#index"
 end

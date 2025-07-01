@@ -1,0 +1,72 @@
+<script type="text/css">
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+</script>
+
+<section class="content" id="welcome">
+  <div class="container">
+    <div id="banner-stats" class="row mt-4">
+      <div class="col-12 col-lg-12">
+        <h3>Matching BMC Lookups</h3>
+        <div class="card border-secondary shadow">
+
+          <section class="content" id="welcome">
+            <div class="container mt-4">
+              <p style="color: green"><%= notice %></p>
+              <table class="table table-borderless table-striped table-fixed">
+                <div data-controller="category-filter" class="container col-12 text-center">
+                  <div class="alert alert-warning p-2 mt-5" role="alert">
+                    <b>BMC: <%= params[:lvl]&.join(', ') %></b>
+                  </div>
+
+                  <div data-controller="category-filter">
+                    <%= form_with url: categories_filter_path(match: @match.id), method: :post, local: true, data: { controller: "category-filter" } do %>
+                      <select data-category-filter-target="lvl1" data-action="change->category-filter#fetchLvl2" class="form-select form-select-lg mb-3">
+                        <option value="">Select LVL1</option>
+                        <% Category.distinct.pluck(:lvl1_code, :lvl1_desc).each do |code, desc| %>
+                          <option value="<%= code %>"><%= code %> | <%= desc %></option>
+                        <% end %>
+                      </select>
+                      <div style="display: flex; align-items: center;">
+                        <select data-category-filter-target="lvl2" data-action="change->category-filter#fetchLvl3" class="form-select form-select-lg mb-3">
+                          <option value="">Select LVL2</option>
+                        </select>
+                        <div data-category-filter-target="lvl2Loader" class="spinner" style="display: none; width: 20px; height: 20px; margin-left: 8px; border: 3px solid #eee; border-top-color: #333; border-radius: 50%; animation: spin 0.6s linear infinite;"></div>
+                      </div>
+                      <div style="display: flex; align-items: center;">
+                        <select data-category-filter-target="lvl3" data-action="change->category-filter#fetchLvl4" class="form-select form-select-lg mb-3">
+                          <option value="">Select LVL3</option>
+                        </select>
+                        <div data-category-filter-target="lvl3Loader" class="spinner" style="display: none; width: 20px; height: 20px; margin-left: 8px; border: 3px solid #eee; border-top-color: #333; border-radius: 50%; animation: spin 0.6s linear infinite;"></div>
+                      </div>
+                      <div style="display: flex; align-items: center;">
+                        <select name="lvl4_code" data-category-filter-target="lvl4" class="form-select form-select-lg mb-3">
+                          <option value="">Select LVL4</option>
+                        </select>
+                        <div data-category-filter-target="lvl4Loader" class="spinner" style="display: none; width: 20px; height: 20px; margin-left: 8px; border: 3px solid #eee; border-top-color: #333; border-radius: 50%; animation: spin 0.6s linear infinite;"></div>
+                      </div>
+                      <div class="col-5 btn-group mr-2">
+                        <%= submit_tag "Submit", class: "btn btn-primary p-2 mt-5 col-5", data: { disable_with: "Submitting..." } %>
+                      </div>
+                      <div class="col-5 btn-group mr-2">
+                        <%= button_tag "Refresh", type: "button", class: "btn btn-success p-2 mt-5 col-5", onclick: "window.location.reload();" %>
+                      </div>
+                      <div class="alert alert-info p-2 mt-5" role="alert">
+                        <b>Due to network or any issue If submit button will not work, Please click on refresh and try again.</b>
+                      </div>
+                    <% end %>
+
+                  </div>
+                </div>
+
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
