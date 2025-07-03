@@ -2,7 +2,6 @@ class CategoriesController < ApplicationController
   before_action :find_match, only: %i[ filter update ]
 
   def filter
-    @lkp = ActiveRecord::Base.connection.exec_query('select distinct LVL1_CODE from lkp_merch_hier')
   end
 
   def update
@@ -38,7 +37,7 @@ class CategoriesController < ApplicationController
 
   def find_match
     match = Match.includes(maras: :match_fields).find_by(id: params[:match])
-    if match.present? && match&.match_fields.present?
+    if match.present?
       @match = match
     else
       redirect_to consolidation_path, error: "Either match or match fields are not available."

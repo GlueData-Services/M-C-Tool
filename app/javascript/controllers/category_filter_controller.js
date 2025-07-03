@@ -3,6 +3,19 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["lvl1", "lvl2", "lvl3", "lvl4", "lvl2Loader", "lvl3Loader", "lvl4Loader"]
 
+  connect() {
+    const hasReloaded = sessionStorage.getItem("category_page_reloaded_at");
+    const now = Date.now();
+
+    if (!hasReloaded || now - parseInt(hasReloaded, 10) > 9000) {
+      sessionStorage.setItem("category_page_reloaded_at", now.toString());
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
+  }
+
   fetchLvl2() {
     const lvl1Code = this.lvl1Target.value
     this.showLoader(this.lvl2LoaderTarget)

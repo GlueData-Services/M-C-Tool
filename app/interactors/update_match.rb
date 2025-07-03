@@ -16,9 +16,9 @@ class UpdateMatch
         field = match.match_fields.where(lookup_id: lookup_id).exists? ?
                   match.match_fields.where(lookup_id: lookup_id).first :
                   match.match_fields.new(lookup_id: lookup_id)
-        if match_details['mara_id'].present?
-          match_details['overridden_value'] = nil
-        end
+        # if match_details['mara_id'].present?
+        #   match_details['overridden_value'] = nil
+        # end
         modified = true if field&.update(match_details) # Cant set it to update's return, because the last one may fail
       end
       match.reload
@@ -63,6 +63,16 @@ class UpdateMatch
 
       if match.review_status == 'fail'
         match.update(status: :complete, review_status: :remediated)
+      end
+    end
+
+    match_params.select do |id, nested_params|
+      if nested_params[:overridden_value].present?
+        lvl4_desc = ActiveRecord::Base.connection.exec_query("SELECT lkp_merch_hier.LVL4_CODE FROM lkp_merch_hier WHERE lkp_merch_hier.LVL4_DESC = '#{nested_params["overridden_value"]}' LIMIT 1")
+        ov = match.match_fields.find_or_initialize_by(lookup_id: id)
+        ov.update(nested_params)
+        # ov.update(mara_id: match.mara_ids.last, overridden_value: lvl4_desc&.first["LVL4_CODE"])
+        ov.save
       end
     end
     context.match = match

@@ -23,7 +23,7 @@
                   </div>
 
                   <div data-controller="category-filter">
-                    <%= form_with url: categories_filter_path(match: @match.id), method: :post, local: true, data: { controller: "category-filter" } do %>
+                    <%= form_with url: consolidate_match_path(id: @match.id), method: :get, remote: true, data: { controller: "category-filter" } do %>
                       <select data-category-filter-target="lvl1" data-action="change->category-filter#fetchLvl2" class="form-select form-select-lg mb-3">
                         <option value="">Select LVL1</option>
                         <% Category.distinct.pluck(:lvl1_code, :lvl1_desc).each do |code, desc| %>

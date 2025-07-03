@@ -83,7 +83,7 @@
             <% vals << value.to_s&.strip if (value.to_s.present? && !value.to_s.include?("*map")) %>
             <% val_id = mara.id %>
             <% highlight = selectable && mf&.mara_id.nil? %>
-
+            <% @good_match = value if mara.id == mf&.mara_id %>
             <td class="<%= mara.banner.downcase %> mara-data w-280
                          <%= 'text-more-muted' unless selectable %>
                          <%= 'mara-selected' if mara.id == mf&.mara_id %>
@@ -129,10 +129,35 @@
                                   title: 'Override',
                                   data: { action: 'change->consolidator#override' } %>
 
-                <%= link_to 'Update', categories_filter_path({match: @match.id, lvl: vals}) %>
               <% end %>
             <% else %>
-              <%= get_consolidated_value(mf, vals) %>
+              <%= get_consolidated_value(mf, vals) if @lookups[lookup_id].attribute_name&.downcase != 'bmc' %>
+            <% end %>
+
+            <% if overridable && @lookups[lookup_id].attribute_name&.downcase.eql?('bmc') %>
+              <% if params[:lvl4_code].present? %>
+                <% lvl4_desc = ActiveRecord::Base.connection.exec_query("SELECT lkp_merch_hier.LVL4_DESC FROM lkp_merch_hier WHERE lkp_merch_hier.LVL4_CODE = '#{params[:lvl4_code]}' LIMIT 1") %>
+                <% lvl4_desc = lvl4_desc&.rows %>
+              <% elsif @match.match_fields.find_by(lookup_id: lookup_id)&.overridden_value %>
+                <% lvl4_desc = ActiveRecord::Base.connection.exec_query("SELECT lkp_merch_hier.LVL4_DESC FROM lkp_merch_hier WHERE lkp_merch_hier.LVL4_DESC = '#{@match.match_fields.find_by(lookup_id: lookup_id)&.overridden_value}' LIMIT 1") %>
+                <% lvl4_desc = lvl4_desc&.rows %>
+              <% else %>
+                <% lvl4_desc = params[:lvl4_code] %>
+              <% end %>
+              <% if @good_match.present? %>
+                <% default_d = @good_match %>
+              <% else %>
+                <% new_match = @match.maras.find_by(prefixed_matnr: val_id) %>
+                <% default_d = new_match.get_specific_field(lookup_id) %>
+              <% end %>
+              <%= hidden_field_tag "match_fields[#{lookup_id}][mara_id]", val_id %>
+              <%= text_field_tag "match_fields[#{lookup_id}][overridden_value]",
+                                   lvl4_desc.present? ? lvl4_desc : default_d,
+                                   data: { consolidator_target: 'overrideInput' },
+                                   class: "form-control",
+                                   disabled: params[:lvl4_code].present? ? false : true %>
+
+              <%= link_to 'Update', categories_filter_path({match: @match.id, lvl: vals}) if @lookups[lookup_id].attribute_name&.downcase.eql?('bmc') %>
             <% end %>
           </td>
         </tr>

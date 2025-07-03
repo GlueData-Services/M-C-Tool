@@ -31,7 +31,7 @@
   <!--    </li>-->
   <%# end %>
 
-  <% if match.maras.map { |m| m.get_specific_field(72).downcase }.include?('generic') && current_user.can_view?('variants') %>
+  <% if match.maras.map { |m| m.get_specific_field(72)&.downcase }.include?('generic') && current_user.can_view?('variants') %>
     <li class="nav-item">
       <button class="nav-link" id="variants-tab" data-bs-toggle="tab" data-bs-target="#variants" type="button" role="tab">Variants</button>
     </li>
